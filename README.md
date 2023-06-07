@@ -80,7 +80,7 @@ src:
 
    main: The central file from which the API is launched.
 
-   Final-Project.postman_collection.json : Collection of the Postman json format. 
+   Final-Project.postman_collection.json: Collection of the Postman json format. 
 
 
 ## Running the app
@@ -90,6 +90,10 @@ src:
 $ npm run start:dev
 
 ```
+
+## Postman
+
+In file 'Final-Project.postman_collection.json' contains a working collection of request for the project
 
 
 ## Support
