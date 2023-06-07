@@ -1,0 +1,29 @@
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { Role, User } from '@prisma/client';
+
+@Injectable()
+export class RoleGuard implements CanActivate {
+  constructor(private readonly reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (!requiredRoles) {
+      // If no roles are specified, allow access by default
+      return true;
+    }
+
+    const request = context.switchToHttp().getRequest();
+    const user: User = request.user; // Assuming user information is stored in the 'user' property of the request
+
+    if (!user || !user.roles) {
+      return false; // User must be authenticated and have a role
+    }
+
+    return requiredRoles.includes(user.roles);
+  }
+}

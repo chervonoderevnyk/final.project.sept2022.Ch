@@ -9,8 +9,7 @@ import { Orders } from '@prisma/client';
 import { CreateOrderDto } from './dto/create.order.dto';
 import { PrismaService } from '../core/orm/prisma.service';
 import { UsersService } from '../users/users.service';
-import { SortOrderByInput } from './dto/get.order.dto';
-import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+import { UpdateOrderDto } from './dto/update.order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -20,62 +19,60 @@ export class OrdersService {
     private readonly userService: UsersService,
   ) {}
 
-  async findAllPaginate(page: number, limit: number) {
-    return this.prismaService.orders.findMany({
-      skip: (page - 1) * limit,
+  async getAllOrders(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+
+    const totalCount = await this.prismaService.orders.count();
+
+    const orders = await this.prismaService.orders.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+      skip,
       take: limit,
       select: {
         id: true,
         name: true,
-        // surname: true,
-        // email: true,
-        // phone: true,
+        surname: true,
+        email: true,
+        phone: true,
         age: true,
-        // course: true,
-        // course_format: true,
-        // course_type: true,
-        // status: true,
-        // sum: true,
-        // alreadyPaid: true,
-        // group: true,
-        // created_at: true,
-        // utm: true,
-        // msg: true,
-        // manager: true,
+        course: true,
+        course_format: true,
+        course_type: true,
+        status: true,
+        sum: true,
+        alreadyPaid: true,
+        group: true,
+        created_at: true,
+        utm: true,
+        msg: true,
+        manager: true,
       },
-      orderBy: [
-        {
-          id: 'desc',
-        },
-      ],
     });
+    return {
+      data: orders,
+      page,
+      limit,
+      totalCount,
+    };
   }
 
-  async findAll(): Promise<Orders[]> {
-    return this.prismaService.orders
-      .findMany
-      //   {
-      //   select: {
-      //     id: true,
-      //     name: true,
-      //     surname: true,
-      //     email: true,
-      //     phone: true,
-      //     age: true,
-      //     course: true,
-      //     course_format: true,
-      //     course_type: true,
-      //     status: true,
-      //     sum: true,
-      //     alreadyPaid: true,
-      //     // group: true,
-      //     created_at: true,
-      //     utm: true,
-      //     msg: true,
-      // manager: true,
-      //   },
-      // }
-      ();
+  async getAllOrdersSort(
+    sortField: string,
+    sortOrder: 'asc' | 'desc',
+    page: number,
+    limit: number,
+  ) {
+    const orders = await this.prismaService.orders.findMany({
+      orderBy: {
+        [sortField]: sortOrder,
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return orders;
   }
 
   async createOrder(
@@ -134,15 +131,17 @@ export class OrdersService {
     });
   }
 
-  async updateOrder(orderId: string, UpdateOrderDto): Promise<Orders> {
+  async updateOrder(orderId: string, updateOrderDto: UpdateOrderDto) {
     return this.prismaService.orders.update({
       where: { id: Number(orderId) },
-      data: UpdateOrderDto,
+      data: updateOrderDto,
     });
   }
 
   async deleteOrder(orderId: string) {
-    return this.prismaService.orders.delete({ where: { id: Number(orderId) } });
+    await this.prismaService.orders.delete({
+      where: { id: Number(orderId) },
+    });
   }
 
   async checkUser(userId: string) {

@@ -11,32 +11,21 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { CreateUserDto } from './dto/create.users.dto';
 import { UsersService } from './users.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update.user.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Users')
 @Controller('users')
 @UseGuards(AuthGuard())
-// @Roles(Role.User)
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  // @Post()
-  // async createUser(
-  //   @Req() req: any,
-  //   @Body() createUserDto: CreateUserDto,
-  //   @Res() res: any,
-  // ) {
-  //   return res
-  //     .status(HttpStatus.CREATED)
-  //     .json(await this.userService.createUser(createUserDto));
-  // }
-
   @Post()
+  @UseGuards(AuthGuard())
   async registerUserByAdmin(
     @Req() req: any,
     @Body() createUserDto: CreateUserDto,
@@ -55,6 +44,7 @@ export class UsersController {
 
   @ApiParam({ name: 'userId', required: true })
   @Get('/:userId')
+  @UseGuards(AuthGuard())
   async getUserInfo(
     @Req() req: any,
     @Res() res: any,
@@ -66,10 +56,8 @@ export class UsersController {
   }
 
   @Patch('/:userId')
-  @ApiParam({ name: 'userId', required: true })
-  async updateUser(
-    @Req() req: any,
-    @Res() res: any,
+  @UseGuards(AuthGuard())
+  updateUser(
     @Param('userId') userId: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
@@ -77,13 +65,8 @@ export class UsersController {
   }
 
   @Delete('/:userId')
-  async deleteUser(
-    @Req() req: any,
-    @Res() res: any,
-    @Param('userId') userId: string,
-  ) {
-    return res
-      .status(HttpStatus.OK)
-      .json(await this.userService.deleteUser(userId));
+  @UseGuards(AuthGuard())
+  deleteUser(@Param('userId') userId: string) {
+    return this.userService.deleteUser(userId);
   }
 }

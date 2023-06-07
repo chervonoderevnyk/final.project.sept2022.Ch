@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { BearerStrategy } from './bearer.strategy';
 import { UsersService } from '../users/users.service';
 import { PrismaService } from '../core/orm/prisma.service';
+import { RoleGuard } from './guard/roles.guard';
 
 @Module({
   imports: [
@@ -21,7 +22,13 @@ import { PrismaService } from '../core/orm/prisma.service';
       }),
     }),
   ],
-  providers: [AuthService, BearerStrategy, UsersService, PrismaService],
+  providers: [
+    AuthService,
+    BearerStrategy,
+    UsersService,
+    PrismaService,
+    RoleGuard,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

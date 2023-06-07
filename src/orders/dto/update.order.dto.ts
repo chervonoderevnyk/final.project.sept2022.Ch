@@ -1,86 +1,80 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsPhoneNumber,
-  IsString,
-} from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateOrderDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
-  name: string;
+  @IsOptional()
+  readonly name: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  surname: string | null;
+  readonly surname: string | null;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  email: string | null;
+  readonly email: string | null;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  phone: string | null;
+  readonly phone: string | null;
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  age: number;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  course: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  course_format: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  course_type: string;
+  readonly age: number;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  status: string | null;
+  readonly course: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly course_format: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly course_type: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly status: string | null;
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  sum: number | null;
+  readonly sum: number | null;
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  alreadyPaid: number | null;
+  readonly alreadyPaid: number | null;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  created_at: Date | null;
+  readonly created_at: Date | null;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  utm: string;
+  readonly utm: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  msg: string;
+  readonly msg: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  manager: string;
+  readonly manager: string;
 }
 //id

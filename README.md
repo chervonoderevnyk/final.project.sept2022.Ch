@@ -25,38 +25,70 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+https://docs.nestjs.com/  documentation of the Nestjs
 
 ## Installation
 
 ```bash
+
 $ npm install
+
+If the nestjs is not instelled on the computer 
+$ npm install -g @nestjs/cli
+
+Be sure to check the version of "@nestjs/common" and "@nestjs/core". It should be "^8.0.0". 
+If version : "^9.0.0" is automatically installed: uninstall exit 
+$ npm uninstall "@nestjs/common": "^9.0.0"
+$ npm uninstall "@nestjs/core": "^9.0.0"
+And install version 8
+$ npm install "@nestjs/common": "^8.0.0"
+$ npm install "@nestjs/core": "^8.0.0"
 ```
+
+## Information on Prisma integration
+
+```bash
+https://docs.nestjs.com/recipes/prisma
+
+```
+
+## Applications (orders) received from the database
+
+```bash
+mysql: https://drive.google.com/file/d/1_5elESLEi3Lb_QFgDoo2NNsiP-n5O0Ow/view?
+usp=sharing
+
+```
+
+## Folder Structure:
+
+prisma:
+
+migrations: Prisma Migrate generates SQL migration files for your declarative data model definition in the Prisma schema.
+
+schema.prisma: Table for the database.
+
+src: 
+
+   auth: Everything you need to register and log in.
+
+   core: General purpose files for the project are placed here.
+
+   orders: Serving the module: 'orders' entity through the 'CRUD' script.
+
+   users: Serving the module: 'users' entity through the 'CRUD' script.
+
+   main: The central file from which the API is launched
+
 
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
 # watch mode
 $ npm run start:dev
 
-# production mode
-$ npm run start:prod
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
 
 ## Support
 

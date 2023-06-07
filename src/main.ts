@@ -6,7 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  // app.useGlobalGuards(new RolesGuard());
+
   const config = new DocumentBuilder()
     .setTitle('Final-project example')
     .setDescription('The final-project API description')

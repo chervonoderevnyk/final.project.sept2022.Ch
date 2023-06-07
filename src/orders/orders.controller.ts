@@ -7,24 +7,26 @@ import {
   HttpStatus,
   Inject,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
-  Render,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { SetMetadata } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create.order.dto';
 import { UpdateOrderDto } from './dto/update.order.dto';
 import { UsersService } from '../users/users.service';
-import { SortOrderByInput } from './dto/get.order.dto';
+import { Role } from '../auth/guard/roles.enum';
 
 @ApiTags('Orders')
 @Controller('orders')
-// @UseGuards(RolesGuard)
 export class OrdersController {
   constructor(
     private readonly ordersService: OrdersService,
@@ -33,30 +35,34 @@ export class OrdersController {
   ) {}
 
   @Get()
-  async findAllOrdersPaginate(
-    @Query('page') page = 1,
-    @Query('limit') limit = 25,
-  ) {
-    return this.ordersService.findAllPaginate(page, limit);
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
+  async getAllOrders(@Query('page') page = 1, @Query('limit') limit = 25) {
+    return this.ordersService.getAllOrders(page, limit);
   }
 
   @Get()
-  async findAllOrders(@Req() req: any, @Res() res: any) {
-    return res.status(HttpStatus.OK).json(await this.ordersService.findAll());
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
+  async getAllOrdersSort(
+    @Query('sortField') sortField = 'id',
+    @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc',
+    @Query('page', ParseIntPipe) page = 1,
+    @Query('limit', ParseIntPipe) limit = 25,
+  ) {
+    const orders = await this.ordersService.getAllOrdersSort(
+      sortField,
+      sortOrder,
+      page,
+      limit,
+    );
+
+    return orders;
   }
 
-  // @Post()
-  // async createOrders(
-  //   @Req() req: any,
-  //   @Body() body: CreateOrderDto,
-  //   @Res() res: any,
-  // ) {
-  //   return res
-  //     .status(HttpStatus.CREATED)
-  //     .json(await this.ordersService.createOrder(body));
-  // }
-
   @Post('/:userId')
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   async createOrders(
     @Req() req: any,
     @Body() orderData: CreateOrderDto,
@@ -94,7 +100,8 @@ export class OrdersController {
   }
 
   @Get('/:orderId')
-  // @Roles('admin')
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   @ApiParam({ name: 'orderId', required: true })
   async getUserInfo(
     @Req() req: any,
@@ -107,10 +114,9 @@ export class OrdersController {
   }
 
   @Patch('/:orderId')
-  @ApiParam({ name: 'orderId', required: true })
-  async updateOrder(
-    @Req() req: any,
-    @Res() res: any,
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
+  updateProduct(
     @Param('orderId') orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,
   ) {
@@ -118,13 +124,9 @@ export class OrdersController {
   }
 
   @Delete('/:orderId')
-  async deleteOrder(
-    @Req() req: any,
-    @Res() res: any,
-    @Param('orderId') orderId: string,
-  ) {
-    return res
-      .status(HttpStatus.OK)
-      .json(await this.ordersService.deleteOrder(orderId));
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
+  async deleteOrder(@Param('orderId') orderId: string) {
+    await this.ordersService.deleteOrder(orderId);
   }
 }

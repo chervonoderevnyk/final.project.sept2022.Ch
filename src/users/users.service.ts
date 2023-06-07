@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-
-import { CreateUserDto } from './dto/create.users.dto';
-import { PrismaService } from '../core/orm/prisma.service';
 import { Role, User } from '@prisma/client';
+
+import { PrismaService } from '../core/orm/prisma.service';
 import { RegisterDto } from '../auth/dto/auth.dto';
+import { UpdateUserDto } from './dto/update.user.dto';
 
 @Injectable()
 export class UsersService {
@@ -24,31 +24,9 @@ export class UsersService {
     });
   }
 
-  // async createUser(userData: RegisterDto): Promise<User> {
-  //   const passwordHash = await this.hashPassword(userData.password);
-  //   return this.prismaService.user.create({
-  //     data: {
-  //       lastName: userData.lastName,
-  //       email: userData.email,
-  //       password: passwordHash,
-  //       roles: userData.roles,
-  //     },
-  //   });
-  // }
   async hashPassword(password: string) {
     return bcrypt.hash(password, this.salt);
   }
-
-  // async createManager(userData: RegisterManagerDto): Promise<User> {
-  //   return this.prismaService.user.create({
-  //     data: {
-  //       lastName: userData.lastName,
-  //       firstName: userData.firstName,
-  //       email: userData.email,
-  //       roles: Role.Manager,
-  //     },
-  //   });
-  // }
 
   async getUserList() {
     return this.prismaService.user.findMany({
@@ -78,15 +56,18 @@ export class UsersService {
     });
   }
 
-  async updateUser(userId: string, UpdateUserDto): Promise<User> {
+  async updateUser(userId: string, updateUserDto: UpdateUserDto) {
+    const { lastName, firstName, email, roles } = updateUserDto;
     return this.prismaService.user.update({
       where: { id: Number(userId) },
-      data: UpdateUserDto,
+      data: { lastName, firstName, email, roles },
     });
   }
 
   async deleteUser(userId: string) {
-    return this.prismaService.user.delete({ where: { id: Number(userId) } });
+    return this.prismaService.user.delete({
+      where: { id: Number(userId) },
+    });
   }
 
   async findUserByEmail(userEmail: string) {
