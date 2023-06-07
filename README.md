@@ -70,7 +70,7 @@ schema.prisma: Table for the database.
 
 src: 
 
-   auth: Everything you need to register and log in.
+   auth: Everything you need to register, log in adn guard.
 
    core: General purpose files for the project are placed here.
 
