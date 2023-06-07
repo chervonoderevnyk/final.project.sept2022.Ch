@@ -78,7 +78,9 @@ src:
 
    users: Serving the module: 'users' entity through the 'CRUD' script.
 
-   main: The central file from which the API is launched
+   main: The central file from which the API is launched.
+
+   Final-Project.postman_collection.json : Collection of the Postman json format. 
 
 
 ## Running the app
