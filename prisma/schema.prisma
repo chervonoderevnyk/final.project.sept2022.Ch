@@ -8,48 +8,44 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-// model Orders {
-//   id            Int       @id @default(autoincrement())
-//   name          String?   @db.VarChar(25)
-//   surname       String?   @db.VarChar(25)
-//   email         String?   @db.VarChar(100)
-//   phone         String?   @db.VarChar(12)
-//   age           Int?
-//   course        String?   @db.VarChar(10)
-//   course_format String?   @db.VarChar(15)
-//   course_type   String?   @db.VarChar(100)
-//   sum           Int?
-//   alreadyPaid   Int?
-//   group         String?
-//   created_at    DateTime? @db.DateTime(6)
-//   utm           String?   @db.VarChar(100)
-//   msg           String?   @db.VarChar(100)
-//   status        String?   @db.VarChar(15)
-//   manager       String?
-//   mentor        User?     @relation(fields: [mentorId], references: [id])
-//   mentorId      Int?
-// }
-
 model Orders {
   id            Int       @id @default(autoincrement())
-  name          String?
-  surname       String?
-  email         String?   @unique
-  phone         String?
+  name          String?   @db.VarChar(25)
+  surname       String?   @db.VarChar(25)
+  email         String?   @db.VarChar(100)
+  phone         String?   @db.VarChar(12)
   age           Int?
-  course        String?
-  course_format String?
-  course_type   String?
-  status        String?
+  course        String?   @db.VarChar(10)
+  course_format String?   @db.VarChar(15)
+  course_type   String?   @db.VarChar(100)
   sum           Int?
   alreadyPaid   Int?
   group         String?
-  created_at    DateTime? @default(now())
-  utm           String?
-  msg           String?
+  created_at    DateTime? @db.DateTime(6)
+  utm           String?   @db.VarChar(100)
+  msg           String?   @db.VarChar(100)
+  status        String?   @db.VarChar(15)
   manager       String?
   mentor        User?     @relation(fields: [mentorId], references: [id])
   mentorId      Int?
+
+  @@index([id], name: "IdIndex")
+  @@index([name, surname], name: "NameSurnameIndex")
+  @@index([course], name: "CourseFormatIndex")
+  @@index([course_format], name: "Course_formatFormatIndex")
+  @@index([course_type], name: "Course_typeFormatIndex")
+  @@index([created_at], name: "CreatedAtIndex")
+  @@index([age], name: "AgeIndex")
+  @@index([email], name: "EmailIndex")
+  @@index([phone], name: "PhoneIndex")
+  @@index([sum], name: "SumIndex")
+  @@index([alreadyPaid], name: "AlreadyPaidIndex")
+  @@index([group], name: "GroupIndex")
+  @@index([utm], name: "UtmIndex")
+  @@index([msg], name: "MsgIndex")
+  @@index([status], name: "StatusIndex")
+  @@index([manager], name: "ManagerIndex")
+  @@index([mentorId], name: "MentorIdIndex")
 }
 
 model User {

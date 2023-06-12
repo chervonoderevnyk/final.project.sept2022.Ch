@@ -19,62 +19,6 @@ export class OrdersService {
     private readonly userService: UsersService,
   ) {}
 
-  // async getAllOrders(page: number, limit: number) {
-  //   const skip = (page - 1) * limit;
-  //
-  //   const totalCount = await this.prismaService.orders.count();
-  //
-  //   const orders = await this.prismaService.orders.findMany({
-  //     orderBy: {
-  //       id: 'desc',
-  //     },
-  //     skip,
-  //     take: limit,
-  //     select: {
-  //       id: true,
-  //       name: true,
-  //       surname: true,
-  //       email: true,
-  //       phone: true,
-  //       age: true,
-  //       course: true,
-  //       course_format: true,
-  //       course_type: true,
-  //       status: true,
-  //       sum: true,
-  //       alreadyPaid: true,
-  //       group: true,
-  //       created_at: true,
-  //       utm: true,
-  //       msg: true,
-  //       manager: true,
-  //     },
-  //   });
-  //   return {
-  //     data: orders,
-  //     page,
-  //     limit,
-  //     totalCount,
-  //   };
-  // }
-
-  // async getAllOrdersSort(
-  //   sortField: string,
-  //   sortOrder: 'asc' | 'desc',
-  //   page: number,
-  //   limit: number,
-  // ) {
-  //   const orders = await this.prismaService.orders.findMany({
-  //     orderBy: {
-  //       [sortField]: sortOrder,
-  //     },
-  //     skip: (page - 1) * limit,
-  //     take: limit,
-  //   });
-  //
-  //   return orders;
-  // }
-
   async getAllOrders(page: number, limit: number) {
     const skip = (page - 1) * limit;
 
@@ -106,6 +50,7 @@ export class OrdersService {
         manager: true,
       },
     });
+
     return {
       data: orders,
       page,
@@ -115,19 +60,49 @@ export class OrdersService {
   }
 
   async getAllOrdersSort(
-    { sortField, sortOrder }: { sortField: string; sortOrder: 'asc' | 'desc' },
+    sortOptions: { sortField: string; sortOrder: 'asc' | 'desc' },
     page: number,
     limit: number,
   ) {
+    const { sortField, sortOrder } = sortOptions;
+
+    const skip = (page - 1) * limit;
+
+    const totalCount = await this.prismaService.orders.count();
+
     const orders = await this.prismaService.orders.findMany({
       orderBy: {
         [sortField]: sortOrder,
       },
-      skip: (page - 1) * limit,
+      skip,
       take: limit,
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+        phone: true,
+        age: true,
+        course: true,
+        course_format: true,
+        course_type: true,
+        status: true,
+        sum: true,
+        alreadyPaid: true,
+        group: true,
+        created_at: true,
+        utm: true,
+        msg: true,
+        manager: true,
+      },
     });
 
-    return orders;
+    return {
+      data: orders,
+      page,
+      limit,
+      totalCount,
+    };
   }
 
   async createOrder(
@@ -165,7 +140,6 @@ export class OrdersService {
     return this.prismaService.orders.findFirst({
       where: { id: Number(orderId) },
       select: {
-        id: true,
         name: true,
         surname: true,
         email: true,

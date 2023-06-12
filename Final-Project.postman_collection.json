@@ -8,29 +8,20 @@
 		{
 			"name": "findAllOrders",
 			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/orders",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"orders"
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+							"type": "string"
+						}
 					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "findAllOrdersSort&Paginate",
-			"request": {
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/orders?sortField=course&sortOrder=desc&page=1&limit=5",
+					"raw": "http://localhost:3000/orders?page=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -41,8 +32,83 @@
 					],
 					"query": [
 						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n    \"name\": \"Nepyjpyvo\",\n    \"surname\": \"Nono\",\n    \"email\": \"pyvoN.c@gmail.com\",\n    \"phone\": \"8(097)384-34\",\n    \"age\": 4000,\n    \"course\": \"FS\",\n    \"course_format\": \"static\",\n    \"course_type\": \"pro\",\n    \"status\": null,\n    \"sum\": 1000,\n    \"alreadyPaid\": 100000,\n    \"group\": null,\n    \"utm\": \"target_fullstack\",\n    \"msg\": null,\n    \"manager\": null\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/orders/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllOrdersSort&Paginate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/orders/sorted?sortField=age&sortOrder=desc&page=1&limit=25",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders",
+						"sorted"
+					],
+					"query": [
+						{
 							"key": "sortField",
-							"value": "course"
+							"value": "age"
 						},
 						{
 							"key": "sortOrder",
@@ -54,7 +120,7 @@
 						},
 						{
 							"key": "limit",
-							"value": "5"
+							"value": "25"
 						}
 					]
 				}
@@ -64,6 +130,16 @@
 		{
 			"name": "getOrderById",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -82,13 +158,53 @@
 			"response": []
 		},
 		{
+			"name": "deleteOrder",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/orders/502",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders",
+						"502"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "patchOrders",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\" : \"Ork\",\n    \"surname\": \"Golf\",\n    \"email\": \"goolsby.c@yandex.com\",\n    \"phone\": \"8(927) 323-8\",\n    \"age\": 3453,\n    \"course\": \"FS\",\n    \"course_format\": \"static\",\n    \"course_type\": \"pro\",\n    \"status\": null,\n    \"sum\": null,\n    \"alreadyPaid\": null,\n    \"group\": null,\n    \"created_at\": \"2021-11-04T20:50:49.000Z\",\n    \"utm\": \"target_fullstack\",\n    \"msg\": null,\n    \"manager\": null\n}",
+					"raw": "{\n    \"name\" : \"Ork\",\n    \"surname\": \"WildPeople\",\n    \"email\": \"goolsby.c@yandex.com\",\n    \"phone\": \"8(927) 323-8\",\n    \"age\": 3453,\n    \"course\": \"FS\",\n    \"course_format\": \"static\",\n    \"course_type\": \"pro\",\n    \"status\": null,\n    \"sum\": null,\n    \"alreadyPaid\": null,\n    \"group\": null,\n    \"created_at\": \"2021-11-04T20:50:49.000Z\",\n    \"utm\": \"target_fullstack\",\n    \"msg\": null,\n    \"manager\": null\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,35 +221,6 @@
 					"path": [
 						"orders",
 						"15"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "deleteOrders",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\" : \"Ork\",\n    \"course\": \"FS\",\n    \"course_format\": \"static\",\n    \"course_type\": \"pro\"\n\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/orders/500",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"orders",
-						"500"
 					]
 				}
 			},
@@ -146,7 +233,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"bol@gmail.com\",\n    \"password\": \"12345\",\n    \"lastName\": \"Bolik\"\n}",
+					"raw": "{\n    \"email\": \"BBbolik@gmail.com\",\n    \"password\": \"12345\",\n    \"lastName\": \"Bolik\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -175,7 +262,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin\"\n\n}",
+					"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin\",\n    \"LastName\": \"Admin\"\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -205,7 +292,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODU2MTI4MzQsImV4cCI6MTY4NTY5OTIzNH0.LV9YyCimDwYSlLgN7yxkG_It-57Hf1DB1x6JmjdXGV8",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
 							"type": "string"
 						}
 					]
@@ -234,7 +321,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUiLCJpYXQiOjE2ODU2MDQwNTcsImV4cCI6MTY4NTY5MDQ1N30.dRIAJkvX6fYlJJCN6uR80dyzCquXAF_2PtX4cz7WuZA",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
 							"type": "string"
 						}
 					]

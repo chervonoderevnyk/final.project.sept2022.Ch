@@ -27,6 +27,7 @@ import { Role } from '../auth/guard/roles.enum';
 
 @ApiTags('Orders')
 @Controller('orders')
+@UseGuards(AuthGuard())
 export class OrdersController {
   constructor(
     private readonly ordersService: OrdersService,
@@ -35,34 +36,11 @@ export class OrdersController {
   ) {}
 
   @Get()
-  @UseGuards(AuthGuard())
-  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   async getAllOrders(@Query('page') page = 1, @Query('limit') limit = 25) {
     return this.ordersService.getAllOrders(page, limit);
   }
 
-  // @Get()
-  // @UseGuards(AuthGuard())
-  // @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
-  // async getAllOrdersSort(
-  //   @Query('sortField') sortField = 'id',
-  //   @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc',
-  //   @Query('page', ParseIntPipe) page = 1,
-  //   @Query('limit', ParseIntPipe) limit = 25,
-  // ) {
-  //   const orders = await this.ordersService.getAllOrdersSort(
-  //     sortField,
-  //     sortOrder,
-  //     page,
-  //     limit,
-  //   );
-  //
-  //   return orders;
-  // }
-
-  @Get()
-  @UseGuards(AuthGuard())
-  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
+  @Get('/sorted')
   async getAllOrdersSort(
     @Query('sortField') sortField: string,
     @Query('sortOrder') sortOrder: 'asc' | 'desc',
@@ -95,7 +73,6 @@ export class OrdersController {
     }
     return this.ordersService.createOrder(
       {
-        id: orderData.id,
         name: orderData.name,
         surname: orderData.surname,
         email: orderData.email,

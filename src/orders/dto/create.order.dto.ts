@@ -8,10 +8,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateOrderDto {
   @ApiProperty()
-  @IsNumber()
-  id: number;
-
-  @ApiProperty()
   @IsString()
   @IsOptional()
   name: string;
