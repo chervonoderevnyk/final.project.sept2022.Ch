@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+// model Orders {
+//   id            Int       @id @default(autoincrement())
+//   name          String?   @db.VarChar(25)
+//   surname       String?   @db.VarChar(25)
+//   email         String?   @db.VarChar(100)
+//   phone         String?   @db.VarChar(12)
+//   age           Int?
+//   course        String?   @db.VarChar(10)
+//   course_format String?   @db.VarChar(15)
+//   course_type   String?   @db.VarChar(100)
+//   sum           Int?
+//   alreadyPaid   Int?
+//   group         String?
+//   created_at    DateTime? @db.DateTime(6)
+//   utm           String?   @db.VarChar(100)
+//   msg           String?   @db.VarChar(100)
+//   status        String?   @db.VarChar(15)
+//   manager       String?
+//   mentor        User?     @relation(fields: [mentorId], references: [id])
+//   mentorId      Int?
+// }
+
+model Orders {
+  id            Int       @id @default(autoincrement())
+  name          String?
+  surname       String?
+  email         String?   @unique
+  phone         String?
+  age           Int?
+  course        String?
+  course_format String?
+  course_type   String?
+  status        String?
+  sum           Int?
+  alreadyPaid   Int?
+  group         String?
+  created_at    DateTime? @default(now())
+  utm           String?
+  msg           String?
+  manager       String?
+  mentor        User?     @relation(fields: [mentorId], references: [id])
+  mentorId      Int?
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  lastName  String?
+  firstName String?
+  password  String
+  roles     Role?    @default(Admin)
+  orders    Orders[]
+}
+
+enum Role {
+  Admin
+  Manager
+}
