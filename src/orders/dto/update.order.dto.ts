@@ -57,6 +57,11 @@ export class UpdateOrderDto {
   @IsOptional()
   readonly alreadyPaid: number | null;
 
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly group: string | null;
+
   @ApiProperty()
   @IsString()
   @IsOptional()

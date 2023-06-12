@@ -38,11 +38,11 @@ $ npm install -g @nestjs/cli
 
 Be sure to check the version of "@nestjs/common" and "@nestjs/core". It should be "^8.0.0". 
 If version : "^9.0.0" is automatically installed: uninstall exit 
-$ npm uninstall "@nestjs/common": "^9.0.0"
-$ npm uninstall "@nestjs/core": "^9.0.0"
+$ npm uninstall @nestjs/common^9.0.0
+$ npm uninstall @nestjs/core^9.0.0
 And install version 8
-$ npm install "@nestjs/common": "^8.0.0"
-$ npm install "@nestjs/core": "^8.0.0"
+$ npm install @nestjs/common^8.0.0
+$ npm install @nestjs/core^8.0.0
 ```
 
 ## Information on Prisma integration

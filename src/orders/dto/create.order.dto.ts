@@ -1,6 +1,5 @@
 import {
   IsEmail,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -14,7 +13,7 @@ export class CreateOrderDto {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
 
   @ApiProperty({ required: false })
@@ -35,22 +34,22 @@ export class CreateOrderDto {
 
   @ApiProperty()
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   age: number;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   course: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   course_format: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   course_type: string;
 
   @ApiProperty()

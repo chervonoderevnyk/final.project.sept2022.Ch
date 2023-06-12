@@ -12,6 +12,7 @@ import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 import { PassportWrapperModule } from './auth/passport-wrapper.module';
 import { AuthController } from './auth/auth.controller';
+import { PrismaService } from './core/orm/prisma.service';
 
 @Module({
   imports: [
@@ -27,6 +28,12 @@ import { AuthController } from './auth/auth.controller';
     UsersController,
     AuthController,
   ],
-  providers: [AppService, OrdersService, PrismaModule, UsersService],
+  providers: [
+    AppService,
+    OrdersService,
+    PrismaModule,
+    UsersService,
+    PrismaService,
+  ],
 })
 export class AppModule {}

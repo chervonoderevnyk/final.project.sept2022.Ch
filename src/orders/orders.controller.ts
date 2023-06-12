@@ -41,18 +41,36 @@ export class OrdersController {
     return this.ordersService.getAllOrders(page, limit);
   }
 
+  // @Get()
+  // @UseGuards(AuthGuard())
+  // @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
+  // async getAllOrdersSort(
+  //   @Query('sortField') sortField = 'id',
+  //   @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc',
+  //   @Query('page', ParseIntPipe) page = 1,
+  //   @Query('limit', ParseIntPipe) limit = 25,
+  // ) {
+  //   const orders = await this.ordersService.getAllOrdersSort(
+  //     sortField,
+  //     sortOrder,
+  //     page,
+  //     limit,
+  //   );
+  //
+  //   return orders;
+  // }
+
   @Get()
   @UseGuards(AuthGuard())
   @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   async getAllOrdersSort(
-    @Query('sortField') sortField = 'id',
-    @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc',
+    @Query('sortField') sortField: string,
+    @Query('sortOrder') sortOrder: 'asc' | 'desc',
     @Query('page', ParseIntPipe) page = 1,
     @Query('limit', ParseIntPipe) limit = 25,
   ) {
     const orders = await this.ordersService.getAllOrdersSort(
-      sortField,
-      sortOrder,
+      { sortField, sortOrder },
       page,
       limit,
     );
