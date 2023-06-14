@@ -1,10 +1,18 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  Res,
+  Request,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
-import { LoginDto, RegisterDto } from './dto/auth.dto';
+import { LoginDto } from './dto/auth.dto';
+import { CreateUserDto } from '../users/dto/create.users.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -16,58 +24,46 @@ export class AuthController {
 
   @Post('login')
   async login(@Res() res: any, @Body() body: LoginDto) {
-    if (!body.email && !body.password) {
+    if (!body.email || !body.password) {
       return res
         .status(HttpStatus.FORBIDDEN)
-        .json({ message: 'Error.Check_request_params' });
+        .json({ message: 'Error: Check request parameters' });
     }
+
     const findUser: User = await this.userService.findUserByEmail(body.email);
     if (!findUser) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ message: 'Email or password is incorrect' });
+      const newUser: CreateUserDto = {
+        firstName: '',
+        lastName: '',
+        email: body.email,
+        password: body.password,
+        roles: Role.Manager,
+      };
+      const createdUser = await this.userService.registerUserByAdmin(newUser);
+
+      const accessToken = this.authService.generateAccessToken(
+        createdUser.id.toString(),
+      );
+      const refreshToken = this.authService.generateRefreshToken(
+        createdUser.id.toString(),
+      );
+
+      return res.status(HttpStatus.OK).json({ accessToken, refreshToken });
     }
+
     if (await this.authService.compareHash(body.password, findUser.password)) {
-      const token = await this.authService.singIn(findUser.id.toString());
-      return res.status(HttpStatus.OK).json({ token });
+      const accessToken = this.authService.generateAccessToken(
+        findUser.id.toString(),
+      );
+      const refreshToken = this.authService.generateRefreshToken(
+        findUser.id.toString(),
+      );
+
+      return res.status(HttpStatus.OK).json({ accessToken, refreshToken });
     }
+
     return res
       .status(HttpStatus.UNAUTHORIZED)
       .json({ message: 'Email or password is incorrect' });
-  }
-
-  @Post('register')
-  async registerUser(@Res() res: any, @Body() body: RegisterDto) {
-    let findUser;
-    try {
-      findUser = await this.userService.findUserByEmail(body.email.trim());
-    } catch (err) {
-      console.log(err);
-    }
-    if (findUser) {
-      return res
-        .status(HttpStatus.FORBIDDEN)
-        .json({ message: 'User with this email is already exist' });
-    }
-    const user = await this.userService.registerUserByAdmin({
-      lastName: body.lastName ? body.lastName : 'Manager',
-      firstName: body.firstName,
-      email: body.email,
-      password: body.password,
-      roles: body.roles,
-    });
-
-    if (user) {
-      // const subject = 'Welcome on board!';
-      // this.mailService.send(user.email, subject, MailTemplate.WELCOME, {
-      //   userName: user.lastName,
-      // });
-      const token = await this.authService.singIn(user.id.toString());
-      return res.status(HttpStatus.OK).json({ token });
-    }
-
-    return res
-      .status(HttpStatus.BAD_REQUEST)
-      .json({ message: 'Error.Register_user_failed' });
   }
 }

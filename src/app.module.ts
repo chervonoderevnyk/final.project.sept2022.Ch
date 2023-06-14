@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+// import { AppController } from './app.controller';
+// import { AppService } from './app.service';
 import { OrdersService } from './orders/orders.service';
 import { OrdersController } from './orders/orders.controller';
 import { OrdersModule } from './orders/orders.module';
@@ -23,17 +23,28 @@ import { PrismaService } from './core/orm/prisma.service';
     PassportWrapperModule,
   ],
   controllers: [
-    AppController,
+    // AppController,
     OrdersController,
     UsersController,
     AuthController,
   ],
   providers: [
-    AppService,
+    // AppService,
     OrdersService,
     PrismaModule,
     UsersService,
     PrismaService,
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async onModuleInit() {
+    try {
+      await this.prisma.$connect();
+      console.log('Підключення до бази даних встановлено!');
+    } catch (error) {
+      console.error('Помилка підключення до бази даних:', error);
+    }
+  }
+}

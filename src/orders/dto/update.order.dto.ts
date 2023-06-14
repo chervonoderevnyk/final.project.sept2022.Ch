@@ -2,84 +2,83 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateOrderDto {
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly name: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  readonly surname: string | null;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  readonly email: string | null;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  readonly phone: string | null;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsOptional()
-  readonly age: number;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  readonly course: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  readonly course_format: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  readonly course_type: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  readonly status: string | null;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsOptional()
-  readonly sum: number | null;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsOptional()
-  readonly alreadyPaid: number | null;
+  readonly name?: string;
 
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly group: string | null;
+  readonly surname?: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly created_at: Date | null;
+  readonly email?: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly utm: string;
+  readonly phone?: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly age?: number;
+
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly msg: string;
+  readonly course?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly manager: string;
+  readonly course_format?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly course_type?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly status?: string | null;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly sum?: number | null;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  @IsOptional()
+  readonly alreadyPaid?: number | null;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly group?: string | null;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly created_at?: string | null;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly utm?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly msg?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  readonly manager?: string;
 }
-//id

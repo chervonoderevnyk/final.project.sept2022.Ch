@@ -12,10 +12,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { CreateUserDto } from './dto/create.users.dto';
 import { UsersService } from './users.service';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update.user.dto';
 
 @ApiTags('Users')

@@ -1,15 +1,12 @@
 import {
   Body,
   Controller,
-  Delete,
   forwardRef,
   Get,
   HttpStatus,
   Inject,
   Param,
-  ParseIntPipe,
   Patch,
-  Post,
   Query,
   Req,
   Res,
@@ -18,9 +15,9 @@ import {
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { SetMetadata } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from '@prisma/client';
 
 import { OrdersService } from './orders.service';
-import { CreateOrderDto } from './dto/create.order.dto';
 import { UpdateOrderDto } from './dto/update.order.dto';
 import { UsersService } from '../users/users.service';
 import { Role } from '../auth/guard/roles.enum';
@@ -36,62 +33,25 @@ export class OrdersController {
   ) {}
 
   @Get()
-  async getAllOrders(@Query('page') page = 1, @Query('limit') limit = 25) {
-    return this.ordersService.getAllOrders(page, limit);
-  }
-
-  @Get('/sorted')
-  async getAllOrdersSort(
-    @Query('sortField') sortField: string,
-    @Query('sortOrder') sortOrder: 'asc' | 'desc',
-    @Query('page', ParseIntPipe) page = 1,
-    @Query('limit', ParseIntPipe) limit = 25,
+  async getAllOrders(
+    @Query('sort') sort: string,
+    @Query('page') page = 1,
+    @Query('limit') limit = 25,
   ) {
-    const orders = await this.ordersService.getAllOrdersSort(
-      { sortField, sortOrder },
-      page,
-      limit,
-    );
+    let sortField: string | undefined;
+    let sortOrder: 'asc' | 'desc' | undefined;
 
-    return orders;
-  }
-
-  @Post('/:userId')
-  @UseGuards(AuthGuard())
-  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
-  async createOrders(
-    @Req() req: any,
-    @Body() orderData: CreateOrderDto,
-    @Res() res: any,
-    @Param('userId') userId: string,
-  ) {
-    const user = await this.userService.getUserById(userId);
-    if (!user) {
-      return res
-        .status(HttpStatus.NOT_FOUND)
-        .json({ message: `User with id: ${userId} not fount` });
+    if (sort) {
+      if (sort.startsWith('-')) {
+        sortField = sort.substring(1);
+        sortOrder = 'desc';
+      } else {
+        sortField = sort;
+        sortOrder = 'asc';
+      }
     }
-    return this.ordersService.createOrder(
-      {
-        name: orderData.name,
-        surname: orderData.surname,
-        email: orderData.email,
-        phone: orderData.phone,
-        age: orderData.age,
-        course: orderData.course,
-        course_format: orderData.course_format,
-        course_type: orderData.course_type,
-        status: orderData.status,
-        sum: orderData.sum,
-        alreadyPaid: orderData.alreadyPaid,
-        group: orderData.group,
-        created_at: orderData.created_at,
-        utm: orderData.utm,
-        msg: orderData.msg,
-        manager: orderData.manager,
-      },
-      userId,
-    );
+
+    return this.ordersService.getAllOrders(page, limit, sortField, sortOrder);
   }
 
   @Get('/:orderId')
@@ -109,19 +69,18 @@ export class OrdersController {
   }
 
   @Patch('/:orderId')
-  @UseGuards(AuthGuard())
   @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
-  updateProduct(
+  async updateOrder(
     @Param('orderId') orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,
+    @Req() req: any,
   ) {
-    return this.ordersService.updateOrder(orderId, updateOrderDto);
-  }
-
-  @Delete('/:orderId')
-  @UseGuards(AuthGuard())
-  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
-  async deleteOrder(@Param('orderId') orderId: string) {
-    await this.ordersService.deleteOrder(orderId);
+    const manager: User = req.user;
+    const updatedOrder = await this.ordersService.updateOrder(
+      orderId,
+      updateOrderDto,
+      manager,
+    );
+    return updatedOrder;
   }
 }

@@ -1,12 +1,13 @@
 import {
+  BadRequestException,
+  ForbiddenException,
   forwardRef,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Orders } from '@prisma/client';
+import { User } from '@prisma/client';
 
-import { CreateOrderDto } from './dto/create.order.dto';
 import { PrismaService } from '../core/orm/prisma.service';
 import { UsersService } from '../users/users.service';
 import { UpdateOrderDto } from './dto/update.order.dto';
@@ -19,61 +20,25 @@ export class OrdersService {
     private readonly userService: UsersService,
   ) {}
 
-  async getAllOrders(page: number, limit: number) {
-    const skip = (page - 1) * limit;
-
-    const totalCount = await this.prismaService.orders.count();
-
-    const orders = await this.prismaService.orders.findMany({
-      orderBy: {
-        id: 'desc',
-      },
-      skip,
-      take: limit,
-      select: {
-        id: true,
-        name: true,
-        surname: true,
-        email: true,
-        phone: true,
-        age: true,
-        course: true,
-        course_format: true,
-        course_type: true,
-        status: true,
-        sum: true,
-        alreadyPaid: true,
-        group: true,
-        created_at: true,
-        utm: true,
-        msg: true,
-        manager: true,
-      },
-    });
-
-    return {
-      data: orders,
-      page,
-      limit,
-      totalCount,
-    };
-  }
-
-  async getAllOrdersSort(
-    sortOptions: { sortField: string; sortOrder: 'asc' | 'desc' },
+  async getAllOrders(
     page: number,
     limit: number,
+    sortField?: string,
+    sortOrder?: 'asc' | 'desc',
   ) {
-    const { sortField, sortOrder } = sortOptions;
-
     const skip = (page - 1) * limit;
-
     const totalCount = await this.prismaService.orders.count();
 
+    const orderBy: any = {};
+
+    if (sortField && sortOrder) {
+      orderBy[sortField] = sortOrder;
+    } else {
+      orderBy.id = 'desc';
+    }
+
     const orders = await this.prismaService.orders.findMany({
-      orderBy: {
-        [sortField]: sortOrder,
-      },
+      orderBy,
       skip,
       take: limit,
       select: {
@@ -103,37 +68,6 @@ export class OrdersService {
       limit,
       totalCount,
     };
-  }
-
-  async createOrder(
-    orderData: CreateOrderDto,
-    userId: string,
-  ): Promise<Orders> {
-    const user = await this.checkUser(userId);
-    if (!user) {
-      throw new NotFoundException(`User with ${userId} does not exist.`);
-    }
-    return this.prismaService.orders.create({
-      data: {
-        name: orderData.name,
-        surname: orderData.surname,
-        email: orderData.email,
-        phone: orderData.phone,
-        age: orderData.age,
-        course: orderData.course,
-        course_format: orderData.course_format,
-        course_type: orderData.course_type,
-        status: orderData.status,
-        sum: orderData.sum,
-        alreadyPaid: orderData.alreadyPaid,
-        group: orderData.group,
-        created_at: orderData.created_at,
-        utm: orderData.utm,
-        msg: orderData.msg,
-        manager: orderData.manager,
-        mentorId: user.id,
-      },
-    });
   }
 
   async getOrderById(orderId: string) {
@@ -160,24 +94,62 @@ export class OrdersService {
     });
   }
 
-  async updateOrder(orderId: string, updateOrderDto: UpdateOrderDto) {
+  async updateOrder(
+    orderId: string,
+    updateOrderDto: UpdateOrderDto,
+    manager: User,
+  ) {
+    const order = await this.prismaService.orders.findUnique({
+      where: { id: Number(orderId) },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Замовлення не знайдено');
+    }
+
+    if (order.manager !== manager.lastName) {
+      throw new ForbiddenException(
+        'У вас немає дозволу оновлювати це замовлення',
+      );
+    }
+
+    const updatedData: any = {};
+
+    if (Object.keys(updateOrderDto).length > 0) {
+      updatedData.status = 'В роботі';
+
+      for (const field in updateOrderDto) {
+        if (
+          updateOrderDto[field] !== null &&
+          updateOrderDto[field] !== undefined
+        ) {
+          updatedData[field] = updateOrderDto[field];
+        }
+      }
+    }
+
+    if (manager) {
+      updatedData.manager = manager.lastName || manager.id.toString();
+    }
+
+    if (
+      updateOrderDto.created_at !== null &&
+      updateOrderDto.created_at !== undefined
+    ) {
+      try {
+        const createdAt = new Date(updateOrderDto.created_at);
+        if (isNaN(createdAt.getTime())) {
+          throw new Error('Некоректне значення поля created_at');
+        }
+        updatedData.created_at = createdAt.toISOString();
+      } catch (error) {
+        throw new BadRequestException(error.message);
+      }
+    }
+
     return this.prismaService.orders.update({
       where: { id: Number(orderId) },
-      data: updateOrderDto,
+      data: updatedData,
     });
-  }
-
-  async deleteOrder(orderId: string) {
-    await this.prismaService.orders.delete({
-      where: { id: Number(orderId) },
-    });
-  }
-
-  async checkUser(userId: string) {
-    const user = await this.userService.getUserById(userId);
-    if (!user) {
-      throw new NotFoundException(`User with ${userId} does not exist.`);
-    }
-    return user;
   }
 }

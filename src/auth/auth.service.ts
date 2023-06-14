@@ -15,7 +15,13 @@ export class AuthService {
     return bcrypt.compare(password, hash);
   }
 
-  async singIn(userId: string) {
-    return this.jwtService.sign({ id: userId });
+  generateAccessToken(userId: string): string {
+    const payload = { id: userId };
+    return this.jwtService.sign(payload, { expiresIn: '10m' });
+  }
+
+  generateRefreshToken(userId: string): string {
+    const payload = { id: userId };
+    return this.jwtService.sign(payload, { expiresIn: '20m' });
   }
 }
