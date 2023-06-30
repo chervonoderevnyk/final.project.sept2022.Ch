@@ -1,9 +1,6 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 
-// import { AppController } from './app.controller';
-// import { AppService } from './app.service';
 import { OrdersService } from './orders/orders.service';
-import { OrdersController } from './orders/orders.controller';
 import { OrdersModule } from './orders/orders.module';
 import { PrismaModule } from './core/orm/prisma.module';
 import { AuthModule } from './auth/auth.module';
@@ -13,6 +10,10 @@ import { UsersModule } from './users/users.module';
 import { PassportWrapperModule } from './auth/passport-wrapper.module';
 import { AuthController } from './auth/auth.controller';
 import { PrismaService } from './core/orm/prisma.service';
+import { CommentService } from './comments/comment.service';
+import { CommentModule } from './comments/comment.module';
+import { CommentController } from './comments/comment.controller';
+import { OrdersController } from './orders/orders.controller';
 
 @Module({
   imports: [
@@ -21,19 +22,20 @@ import { PrismaService } from './core/orm/prisma.service';
     AuthModule,
     UsersModule,
     PassportWrapperModule,
+    CommentModule,
   ],
   controllers: [
-    // AppController,
     OrdersController,
     UsersController,
     AuthController,
+    CommentController,
   ],
   providers: [
-    // AppService,
     OrdersService,
     PrismaModule,
     UsersService,
     PrismaService,
+    CommentService,
   ],
 })
 export class AppModule implements OnModuleInit {

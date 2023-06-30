@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateOrderDto {
@@ -25,7 +25,7 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  readonly age?: number;
+  readonly age?: number | null;
 
   @ApiProperty({ required: false })
   @IsString()
@@ -65,7 +65,7 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly created_at?: string | null;
+  readonly created_at?: Date | null;
 
   @ApiProperty({ required: false })
   @IsString()
@@ -80,5 +80,10 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  readonly manager?: string;
+  manager?: string;
+
+  @ApiProperty({ required: false })
+  @IsObject()
+  @IsOptional()
+  readonly managerInfo?: { lastName: string; id: number };
 }

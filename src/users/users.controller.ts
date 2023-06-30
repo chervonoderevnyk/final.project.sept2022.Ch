@@ -52,7 +52,7 @@ export class UsersController {
   ) {
     return res
       .status(HttpStatus.OK)
-      .json(await this.userService.getUserById(userId));
+      .json(await this.userService.getUserById(String(userId)));
   }
 
   @Patch('/:userId')

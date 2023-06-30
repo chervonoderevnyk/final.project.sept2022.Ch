@@ -1,12 +1,11 @@
 import {
-  BadRequestException,
-  ForbiddenException,
   forwardRef,
   Inject,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Role } from '@prisma/client';
 
 import { PrismaService } from '../core/orm/prisma.service';
 import { UsersService } from '../users/users.service';
@@ -56,9 +55,13 @@ export class OrdersService {
         alreadyPaid: true,
         group: true,
         created_at: true,
-        utm: true,
-        msg: true,
         manager: true,
+        managerInfo: {
+          select: {
+            id: true,
+            lastName: true,
+          },
+        },
       },
     });
 
@@ -90,6 +93,12 @@ export class OrdersService {
         utm: true,
         msg: true,
         manager: true,
+        managerInfo: {
+          select: {
+            id: true,
+            lastName: true,
+          },
+        },
       },
     });
   }
@@ -97,59 +106,80 @@ export class OrdersService {
   async updateOrder(
     orderId: string,
     updateOrderDto: UpdateOrderDto,
-    manager: User,
+    user: any,
   ) {
     const order = await this.prismaService.orders.findUnique({
       where: { id: Number(orderId) },
+      include: {
+        managerInfo: true,
+      },
     });
 
     if (!order) {
-      throw new NotFoundException('Замовлення не знайдено');
+      throw new NotFoundException('Заявка не знайдена');
     }
 
-    if (order.manager !== manager.lastName) {
-      throw new ForbiddenException(
-        'У вас немає дозволу оновлювати це замовлення',
-      );
-    }
-
-    const updatedData: any = {};
-
-    if (Object.keys(updateOrderDto).length > 0) {
-      updatedData.status = 'В роботі';
-
-      for (const field in updateOrderDto) {
-        if (
-          updateOrderDto[field] !== null &&
-          updateOrderDto[field] !== undefined
-        ) {
-          updatedData[field] = updateOrderDto[field];
-        }
-      }
-    }
-
-    if (manager) {
-      updatedData.manager = manager.lastName || manager.id.toString();
-    }
+    const isAdmin = user.roles === Role.Admin;
+    const isManager = user.roles === Role.Manager;
 
     if (
-      updateOrderDto.created_at !== null &&
-      updateOrderDto.created_at !== undefined
+      (isAdmin || isManager) &&
+      (!order.manager || order.manager === user.lastName)
     ) {
-      try {
-        const createdAt = new Date(updateOrderDto.created_at);
-        if (isNaN(createdAt.getTime())) {
-          throw new Error('Некоректне значення поля created_at');
-        }
-        updatedData.created_at = createdAt.toISOString();
-      } catch (error) {
-        throw new BadRequestException(error.message);
-      }
-    }
+      const updatedOrder = await this.prismaService.orders.update({
+        where: { id: Number(orderId) },
+        data: {
+          name: updateOrderDto.name,
+          surname: updateOrderDto.surname,
+          email: updateOrderDto.email,
+          phone: updateOrderDto.phone,
+          age: updateOrderDto.age,
+          course: updateOrderDto.course,
+          course_format: updateOrderDto.course_format,
+          course_type: updateOrderDto.course_type,
+          status: updateOrderDto.status || 'В роботі',
+          sum: updateOrderDto.sum,
+          alreadyPaid: updateOrderDto.alreadyPaid,
+          group: updateOrderDto.group,
+          created_at: updateOrderDto.created_at,
+          manager: updateOrderDto.manager || order.manager,
+          managerInfo: {
+            connect: { id: user.id },
+          },
+        },
+        include: {
+          managerInfo: true,
+        },
+      });
 
-    return this.prismaService.orders.update({
+      return updatedOrder;
+    } else {
+      throw new UnauthorizedException(
+        'Ви не маєте дозволу на оновлення цієї заявки або менеджер для заявки уже визначений',
+      );
+    }
+  }
+
+  async getOrderDetails(orderId: string) {
+    return this.prismaService.orders.findFirst({
       where: { id: Number(orderId) },
-      data: updatedData,
+      select: {
+        msg: true,
+        utm: true,
+        comments: {
+          select: {
+            id: true,
+            commentText: true,
+            createdAt: true,
+            user: {
+              select: {
+                lastName: true,
+                firstName: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 }

@@ -25,10 +25,12 @@ model Orders {
   utm           String?   @db.VarChar(100)
   msg           String?   @db.VarChar(100)
   status        String?   @db.VarChar(15)
-  manager       String?
-  mentor        User?     @relation(fields: [mentorId], references: [id])
-  mentorId      Int?
+  manager       String?   @db.VarChar(25)
+  comments      Comment[]
+  managerInfo   Users?    @relation(fields: [managerId], references: [id])
+  managerId     Int?      @map("managerInfo")
 
+  @@index([manager], name: "ManagerIndex")
   @@index([id], name: "IdIndex")
   @@index([name, surname], name: "NameSurnameIndex")
   @@index([course], name: "CourseFormatIndex")
@@ -41,24 +43,33 @@ model Orders {
   @@index([sum], name: "SumIndex")
   @@index([alreadyPaid], name: "AlreadyPaidIndex")
   @@index([group], name: "GroupIndex")
-  @@index([utm], name: "UtmIndex")
-  @@index([msg], name: "MsgIndex")
   @@index([status], name: "StatusIndex")
-  @@index([manager], name: "ManagerIndex")
-  @@index([mentorId], name: "MentorIdIndex")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  lastName  String?
-  firstName String?
+model Users {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  lastName  String?   @db.VarChar(25)
+  firstName String?   @db.VarChar(25)
   password  String
-  roles     Role?    @default(Admin)
+  roles     Role?
   orders    Orders[]
+  comment   Comment[]
+
+  @@index([lastName], name: "LastNameIndex")
 }
 
 enum Role {
   Admin
   Manager
+}
+
+model Comment {
+  id          Int      @id @default(autoincrement())
+  commentText String
+  createdAt   DateTime @default(now())
+  order       Orders   @relation(fields: [orderId], references: [id])
+  user        Users    @relation(fields: [userId], references: [id])
+  orderId     Int
+  userId      Int
 }

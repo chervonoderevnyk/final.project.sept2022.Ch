@@ -16,7 +16,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY3NzE5NjQsImV4cCI6MTY4Njc3Nzk2NH0.dvWyRa7AQULGFKKswxmImLWrv48L7AP0bLX9XGBrTjE",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDI0MzIsImV4cCI6MTY4ODE0MzAzMn0.pMZzWwp8b0eEopI_Zq0nCnKjGVFzfXcDtRqDcUDNU9M",
 									"type": "string"
 								}
 							]
@@ -24,7 +24,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders?page=20",
+							"raw": "http://localhost:3006/orders?page=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -36,7 +36,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "20"
+									"value": "1"
 								}
 							]
 						}
@@ -51,7 +51,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY3NzE5NjQsImV4cCI6MTY4Njc3Nzk2NH0.dvWyRa7AQULGFKKswxmImLWrv48L7AP0bLX9XGBrTjE",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDI0MzIsImV4cCI6MTY4ODE0MzAzMn0.pMZzWwp8b0eEopI_Zq0nCnKjGVFzfXcDtRqDcUDNU9M",
 									"type": "string"
 								}
 							]
@@ -90,7 +90,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY3Njg1NzcsImV4cCI6MTY4Njc3NDU3N30.HflBYMfO-goShvFJiK4157gH2Dc4qIeqZ2oTPzlFe5w",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDI0MzIsImV4cCI6MTY4ODE0MzAzMn0.pMZzWwp8b0eEopI_Zq0nCnKjGVFzfXcDtRqDcUDNU9M",
 									"type": "string"
 								}
 							]
@@ -98,7 +98,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders/3",
+							"raw": "http://localhost:3006/orders/486",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -106,7 +106,38 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"3"
+								"486"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrderById/details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDIyNDksImV4cCI6MTY4ODE0Mjg0OX0.LfhG1m_3iqlYpeYuPUg245Lb6C0T2A385juj7yTbn5U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3006/orders/487/details",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"orders",
+								"487",
+								"details"
 							]
 						}
 					},
@@ -120,7 +151,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY3NzE5NjQsImV4cCI6MTY4Njc3Nzk2NH0.dvWyRa7AQULGFKKswxmImLWrv48L7AP0bLX9XGBrTjE",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJpYXQiOjE2ODgxMjY3MDgsImV4cCI6MTY4ODEyNzMwOH0.hQPxqkV5aOuEvplQgQWVSLaBOf-lcJSksyDY5nHtvCw",
 									"type": "string"
 								}
 							]
@@ -129,7 +160,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n            \"name\": \"12345\",\n            \"surname\": \"tomek\",\n            \"email\": \"rideout.tomas@yandex.com\",\n            \"phone\": \"380675203698\",\n            \"age\": 34,\n            \"course\": \"JSCX\",\n            \"course_format\": \"static\",\n            \"course_type\": \"minimal\",\n            \"status\": \"In Work\",\n            \"sum\": 200,\n            \"alreadyPaid\": 2500,\n            \"group\": null,\n            \"created_at\": \"2021-11-02T14:45:02.000Z\",\n            \"utm\": \"target_main_target_fullstack_target_js\",\n            \"msg\": null,\n            \"manager\": \"Admin\"\n        }",
+							"raw": "{\n  \n    \"age\": 34\n    \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -137,7 +168,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/orders/3",
+							"raw": "http://localhost:3006/orders/480",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -145,7 +176,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"3"
+								"480"
 							]
 						}
 					},
@@ -163,7 +194,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin\",\n    \"LastName\": \"Admin\"\n\n}",
+							"raw": "{\n        \"email\": \"admin@gmail.com\",\n        \"password\": \"admin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -171,12 +202,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/login",
+							"raw": "http://localhost:3006/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "3006",
 							"path": [
 								"auth",
 								"login"
@@ -193,7 +224,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDIyNDksImV4cCI6MTY4ODE0Mjg0OX0.LfhG1m_3iqlYpeYuPUg245Lb6C0T2A385juj7yTbn5U",
 									"type": "string"
 								}
 							]
@@ -201,15 +232,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/users/3",
+							"raw": "http://localhost:3006/users/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "3006",
 							"path": [
 								"users",
-								"3"
+								"1"
 							]
 						}
 					},
@@ -301,7 +332,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDIyNDksImV4cCI6MTY4ODE0Mjg0OX0.LfhG1m_3iqlYpeYuPUg245Lb6C0T2A385juj7yTbn5U",
 									"type": "string"
 								}
 							]
@@ -309,14 +340,59 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/users",
+							"raw": "http://localhost:3006/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "3006",
 							"path": [
 								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "getOrderById/comment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJpYXQiOjE2ODgxMzUwODksImV4cCI6MTY4ODEzNTY4OX0.jP17CUD7fupO-vkxean3fK_DZxo4bRInak17rMa5Kz4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"commentText\": \"Повернись живим!!!\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/comments/484/comment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"comments",
+								"484",
+								"comment"
 							]
 						}
 					},

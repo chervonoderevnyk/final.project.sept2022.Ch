@@ -1,13 +1,6 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Res,
-  Request,
-} from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Role, User } from '@prisma/client';
+import { Role, Users } from '@prisma/client';
 
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
@@ -30,7 +23,7 @@ export class AuthController {
         .json({ message: 'Error: Check request parameters' });
     }
 
-    const findUser: User = await this.userService.findUserByEmail(body.email);
+    const findUser: Users = await this.userService.findUserByEmail(body.email);
     if (!findUser) {
       const newUser: CreateUserDto = {
         firstName: '',
