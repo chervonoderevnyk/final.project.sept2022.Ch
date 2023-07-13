@@ -9,26 +9,30 @@ datasource db {
 }
 
 model Orders {
-  id            Int       @id @default(autoincrement())
-  name          String?   @db.VarChar(25)
-  surname       String?   @db.VarChar(25)
-  email         String?   @db.VarChar(100)
-  phone         String?   @db.VarChar(12)
-  age           Int?
-  course        String?   @db.VarChar(10)
-  course_format String?   @db.VarChar(15)
-  course_type   String?   @db.VarChar(100)
-  sum           Int?
-  alreadyPaid   Int?
-  group         String?
-  created_at    DateTime? @db.DateTime(6)
-  utm           String?   @db.VarChar(100)
-  msg           String?   @db.VarChar(100)
-  status        String?   @db.VarChar(15)
-  manager       String?   @db.VarChar(25)
-  comments      Comment[]
-  managerInfo   Users?    @relation(fields: [managerId], references: [id])
-  managerId     Int?      @map("managerInfo")
+  id      Int     @id @default(autoincrement())
+  name    String? @db.VarChar(25)
+  surname String? @db.VarChar(25)
+  email   String? @db.VarChar(100)
+  phone   String? @db.VarChar(12)
+  utm     String? @db.VarChar(100)
+  msg     String? @db.VarChar(100)
+  status  String? @db.VarChar(15)
+  manager String? @db.VarChar(25)
+  group   String? @db.VarChar(61)
+
+  created_at  DateTime? @db.DateTime(6)
+  age         Int?
+  sum         Int?
+  alreadyPaid Int?
+
+  course        Course?
+  course_format CourseFormat?
+  course_type   CourseType?
+
+  comments    Comment[]
+  managerInfo Users?    @relation(fields: [managerId], references: [id])
+  managerId   Int?      @map("managerInfo")
+  Group       Group[]
 
   @@index([manager], name: "ManagerIndex")
   @@index([id], name: "IdIndex")
@@ -42,7 +46,6 @@ model Orders {
   @@index([phone], name: "PhoneIndex")
   @@index([sum], name: "SumIndex")
   @@index([alreadyPaid], name: "AlreadyPaidIndex")
-  @@index([group], name: "GroupIndex")
   @@index([status], name: "StatusIndex")
 }
 
@@ -55,13 +58,9 @@ model Users {
   roles     Role?
   orders    Orders[]
   comment   Comment[]
+  Group     Group[]
 
   @@index([lastName], name: "LastNameIndex")
-}
-
-enum Role {
-  Admin
-  Manager
 }
 
 model Comment {
@@ -72,4 +71,40 @@ model Comment {
   user        Users    @relation(fields: [userId], references: [id])
   orderId     Int
   userId      Int
+}
+
+model Group {
+  id      Int     @id @default(autoincrement())
+  title   String? @unique
+  order   Orders? @relation(fields: [orderId], references: [id])
+  orderId Int?
+  user    Users   @relation(fields: [userId], references: [id])
+  userId  Int
+}
+
+enum Role {
+  Admin
+  Manager
+}
+
+enum CourseType {
+  pro
+  minimal
+  premium
+  incubator
+  vip
+}
+
+enum Course {
+  FS
+  QACX
+  JCX
+  JSCX
+  FE
+  PCX
+}
+
+enum CourseFormat {
+  static
+  online
 }

@@ -140,7 +140,7 @@ export class OrdersService {
           status: updateOrderDto.status || 'В роботі',
           sum: updateOrderDto.sum,
           alreadyPaid: updateOrderDto.alreadyPaid,
-          group: updateOrderDto.group,
+          group: updateOrderDto.group?.title || order.group,
           created_at: updateOrderDto.created_at,
           manager: updateOrderDto.manager || order.manager,
           managerInfo: {

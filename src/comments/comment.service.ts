@@ -3,7 +3,6 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../core/orm/prisma.service';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { UsersService } from '../users/users.service';
-import { OrdersService } from '../orders/orders.service';
 
 @Injectable()
 export class CommentService {

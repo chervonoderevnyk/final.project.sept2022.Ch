@@ -14,6 +14,9 @@ import { CommentService } from './comments/comment.service';
 import { CommentModule } from './comments/comment.module';
 import { CommentController } from './comments/comment.controller';
 import { OrdersController } from './orders/orders.controller';
+import { GroupModule } from './groups/group.module';
+import { GroupController } from './groups/group.controller';
+import { GroupService } from './groups/group.service';
 
 @Module({
   imports: [
@@ -23,12 +26,14 @@ import { OrdersController } from './orders/orders.controller';
     UsersModule,
     PassportWrapperModule,
     CommentModule,
+    GroupModule,
   ],
   controllers: [
     OrdersController,
     UsersController,
     AuthController,
     CommentController,
+    GroupController,
   ],
   providers: [
     OrdersService,
@@ -36,6 +41,7 @@ import { OrdersController } from './orders/orders.controller';
     UsersService,
     PrismaService,
     CommentService,
+    GroupService,
   ],
 })
 export class AppModule implements OnModuleInit {

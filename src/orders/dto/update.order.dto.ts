@@ -1,5 +1,12 @@
-import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Course, CourseFormat, CourseType, Group } from '@prisma/client';
 
 export class UpdateOrderDto {
   @ApiProperty({ required: false })
@@ -27,20 +34,20 @@ export class UpdateOrderDto {
   @IsOptional()
   readonly age?: number | null;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, enum: Course })
   @IsString()
   @IsOptional()
-  readonly course?: string;
+  readonly course?: Course;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, enum: CourseFormat })
   @IsString()
   @IsOptional()
-  readonly course_format?: string;
+  readonly course_format?: CourseFormat;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, enum: CourseType })
   @IsString()
   @IsOptional()
-  readonly course_type?: string;
+  readonly course_type?: CourseType;
 
   @ApiProperty({ required: false })
   @IsString()
@@ -58,9 +65,9 @@ export class UpdateOrderDto {
   readonly alreadyPaid?: number | null;
 
   @ApiProperty({ required: false })
-  @IsString()
+  @IsObject()
   @IsOptional()
-  readonly group?: string | null;
+  group?: Group | null;
 
   @ApiProperty({ required: false })
   @IsString()
@@ -85,5 +92,5 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()
-  readonly managerInfo?: { lastName: string; id: number };
+  managerInfo?: { lastName: string; id: number };
 }
