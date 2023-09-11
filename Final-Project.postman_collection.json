@@ -16,7 +16,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDI0MzIsImV4cCI6MTY4ODE0MzAzMn0.pMZzWwp8b0eEopI_Zq0nCnKjGVFzfXcDtRqDcUDNU9M",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTQ0MTY1MDksImV4cCI6MTY5NDQxNzEwOX0.Vk0A_GhMOWYkv3-TyFWBsBvY7DAztancnBgJLwJouCE",
 									"type": "string"
 								}
 							]
@@ -51,7 +51,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDI0MzIsImV4cCI6MTY4ODE0MzAzMn0.pMZzWwp8b0eEopI_Zq0nCnKjGVFzfXcDtRqDcUDNU9M",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTQ0MTY1MDksImV4cCI6MTY5NDQxNzEwOX0.Vk0A_GhMOWYkv3-TyFWBsBvY7DAztancnBgJLwJouCE",
 									"type": "string"
 								}
 							]
@@ -151,6 +151,45 @@
 							"bearer": [
 								{
 									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTQ0MTY1MDksImV4cCI6MTY5NDQxNzEwOX0.Vk0A_GhMOWYkv3-TyFWBsBvY7DAztancnBgJLwJouCE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"course\": \"FlS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/orders/495",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"orders",
+								"495"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patchOrders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
 									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJpYXQiOjE2ODgxMjY3MDgsImV4cCI6MTY4ODEyNzMwOH0.hQPxqkV5aOuEvplQgQWVSLaBOf-lcJSksyDY5nHtvCw",
 									"type": "string"
 								}
@@ -224,7 +263,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDIyNDksImV4cCI6MTY4ODE0Mjg0OX0.LfhG1m_3iqlYpeYuPUg245Lb6C0T2A385juj7yTbn5U",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTQ0MTcwNTcsImV4cCI6MTY5NDQxNzY1N30.stPpHh7AFtfvNCiRRvacNa67poaHfDSKK1JPz-St8Z4",
 									"type": "string"
 								}
 							]
@@ -332,7 +371,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2ODgxNDIyNDksImV4cCI6MTY4ODE0Mjg0OX0.LfhG1m_3iqlYpeYuPUg245Lb6C0T2A385juj7yTbn5U",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTQ0MTcwNTcsImV4cCI6MTY5NDQxNzY1N30.stPpHh7AFtfvNCiRRvacNa67poaHfDSKK1JPz-St8Z4",
 									"type": "string"
 								}
 							]
@@ -359,14 +398,14 @@
 			"name": "Comments",
 			"item": [
 				{
-					"name": "getOrderById/comment",
+					"name": "comment",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJpYXQiOjE2ODgxMzUwODksImV4cCI6MTY4ODEzNTY4OX0.jP17CUD7fupO-vkxean3fK_DZxo4bRInak17rMa5Kz4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTQ0MTY2ODEsImV4cCI6MTY5NDQxNzI4MX0.gx-Vhvv8ES_1SsCfGOlf6ilHr3QtHisXQfdhFpORfu8",
 									"type": "string"
 								}
 							]
@@ -375,7 +414,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"commentText\": \"Повернись живим!!!\"\n}\n",
+							"raw": "{\n  \"commentText\": \"Go- go- go!\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -383,7 +422,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/comments/484/comment",
+							"raw": "http://localhost:3006/comments/498/comment",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -391,8 +430,94 @@
 							"port": "3006",
 							"path": [
 								"comments",
-								"484",
+								"498",
 								"comment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Groups",
+			"item": [
+				{
+					"name": "group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTQ0MTY2ODEsImV4cCI6MTY5NDQxNzI4MX0.gx-Vhvv8ES_1SsCfGOlf6ilHr3QtHisXQfdhFpORfu8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"DUK\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/groups/492/group",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"groups",
+								"492",
+								"group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllGroup",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTQ0MTY2ODEsImV4cCI6MTY5NDQxNzI4MX0.gx-Vhvv8ES_1SsCfGOlf6ilHr3QtHisXQfdhFpORfu8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/groups",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"groups"
 							]
 						}
 					},
