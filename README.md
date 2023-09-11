@@ -72,7 +72,13 @@ src:
 
    auth: Everything you need to register, log in adn guard.
 
-   core: General purpose files for the project are placed here.
+   comments: This is where the comments are served.
+
+   core: General purpose files for the project are placed here. 
+         Folder `orm`: contains prisma.service.
+         The `validations` folder: validation checks.
+
+   groups: This is where the groups are served.
 
    orders: Serving the module: 'orders' entity through the 'CRUD' script.
 

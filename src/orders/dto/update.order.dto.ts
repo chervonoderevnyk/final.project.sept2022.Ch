@@ -1,12 +1,12 @@
-import {
-  IsEnum,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Course, CourseFormat, CourseType, Group } from '@prisma/client';
+import {
+  Course,
+  CourseFormat,
+  CourseType,
+  Group,
+  Status,
+} from '@prisma/client';
 
 export class UpdateOrderDto {
   @ApiProperty({ required: false })
@@ -37,22 +37,22 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false, enum: Course })
   @IsString()
   @IsOptional()
-  readonly course?: Course;
+  course?: Course;
 
   @ApiProperty({ required: false, enum: CourseFormat })
   @IsString()
   @IsOptional()
-  readonly course_format?: CourseFormat;
+  course_format?: CourseFormat;
 
   @ApiProperty({ required: false, enum: CourseType })
   @IsString()
   @IsOptional()
-  readonly course_type?: CourseType;
+  course_type?: CourseType;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, enum: Status })
   @IsString()
   @IsOptional()
-  readonly status?: string | null;
+  status?: Status | null;
 
   @ApiProperty({ required: false })
   @IsNumber()

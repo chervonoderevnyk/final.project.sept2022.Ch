@@ -10,13 +10,16 @@ import { Role } from '@prisma/client';
 import { PrismaService } from '../core/orm/prisma.service';
 import { UsersService } from '../users/users.service';
 import { UpdateOrderDto } from './dto/update.order.dto';
+import { ValidationsService } from '../core/validations/validations.service';
 
 @Injectable()
 export class OrdersService {
+  [x: string]: any;
   constructor(
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
+    private readonly validationsService: ValidationsService,
   ) {}
 
   async getAllOrders(
@@ -126,6 +129,29 @@ export class OrdersService {
       (isAdmin || isManager) &&
       (!order.manager || order.manager === user.lastName)
     ) {
+      if (updateOrderDto.course) {
+        updateOrderDto.course = this.validationsService.validateCourse(
+          updateOrderDto.course,
+        );
+      }
+      if (updateOrderDto.course_format) {
+        updateOrderDto.course_format =
+          this.validationsService.validateCourseFormat(
+            updateOrderDto.course_format,
+          );
+      }
+      if (updateOrderDto.course_type) {
+        updateOrderDto.course_type = this.validationsService.validateCourseType(
+          updateOrderDto.course_type,
+        );
+      }
+
+      if (updateOrderDto.status) {
+        updateOrderDto.status = this.validationsService.validateStatus(
+          updateOrderDto.status,
+        );
+      }
+
       const updatedOrder = await this.prismaService.orders.update({
         where: { id: Number(orderId) },
         data: {
@@ -137,7 +163,7 @@ export class OrdersService {
           course: updateOrderDto.course,
           course_format: updateOrderDto.course_format,
           course_type: updateOrderDto.course_type,
-          status: updateOrderDto.status || 'В роботі',
+          status: updateOrderDto.status || 'In_work',
           sum: updateOrderDto.sum,
           alreadyPaid: updateOrderDto.alreadyPaid,
           group: updateOrderDto.group?.title || order.group,

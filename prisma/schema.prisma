@@ -16,7 +16,7 @@ model Orders {
   phone   String? @db.VarChar(12)
   utm     String? @db.VarChar(100)
   msg     String? @db.VarChar(100)
-  status  String? @db.VarChar(15)
+  // status  String? @db.VarChar(15)
   manager String? @db.VarChar(25)
   group   String? @db.VarChar(61)
 
@@ -25,6 +25,7 @@ model Orders {
   sum         Int?
   alreadyPaid Int?
 
+  status        Status?
   course        Course?
   course_format CourseFormat?
   course_type   CourseType?
@@ -34,6 +35,7 @@ model Orders {
   managerId   Int?      @map("managerInfo")
   Group       Group[]
 
+  @@index([status], name: "StatusIndex")
   @@index([manager], name: "ManagerIndex")
   @@index([id], name: "IdIndex")
   @@index([name, surname], name: "NameSurnameIndex")
@@ -46,7 +48,6 @@ model Orders {
   @@index([phone], name: "PhoneIndex")
   @@index([sum], name: "SumIndex")
   @@index([alreadyPaid], name: "AlreadyPaidIndex")
-  @@index([status], name: "StatusIndex")
 }
 
 model Users {
@@ -107,4 +108,12 @@ enum Course {
 enum CourseFormat {
   static
   online
+}
+
+enum Status {
+  In_work
+  New
+  Aggre
+  Disaggre
+  Dubbing
 }

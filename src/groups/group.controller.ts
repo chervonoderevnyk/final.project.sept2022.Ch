@@ -2,8 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Delete,
-  Patch,
   Body,
   Param,
   Inject,
@@ -16,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { Group } from '@prisma/client';
 
 import { GroupService } from './group.service';
 import { OrdersService } from '../orders/orders.service';
@@ -23,7 +22,6 @@ import { UsersService } from '../users/users.service';
 import { UpdateOrderDto } from '../orders/dto/update.order.dto';
 import { CreateGroupDto } from './dto/create.group.dto';
 import { PrismaService } from '../core/orm/prisma.service';
-import { Group } from '@prisma/client';
 
 @ApiTags('Groups')
 @Controller('groups')
@@ -36,46 +34,6 @@ export class GroupController {
     private readonly userService: UsersService,
     private readonly prismaService: PrismaService,
   ) {}
-
-  // @Post()
-  // createGroup(@Body() groupData: { title: string }) {
-  //   return this.groupService.createGroup(groupData.title);
-  // }
-
-  // @Post(':orderId/group')
-  // async createGroup(
-  //   @Param('orderId') orderId: string,
-  //   @Body() createGroupDto: CreateGroupDto,
-  //   @Req() req: any,
-  // ) {
-  //   try {
-  //     const updateOrderDto = new UpdateOrderDto();
-  //
-  //     const order = await this.ordersService.getOrderById(orderId);
-  //     const user = await this.userService.getUserById(req.user.id);
-  //
-  //     if (!updateOrderDto.manager && user.lastName) {
-  //       updateOrderDto.manager = user.lastName || updateOrderDto.manager;
-  //     }
-  //
-  //     await this.ordersService.updateOrder(orderId, updateOrderDto, user);
-  //
-  //     return this.groupService.createGroup(
-  //       orderId,
-  //       createGroupDto,
-  //       req.user.id,
-  //     );
-  //   } catch (error) {
-  //     throw new HttpException(
-  //       {
-  //         statusCode: HttpStatus.BAD_REQUEST,
-  //         message: error.message,
-  //         error: 'Bad Request',
-  //       },
-  //       HttpStatus.BAD_REQUEST,
-  //     );
-  //   }
-  // }
 
   @Post(':orderId/group')
   async createGroup(
@@ -148,21 +106,16 @@ export class GroupController {
     }
   }
 
-  @Delete(':id')
-  deleteGroup(@Param('id') groupId: number) {
-    return this.groupService.deleteGroup(groupId);
-  }
-
-  @Patch(':id')
-  updateGroup(
-    @Param('id') groupId: number,
-    @Body() groupData: { title: string },
-  ) {
-    return this.groupService.updateGroup(groupId, groupData.title);
-  }
-
   @Get()
   getAllGroups() {
     return this.groupService.getAllGroups();
   }
 }
+
+// @Patch(':id')
+// updateGroup(
+//   @Param('id') groupId: number,
+//   @Body() groupData: { title: string },
+// ) {
+//   return this.groupService.updateGroup(groupId, groupData.title);
+// }

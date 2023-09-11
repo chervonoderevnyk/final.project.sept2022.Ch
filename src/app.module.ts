@@ -17,6 +17,8 @@ import { OrdersController } from './orders/orders.controller';
 import { GroupModule } from './groups/group.module';
 import { GroupController } from './groups/group.controller';
 import { GroupService } from './groups/group.service';
+import { ValidationsService } from './core/validations/validations.service';
+import { ValidationsModule } from './core/validations/validations.module';
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { GroupService } from './groups/group.service';
     PassportWrapperModule,
     CommentModule,
     GroupModule,
+    ValidationsModule,
   ],
   controllers: [
     OrdersController,
@@ -42,6 +45,7 @@ import { GroupService } from './groups/group.service';
     PrismaService,
     CommentService,
     GroupService,
+    ValidationsService,
   ],
 })
 export class AppModule implements OnModuleInit {

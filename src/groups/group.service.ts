@@ -3,7 +3,6 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../core/orm/prisma.service';
 import { UsersService } from '../users/users.service';
 import { CreateGroupDto } from './dto/create.group.dto';
-import { UpdateOrderDto } from '../orders/dto/update.order.dto';
 import { OrdersService } from '../orders/orders.service';
 
 @Injectable()
@@ -30,26 +29,24 @@ export class GroupService {
     });
   }
 
-  async deleteGroup(groupId: number) {
-    return this.prismaService.group.delete({
-      where: {
-        id: groupId,
-      },
-    });
-  }
-
-  async updateGroup(groupId: number, title: string) {
-    return this.prismaService.group.update({
-      where: {
-        id: groupId,
-      },
-      data: {
-        title,
-      },
-    });
-  }
-
   async getAllGroups() {
-    return this.prismaService.group.findMany();
+    return this.prismaService.group.findMany({
+      select: {
+        id: true,
+        title: true,
+        userId: true,
+      },
+    });
   }
 }
+
+// async updateGroup(groupId: number, title: string) {
+//   return this.prismaService.group.update({
+//     where: {
+//       id: groupId,
+//     },
+//     data: {
+//       title,
+//     },
+//   });
+// }
