@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   forwardRef,
+  Get,
   HttpException,
   HttpStatus,
   Inject,
@@ -65,5 +66,9 @@ export class CommentController {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+  @Get()
+  getAllGroups() {
+    return this.commentService.getAllComments();
   }
 }

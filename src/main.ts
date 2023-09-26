@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import * as cors from 'cors'; // Імпорт cors
 
 import { PrismaService } from './core/orm/prisma.service';
 import { AppModule } from './app.module';
@@ -13,6 +15,14 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
+  // CORS
+  // app.enableCors({
+  //   origin: 'http://localhost:4200',
+  //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  //   allowedHeaders: ['Content-Type', 'Authorization'],
+  //   credentials: true,
+  // });
+
   const config = new DocumentBuilder()
     .setTitle('Final-project example')
     .setDescription('The final-project API description')
@@ -23,6 +33,13 @@ async function bootstrap() {
   SwaggerModule.setup('api/doc', app, document);
 
   prismaService.enableShutdownHooks(app);
+
+  app.use(
+    cors({
+      origin: 'http://localhost:4200',
+      credentials: true,
+    }),
+  );
 
   await app.listen(3006);
 }

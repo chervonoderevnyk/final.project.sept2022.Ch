@@ -10,18 +10,17 @@ import {
   HttpException,
   HttpStatus,
   UseGuards,
-  ConflictException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { Group } from '@prisma/client';
 
 import { GroupService } from './group.service';
 import { OrdersService } from '../orders/orders.service';
 import { UsersService } from '../users/users.service';
-import { UpdateOrderDto } from '../orders/dto/update.order.dto';
 import { CreateGroupDto } from './dto/create.group.dto';
 import { PrismaService } from '../core/orm/prisma.service';
+import { UpdateOrderDto } from '../orders/dto/update.order.dto';
+import { Group } from '@prisma/client';
 
 @ApiTags('Groups')
 @Controller('groups')
@@ -42,16 +41,6 @@ export class GroupController {
     @Req() req: any,
   ) {
     try {
-      const existingGroup = await this.prismaService.group.findFirst({
-        where: {
-          title: createGroupDto.title,
-        },
-      });
-
-      if (existingGroup) {
-        throw new ConflictException('Група з такою назвою вже існує');
-      }
-
       const updateOrderDto = new UpdateOrderDto();
 
       const order = await this.ordersService.getOrderById(orderId);
@@ -62,12 +51,22 @@ export class GroupController {
       }
 
       updateOrderDto.managerInfo = { lastName: user.lastName, id: user.id };
-      updateOrderDto.group = {
-        ...createGroupDto,
-        id: 0,
-        orderId: 0,
-        userId: 0,
-      };
+
+      const existingGroup = await this.prismaService.group.findFirst({
+        where: {
+          title: createGroupDto.title,
+        },
+      });
+
+      if (existingGroup) {
+        updateOrderDto.group = existingGroup;
+      } else {
+        updateOrderDto.group = {
+          ...createGroupDto,
+          id: 0,
+          userId: req.user.id,
+        };
+      }
 
       const updatedOrder = await this.ordersService.updateOrder(
         orderId,
@@ -78,7 +77,6 @@ export class GroupController {
       const updatedGroupDto: Group = {
         ...createGroupDto,
         id: 0,
-        orderId: Number(orderId),
         userId: req.user.id,
         title: updatedOrder.group,
       };
@@ -89,11 +87,11 @@ export class GroupController {
         user,
       );
 
-      return this.groupService.createGroup(
-        orderId,
-        updatedGroupDto,
-        req.user.id,
-      );
+      if (!existingGroup) {
+        await this.groupService.createGroup(updatedGroupDto, req.user.id);
+      }
+
+      return updatedGroupDto;
     } catch (error) {
       throw new HttpException(
         {
@@ -111,11 +109,3 @@ export class GroupController {
     return this.groupService.getAllGroups();
   }
 }
-
-// @Patch(':id')
-// updateGroup(
-//   @Param('id') groupId: number,
-//   @Body() groupData: { title: string },
-// ) {
-//   return this.groupService.updateGroup(groupId, groupData.title);
-// }

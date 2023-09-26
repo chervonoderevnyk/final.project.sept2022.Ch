@@ -1,8 +1,53 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Course, CourseFormat, CourseType, Status } from '@prisma/client';
+
+import { UpdateOrderDto } from '../../orders/dto/update.order.dto';
 
 @Injectable()
 export class ValidationsService {
+  validateUpdateOrder(updateOrderDto: UpdateOrderDto, order: any, user: any) {
+    this.validateLastName(updateOrderDto, order, user);
+    this.validateUpdateOrderData(updateOrderDto, order, user);
+  }
+
+  validateLastName(updateOrderDto: UpdateOrderDto, order: any, user: any) {
+    if (
+      (!order.manager &&
+        updateOrderDto.manager &&
+        updateOrderDto.manager !== user.lastName) ||
+      (order.manager &&
+        updateOrderDto.manager &&
+        updateOrderDto.manager !== user.lastName) ||
+      (order.manager && order.manager !== user.lastName)
+    ) {
+      throw new BadRequestException('Невірне lastName!');
+    }
+
+    if (order.manager && order.manager !== user.lastName) {
+      throw new UnauthorizedException(
+        'Ви не маєте дозволу на зміну цієї заявки',
+      );
+    }
+
+    updateOrderDto.manager = order.manager || user.lastName;
+  }
+
+  validateUpdateOrderData(
+    updateOrderDto: UpdateOrderDto,
+    order: any,
+    user: any,
+  ) {
+    const { course, course_format, course_type, status } = updateOrderDto;
+    updateOrderDto.course = this.validateCourse(course);
+    updateOrderDto.course_format = this.validateCourseFormat(course_format);
+    updateOrderDto.course_type = this.validateCourseType(course_type);
+    updateOrderDto.status = this.validateStatus(status || 'In_work');
+  }
+
   validateCourse(course: string): Course {
     if (!Object.values(Course).includes(course as Course)) {
       const validValues = Object.values(Course).join(', ');

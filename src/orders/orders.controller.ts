@@ -10,7 +10,6 @@ import {
   Query,
   Req,
   Res,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
@@ -22,6 +21,7 @@ import { UpdateOrderDto } from './dto/update.order.dto';
 import { UsersService } from '../users/users.service';
 import { Role } from '../auth/guard/roles.enum';
 import { PrismaService } from '../core/orm/prisma.service';
+import { ValidationsService } from '../core/validations/validations.service';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -32,6 +32,7 @@ export class OrdersController {
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     private readonly prismaService: PrismaService,
+    private readonly validationsService: ValidationsService,
   ) {}
 
   @Get()
@@ -79,30 +80,18 @@ export class OrdersController {
   ) {
     const userId = req.user.id;
     const user = await this.userService.getUserById(userId);
+    const order = await this.ordersService.getOrderById(orderId);
 
-    if (!updateOrderDto.manager && user.lastName) {
-      if (
-        updateOrderDto.manager &&
-        user.lastName &&
-        updateOrderDto.manager === user.lastName
-      ) {
-        const order = await this.ordersService.getOrderById(orderId);
-        if (order.manager !== user.lastName) {
-          throw new UnauthorizedException(
-            'Ви не маєте дозволу на зміну цієї заявки',
-          );
-        }
-      }
+    this.validationsService.validateUpdateOrder(updateOrderDto, order, user);
 
-      updateOrderDto.manager = user.lastName || updateOrderDto.manager;
-    }
+    updateOrderDto.manager = order.manager || user.lastName;
 
-    const order = await this.ordersService.updateOrder(
+    const updatedOrder = await this.ordersService.updateOrder(
       orderId,
       updateOrderDto,
       user,
     );
-    return order;
+    return updatedOrder;
   }
 
   @Get('/:orderId/details')

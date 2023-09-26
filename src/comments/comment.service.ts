@@ -26,4 +26,14 @@ export class CommentService {
       },
     });
   }
+
+  async getAllComments() {
+    return this.prismaService.comment.findMany({
+      select: {
+        commentText: true,
+        userId: true,
+        orderId: true,
+      },
+    });
+  }
 }

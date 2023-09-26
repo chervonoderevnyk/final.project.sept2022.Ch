@@ -3,7 +3,6 @@ import {
   Inject,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
 
@@ -15,6 +14,7 @@ import { ValidationsService } from '../core/validations/validations.service';
 @Injectable()
 export class OrdersService {
   [x: string]: any;
+
   constructor(
     private readonly prismaService: PrismaService,
     @Inject(forwardRef(() => UsersService))
@@ -122,68 +122,38 @@ export class OrdersService {
       throw new NotFoundException('Заявка не знайдена');
     }
 
-    const isAdmin = user.roles === Role.Admin;
-    const isManager = user.roles === Role.Manager;
+    const isAdminOrManager =
+      user.roles === Role.Admin || user.roles === Role.Manager;
 
-    if (
-      (isAdmin || isManager) &&
-      (!order.manager || order.manager === user.lastName)
-    ) {
-      if (updateOrderDto.course) {
-        updateOrderDto.course = this.validationsService.validateCourse(
-          updateOrderDto.course,
-        );
-      }
-      if (updateOrderDto.course_format) {
-        updateOrderDto.course_format =
-          this.validationsService.validateCourseFormat(
-            updateOrderDto.course_format,
-          );
-      }
-      if (updateOrderDto.course_type) {
-        updateOrderDto.course_type = this.validationsService.validateCourseType(
-          updateOrderDto.course_type,
-        );
-      }
+    this.validationsService.validateUpdateOrderData(
+      updateOrderDto,
+      order,
+      user,
+    );
 
-      if (updateOrderDto.status) {
-        updateOrderDto.status = this.validationsService.validateStatus(
-          updateOrderDto.status,
-        );
-      }
+    const updatedOrderData = this.buildUpdateOrderData(
+      updateOrderDto,
+      order,
+      user,
+    );
 
-      const updatedOrder = await this.prismaService.orders.update({
-        where: { id: Number(orderId) },
-        data: {
-          name: updateOrderDto.name,
-          surname: updateOrderDto.surname,
-          email: updateOrderDto.email,
-          phone: updateOrderDto.phone,
-          age: updateOrderDto.age,
-          course: updateOrderDto.course,
-          course_format: updateOrderDto.course_format,
-          course_type: updateOrderDto.course_type,
-          status: updateOrderDto.status || 'In_work',
-          sum: updateOrderDto.sum,
-          alreadyPaid: updateOrderDto.alreadyPaid,
-          group: updateOrderDto.group?.title || order.group,
-          created_at: updateOrderDto.created_at,
-          manager: updateOrderDto.manager || order.manager,
-          managerInfo: {
-            connect: { id: user.id },
+    const updatedOrder = await this.prismaService.orders.update({
+      where: { id: Number(orderId) },
+      data: updatedOrderData,
+      include: {
+        managerInfo: {
+          select: {
+            id: true,
+            email: true,
+            lastName: true,
+            firstName: true,
+            roles: true,
           },
         },
-        include: {
-          managerInfo: true,
-        },
-      });
+      },
+    });
 
-      return updatedOrder;
-    } else {
-      throw new UnauthorizedException(
-        'Ви не маєте дозволу на оновлення цієї заявки або менеджер для заявки уже визначений',
-      );
-    }
+    return updatedOrder;
   }
 
   async getOrderDetails(orderId: string) {
@@ -207,5 +177,33 @@ export class OrdersService {
         },
       },
     });
+  }
+
+  private buildUpdateOrderData(
+    updateOrderDto: UpdateOrderDto,
+    order: any,
+    user: any,
+  ) {
+    const updatedOrderData = {
+      name: updateOrderDto.name,
+      surname: updateOrderDto.surname,
+      email: updateOrderDto.email,
+      phone: updateOrderDto.phone,
+      age: updateOrderDto.age,
+      course: updateOrderDto.course,
+      course_format: updateOrderDto.course_format,
+      course_type: updateOrderDto.course_type,
+      status: updateOrderDto.status,
+      sum: updateOrderDto.sum,
+      alreadyPaid: updateOrderDto.alreadyPaid,
+      group: updateOrderDto.group?.title || order.group,
+      created_at: updateOrderDto.created_at,
+      manager: updateOrderDto.manager || order.manager,
+      managerInfo: {
+        connect: { id: user.id },
+      },
+    };
+
+    return updatedOrderData;
   }
 }

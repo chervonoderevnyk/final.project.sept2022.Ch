@@ -31,9 +31,14 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto,
     @Res() res: any,
   ) {
-    return res
-      .status(HttpStatus.CREATED)
-      .json(await this.userService.registerUserByAdmin(createUserDto));
+    try {
+      const user = await this.userService.registerUserByAdmin(createUserDto);
+      return res.status(HttpStatus.CREATED).json(user);
+    } catch (error) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
   }
 
   @Get()
@@ -50,18 +55,30 @@ export class UsersController {
     @Res() res: any,
     @Param('userId') userId: string,
   ) {
-    return res
-      .status(HttpStatus.OK)
-      .json(await this.userService.getUserById(String(userId)));
+    const user = await this.userService.getUserById(String(userId));
+    const userWithoutPassword = { ...user, password: undefined };
+    return res.status(HttpStatus.OK).json(userWithoutPassword);
   }
 
   @Patch('/:userId')
   @UseGuards(AuthGuard())
-  updateUser(
+  async updateUser(
     @Param('userId') userId: string,
     @Body() updateUserDto: UpdateUserDto,
+    @Res() res: any,
   ) {
-    return this.userService.updateUser(userId, updateUserDto);
+    try {
+      const updatedUser = await this.userService.updateUser(
+        userId,
+        updateUserDto,
+      );
+      const userWithoutPassword = { ...updatedUser, password: undefined };
+      return res.status(HttpStatus.OK).json(userWithoutPassword);
+    } catch (error) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
   }
 
   @Delete('/:userId')

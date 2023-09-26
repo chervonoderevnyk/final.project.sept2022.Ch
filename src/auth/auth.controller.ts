@@ -24,6 +24,7 @@ export class AuthController {
     }
 
     const findUser: Users = await this.userService.findUserByEmail(body.email);
+
     if (!findUser) {
       const newUser: CreateUserDto = {
         firstName: '',

@@ -14,16 +14,11 @@ export class GroupService {
     private readonly ordersService: OrdersService,
   ) {}
 
-  async createGroup(
-    orderId: string,
-    createGroupDto: CreateGroupDto,
-    userId: string,
-  ) {
+  async createGroup(createGroupDto: CreateGroupDto, userId: string) {
     const { title } = createGroupDto;
     return this.prismaService.group.create({
       data: {
         title,
-        order: { connect: { id: Number(orderId) } },
         user: { connect: { id: Number(userId) } },
       },
     });
@@ -39,14 +34,3 @@ export class GroupService {
     });
   }
 }
-
-// async updateGroup(groupId: number, title: string) {
-//   return this.prismaService.group.update({
-//     where: {
-//       id: groupId,
-//     },
-//     data: {
-//       title,
-//     },
-//   });
-// }

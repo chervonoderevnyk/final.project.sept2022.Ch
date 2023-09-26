@@ -16,9 +16,9 @@ model Orders {
   phone   String? @db.VarChar(12)
   utm     String? @db.VarChar(100)
   msg     String? @db.VarChar(100)
-  // status  String? @db.VarChar(15)
   manager String? @db.VarChar(25)
   group   String? @db.VarChar(61)
+  groupId Int?
 
   created_at  DateTime? @db.DateTime(6)
   age         Int?
@@ -75,12 +75,11 @@ model Comment {
 }
 
 model Group {
-  id      Int     @id @default(autoincrement())
-  title   String? @unique
-  order   Orders? @relation(fields: [orderId], references: [id])
-  orderId Int?
-  user    Users   @relation(fields: [userId], references: [id])
-  userId  Int
+  id     Int      @id @default(autoincrement())
+  title  String?
+  user   Users    @relation(fields: [userId], references: [id])
+  userId Int
+  orders Orders[]
 }
 
 enum Role {

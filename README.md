@@ -47,18 +47,16 @@ $ npm install @nestjs/core^8.0.0
 
 ## Information on Prisma integration
 
-```bash
+bash
 https://docs.nestjs.com/recipes/prisma
 
-```
 
 ## Applications (orders) received from the database
 
-```bash
+bash
 mysql: https://drive.google.com/file/d/1_5elESLEi3Lb_QFgDoo2NNsiP-n5O0Ow/view?
 usp=sharing
 
-```
 
 ## Folder Structure:
 
@@ -98,8 +96,14 @@ $ npm run start:dev
 ```
 
 ## Postman
-
+```
 In file 'Final-Project.postman_collection.json' contains a working collection of request for the project
+
+```
+
+## The documentation of this project is available:
+
+SWAGGER UI: http://localhost:3006/api/doc
 
 
 ## Support

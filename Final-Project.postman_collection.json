@@ -151,7 +151,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTQ0MTY1MDksImV4cCI6MTY5NDQxNzEwOX0.Vk0A_GhMOWYkv3-TyFWBsBvY7DAztancnBgJLwJouCE",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3MjUzMDQsImV4cCI6MTY5NTcyNTkwNH0.WP9KLlBRV6GdK-ylkz7-xXnWcvRYxn7ssHbJU6NtuLw",
 									"type": "string"
 								}
 							]
@@ -160,7 +160,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"course\": \"FlS\"\n}",
+							"raw": "{\n  \"manager\": \"goga\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -168,7 +168,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/orders/495",
+							"raw": "http://localhost:3006/orders/402",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -176,7 +176,46 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"495"
+								"402"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patchOrders Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3MjUzMDQsImV4cCI6MTY5NTcyNTkwNH0.WP9KLlBRV6GdK-ylkz7-xXnWcvRYxn7ssHbJU6NtuLw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"course\": \"JSCX\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/orders/403",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"orders",
+								"403"
 							]
 						}
 					},
@@ -190,7 +229,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJpYXQiOjE2ODgxMjY3MDgsImV4cCI6MTY4ODEyNzMwOH0.hQPxqkV5aOuEvplQgQWVSLaBOf-lcJSksyDY5nHtvCw",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3MjUzMDQsImV4cCI6MTY5NTcyNTkwNH0.WP9KLlBRV6GdK-ylkz7-xXnWcvRYxn7ssHbJU6NtuLw",
 									"type": "string"
 								}
 							]
@@ -199,7 +238,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \n    \"age\": 34\n    \n}",
+							"raw": "{\n    \"age\": 21\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -227,7 +266,7 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "loginUser",
+					"name": "loginUserAdmin",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -250,6 +289,73 @@
 							"path": [
 								"auth",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginUserManager",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"email\": \"star@gmail.com\",\n        \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registerNewManager",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTUyMDEwNzgsImV4cCI6MTY5NTIwMTY3OH0.5hgGnM9YouBNO1iNHBqVJDx6P7BRkuG6AKlBxFJVHwo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"email\": \"star@gmail.com\",\n        \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"users"
 							]
 						}
 					},
@@ -405,7 +511,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTQ0MTY2ODEsImV4cCI6MTY5NDQxNzI4MX0.gx-Vhvv8ES_1SsCfGOlf6ilHr3QtHisXQfdhFpORfu8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3MjUzMDQsImV4cCI6MTY5NTcyNTkwNH0.WP9KLlBRV6GdK-ylkz7-xXnWcvRYxn7ssHbJU6NtuLw",
 									"type": "string"
 								}
 							]
@@ -414,7 +520,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"commentText\": \"Go- go- go!\"\n}\n",
+							"raw": "{\n  \"commentText\": \"Ups!\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -422,7 +528,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/comments/498/comment",
+							"raw": "http://localhost:3006/comments/403/comment",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -430,8 +536,49 @@
 							"port": "3006",
 							"path": [
 								"comments",
-								"498",
+								"403",
 								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllComments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3Mjk3NjUsImV4cCI6MTY5NTczMDM2NX0.3NlQYJ1vgmtyaxMU4oUiVmAr0nkC9nFUh50zAN3-KHs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3006/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3006",
+							"path": [
+								"comments"
 							]
 						}
 					},
@@ -450,7 +597,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTQ0MTY2ODEsImV4cCI6MTY5NDQxNzI4MX0.gx-Vhvv8ES_1SsCfGOlf6ilHr3QtHisXQfdhFpORfu8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3MjU5ODgsImV4cCI6MTY5NTcyNjU4OH0.-ewsu2NHvdxglw_VlI7LxsfsqRynD48-YT4EekJ_WaA",
 									"type": "string"
 								}
 							]
@@ -459,7 +606,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": \"DUK\"\n}\n",
+							"raw": "{\n  \"title\": \"ISKRA\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,7 +614,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/groups/492/group",
+							"raw": "http://localhost:3006/groups/402/group",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -475,7 +622,7 @@
 							"port": "3006",
 							"path": [
 								"groups",
-								"492",
+								"402",
 								"group"
 							]
 						}
@@ -483,7 +630,7 @@
 					"response": []
 				},
 				{
-					"name": "findAllGroup",
+					"name": "findAllGroups",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -493,7 +640,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTQ0MTY2ODEsImV4cCI6MTY5NDQxNzI4MX0.gx-Vhvv8ES_1SsCfGOlf6ilHr3QtHisXQfdhFpORfu8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3MjU5ODgsImV4cCI6MTY5NTcyNjU4OH0.-ewsu2NHvdxglw_VlI7LxsfsqRynD48-YT4EekJ_WaA",
 									"type": "string"
 								}
 							]
