@@ -41,11 +41,24 @@ export class ValidationsService {
     order: any,
     user: any,
   ) {
-    const { course, course_format, course_type, status } = updateOrderDto;
-    updateOrderDto.course = this.validateCourse(course);
-    updateOrderDto.course_format = this.validateCourseFormat(course_format);
-    updateOrderDto.course_type = this.validateCourseType(course_type);
-    updateOrderDto.status = this.validateStatus(status || 'In_work');
+    if (updateOrderDto.hasOwnProperty('course')) {
+      updateOrderDto.course = this.validateCourse(updateOrderDto.course);
+    }
+    if (updateOrderDto.hasOwnProperty('course_format')) {
+      updateOrderDto.course_format = this.validateCourseFormat(
+        updateOrderDto.course_format,
+      );
+    }
+    if (updateOrderDto.hasOwnProperty('course_type')) {
+      updateOrderDto.course_type = this.validateCourseType(
+        updateOrderDto.course_type,
+      );
+    }
+    if (updateOrderDto.hasOwnProperty('status')) {
+      updateOrderDto.status = this.validateStatus(
+        updateOrderDto.status || 'In_work',
+      );
+    }
   }
 
   validateCourse(course: string): Course {

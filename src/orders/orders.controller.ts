@@ -61,7 +61,7 @@ export class OrdersController {
   @UseGuards(AuthGuard())
   @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   @ApiParam({ name: 'orderId', required: true })
-  async getUserInfo(
+  async getOrderInfo(
     @Req() req: any,
     @Res() res: any,
     @Param('orderId') orderId: string,
