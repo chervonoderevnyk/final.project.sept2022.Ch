@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Role } from '@prisma/client';
+import { Role, Status } from '@prisma/client';
 
 import { PrismaService } from '../core/orm/prisma.service';
 import { UsersService } from '../users/users.service';
@@ -131,6 +131,10 @@ export class OrdersService {
       user,
     );
 
+    if (updateOrderDto.status === undefined || updateOrderDto.status === null) {
+      updateOrderDto.status = Status.In_work;
+    }
+
     const updatedOrderData = this.buildUpdateOrderData(
       updateOrderDto,
       order,
@@ -198,7 +202,7 @@ export class OrdersService {
       alreadyPaid: updateOrderDto.alreadyPaid,
       group: updateOrderDto.group?.title || order.group,
       created_at: updateOrderDto.created_at,
-      manager: updateOrderDto.manager || order.manager,
+      manager: user.lastName,
       managerInfo: {
         connect: { id: user.id },
       },
@@ -206,4 +210,32 @@ export class OrdersService {
 
     return updatedOrderData;
   }
+
+  // private buildUpdateOrderData(
+  //   updateOrderDto: UpdateOrderDto,
+  //   order: any,
+  //   user: any,
+  // ) {
+  //   const updatedOrderData = {
+  //     name: updateOrderDto.name,
+  //     surname: updateOrderDto.surname,
+  //     email: updateOrderDto.email,
+  //     phone: updateOrderDto.phone,
+  //     age: updateOrderDto.age,
+  //     course: updateOrderDto.course,
+  //     course_format: updateOrderDto.course_format,
+  //     course_type: updateOrderDto.course_type,
+  //     status: updateOrderDto.status,
+  //     sum: updateOrderDto.sum,
+  //     alreadyPaid: updateOrderDto.alreadyPaid,
+  //     group: updateOrderDto.group?.title || order.group,
+  //     created_at: updateOrderDto.created_at,
+  //     manager: updateOrderDto.manager || order.manager,
+  //     managerInfo: {
+  //       connect: { id: user.id },
+  //     },
+  //   };
+  //
+  //   return updatedOrderData;
+  // }
 }

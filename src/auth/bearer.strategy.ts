@@ -26,7 +26,6 @@ export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
         throw new UnauthorizedException();
       }
     } catch (err) {
-      console.log(new Date().toISOString(), token);
       throw new UnauthorizedException();
     }
     return user;

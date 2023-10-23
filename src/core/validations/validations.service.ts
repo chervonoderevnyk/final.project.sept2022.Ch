@@ -15,6 +15,10 @@ export class ValidationsService {
   }
 
   validateLastName(updateOrderDto: UpdateOrderDto, order: any, user: any) {
+    if (order.status === Status.New) {
+      return;
+    }
+
     if (
       (!order.manager &&
         updateOrderDto.manager &&
@@ -24,17 +28,43 @@ export class ValidationsService {
         updateOrderDto.manager !== user.lastName) ||
       (order.manager && order.manager !== user.lastName)
     ) {
-      throw new BadRequestException('Невірне lastName!');
+      throw new BadRequestException(
+        'Ви не маєте дозволу для змін у цьому order!',
+      );
     }
 
     if (order.manager && order.manager !== user.lastName) {
       throw new UnauthorizedException(
-        'Ви не маєте дозволу на зміну цієї заявки',
+        'Ви не маєте дозволу для змін у цьому order',
       );
     }
 
-    updateOrderDto.manager = order.manager || user.lastName;
+    updateOrderDto.manager = user.lastName;
   }
+
+  // validateLastName(updateOrderDto: UpdateOrderDto, order: any, user: any) {
+  //   if (
+  //     (!order.manager &&
+  //       updateOrderDto.manager &&
+  //       updateOrderDto.manager !== user.lastName) ||
+  //     (order.manager &&
+  //       updateOrderDto.manager &&
+  //       updateOrderDto.manager !== user.lastName) ||
+  //     (order.manager && order.manager !== user.lastName)
+  //   ) {
+  //     throw new BadRequestException(
+  //       'Ви не маєте дозволу для змін у цьому order!',
+  //     );
+  //   }
+  //
+  //   if (order.manager && order.manager !== user.lastName) {
+  //     throw new UnauthorizedException(
+  //       'Ви не маєте дозволу для змін у цьому order',
+  //     );
+  //   }
+  //
+  //   updateOrderDto.manager = order.manager || user.lastName;
+  // }
 
   validateUpdateOrderData(
     updateOrderDto: UpdateOrderDto,
@@ -54,6 +84,7 @@ export class ValidationsService {
         updateOrderDto.course_type,
       );
     }
+
     if (updateOrderDto.hasOwnProperty('status')) {
       updateOrderDto.status = this.validateStatus(
         updateOrderDto.status || 'In_work',

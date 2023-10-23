@@ -9,31 +9,27 @@ datasource db {
 }
 
 model Orders {
-  id      Int     @id @default(autoincrement())
-  name    String? @db.VarChar(25)
-  surname String? @db.VarChar(25)
-  email   String? @db.VarChar(100)
-  phone   String? @db.VarChar(12)
-  utm     String? @db.VarChar(100)
-  msg     String? @db.VarChar(100)
-  manager String? @db.VarChar(25)
-  group   String? @db.VarChar(61)
-  groupId Int?
-
-  created_at  DateTime? @db.DateTime(6)
-  age         Int?
-  sum         Int?
-  alreadyPaid Int?
-
+  id            Int           @id @default(autoincrement())
+  name          String?       @db.VarChar(25)
+  surname       String?       @db.VarChar(25)
+  email         String?       @db.VarChar(100)
+  phone         String?       @db.VarChar(12)
+  utm           String?       @db.VarChar(100)
+  msg           String?       @db.VarChar(100)
+  manager       String?       @db.VarChar(25)
+  group         String?       @db.VarChar(61)
+  created_at    DateTime?     @db.DateTime(6)
+  age           Int?
+  sum           Int?
+  alreadyPaid   Int?
   status        Status?
   course        Course?
   course_format CourseFormat?
   course_type   CourseType?
-
-  comments    Comment[]
-  managerInfo Users?    @relation(fields: [managerId], references: [id])
-  managerId   Int?      @map("managerInfo")
-  Group       Group[]
+  comments      Comment[]
+  managerInfo   Users?        @relation(fields: [managerId], references: [id])
+  managerId     Int?          @map("managerInfo")
+  Group         Group[]
 
   @@index([status], name: "StatusIndex")
   @@index([manager], name: "ManagerIndex")
@@ -52,11 +48,12 @@ model Orders {
 
 model Users {
   id        Int       @id @default(autoincrement())
-  email     String    @unique
+  email     String?
   lastName  String?   @db.VarChar(25)
   firstName String?   @db.VarChar(25)
   password  String
   roles     Role?
+  active    Boolean?  @default(false)
   orders    Orders[]
   comment   Comment[]
   Group     Group[]

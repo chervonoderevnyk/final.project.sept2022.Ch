@@ -10,9 +10,11 @@ import {
   HttpException,
   HttpStatus,
   UseGuards,
+  SetMetadata,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { Group } from '@prisma/client';
 
 import { GroupService } from './group.service';
 import { OrdersService } from '../orders/orders.service';
@@ -20,7 +22,8 @@ import { UsersService } from '../users/users.service';
 import { CreateGroupDto } from './dto/create.group.dto';
 import { PrismaService } from '../core/orm/prisma.service';
 import { UpdateOrderDto } from '../orders/dto/update.order.dto';
-import { Group } from '@prisma/client';
+import { ValidationsService } from '../core/validations/validations.service';
+import { Role } from '../auth/guard/roles.enum';
 
 @ApiTags('Groups')
 @Controller('groups')
@@ -32,9 +35,12 @@ export class GroupController {
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     private readonly prismaService: PrismaService,
+    private readonly validationsService: ValidationsService,
   ) {}
 
   @Post(':orderId/group')
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   async createGroup(
     @Param('orderId') orderId: string,
     @Body() createGroupDto: CreateGroupDto,
@@ -45,6 +51,8 @@ export class GroupController {
 
       const order = await this.ordersService.getOrderById(orderId);
       const user = await this.userService.getUserById(req.user.id);
+
+      this.validationsService.validateLastName(updateOrderDto, order, user);
 
       if (!updateOrderDto.manager && user.lastName) {
         updateOrderDto.manager = user.lastName || updateOrderDto.manager;
@@ -105,6 +113,8 @@ export class GroupController {
   }
 
   @Get()
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   getAllGroups() {
     return this.groupService.getAllGroups();
   }

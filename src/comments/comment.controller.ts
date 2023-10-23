@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Req,
+  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -20,6 +21,7 @@ import { OrdersService } from '../orders/orders.service';
 import { UpdateOrderDto } from '../orders/dto/update.order.dto';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { CommentService } from './comment.service';
+import { Role } from '../auth/guard/roles.enum';
 
 @ApiTags('Comments')
 @Controller('comments')
@@ -34,6 +36,8 @@ export class CommentController {
   ) {}
 
   @Post(':orderId/comment')
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   async createComment(
     @Param('orderId') orderId: string,
     @Body() createCommentDto: CreateCommentDto,
@@ -45,11 +49,11 @@ export class CommentController {
       const order = await this.ordersService.getOrderById(orderId);
       const user = await this.userService.getUserById(req.user.id);
 
-      if (!updateOrderDto.manager && user.lastName) {
-        updateOrderDto.manager = user.lastName || updateOrderDto.manager;
-      }
+      // if (!updateOrderDto.manager && user.lastName) {
+      //   updateOrderDto.manager = user.lastName || updateOrderDto.manager;
+      // }
 
-      await this.ordersService.updateOrder(orderId, updateOrderDto, user);
+      // await this.ordersService.updateOrder(orderId, updateOrderDto, user);
 
       return this.commentService.createComment(
         orderId,
@@ -67,7 +71,10 @@ export class CommentController {
       );
     }
   }
+
   @Get()
+  @UseGuards(AuthGuard())
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   getAllGroups() {
     return this.commentService.getAllComments();
   }

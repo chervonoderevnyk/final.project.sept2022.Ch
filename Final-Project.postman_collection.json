@@ -16,7 +16,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY0OTU2MjUsImV4cCI6MTY5NjQ5NjIyNX0.OtezBJRlHc2lF98XgStxcujcIklgg9BT8Fh5O-MJZO0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTc3MzQ4NjAsImV4cCI6MTY5NzczNTQ2MH0.V6MJNtwqGVYW0qp78XPZkyGrDtEkV_uAoN38XB-v_qY",
 									"type": "string"
 								}
 							]
@@ -51,7 +51,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY1NzcyNDksImV4cCI6MTY5NjU3Nzg0OX0.SR87OTFPrYZhA8UlXpE_jJzreK8xtgZPhub1CwgVbAg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTc3MzQ4NjAsImV4cCI6MTY5NzczNTQ2MH0.V6MJNtwqGVYW0qp78XPZkyGrDtEkV_uAoN38XB-v_qY",
 									"type": "string"
 								}
 							]
@@ -90,7 +90,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY0OTU2MjUsImV4cCI6MTY5NjQ5NjIyNX0.OtezBJRlHc2lF98XgStxcujcIklgg9BT8Fh5O-MJZO0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJpYXQiOjE2OTgwODcxMjksImV4cCI6MTY5ODA4NzcyOX0.gftG1evV4l12ivZUk2ad3GSEp8NzhtAISb_kCTxN8vw",
 									"type": "string"
 								}
 							]
@@ -98,7 +98,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders/402",
+							"raw": "http://localhost:3006/orders/500",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -106,7 +106,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"402"
+								"500"
 							]
 						}
 					},
@@ -120,7 +120,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY1NzcxNTQsImV4cCI6MTY5NjU3Nzc1NH0.hy3JyW12GBTa3fKqepU37e3TiuSSFDP09s5UR3DEYGI",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJpYXQiOjE2OTc4MTYzMDksImV4cCI6MTY5NzgxNjkwOX0.BE2_-gg0v6YrK89Ep4LOkIfFKQKriir1xBaudjDfqBk",
 									"type": "string"
 								}
 							]
@@ -129,7 +129,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"course\": \"FE\"\n}",
+							"raw": "{\n    \"age\": 34\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -137,7 +137,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/orders/484",
+							"raw": "http://localhost:3006/orders/496",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -145,7 +145,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"484"
+								"496"
 							]
 						}
 					},
@@ -159,7 +159,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY1NzcyNDksImV4cCI6MTY5NjU3Nzg0OX0.SR87OTFPrYZhA8UlXpE_jJzreK8xtgZPhub1CwgVbAg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJpYXQiOjE2OTgwODcxMjksImV4cCI6MTY5ODA4NzcyOX0.gftG1evV4l12ivZUk2ad3GSEp8NzhtAISb_kCTxN8vw",
 									"type": "string"
 								}
 							]
@@ -167,7 +167,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders/402/details",
+							"raw": "http://localhost:3006/orders/497/details",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -175,7 +175,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"402",
+								"497",
 								"details"
 							]
 						}
@@ -220,13 +220,82 @@
 							"response": []
 						},
 						{
-							"name": "loginUserManager",
+							"name": "createdUserByAdmin",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTc4MTU5NzQsImV4cCI6MTY5NzgxNjU3NH0.j_Xj_jdwcD44O9R4Zdd-JDkeBGIoJbQwUEDFiAFjNec",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"lastName\": \"Bomok\",\n        \"firstName\": \"Bomko\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3006/users/create-by-admin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3006",
+									"path": [
+										"users",
+										"create-by-admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "activateUser",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"email\": \"Bomik@gmail.com\",\n        \"password\": \"12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3006/auth/activate/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3006",
+									"path": [
+										"auth",
+										"activate",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "loginUser",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"email\": \"star@gmail.com\",\n        \"password\": \"12345\"\n}",
+									"raw": "{\n        \"email\": \"Bomik@gmail.com\",\n        \"password\": \"12345\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -249,23 +318,13 @@
 							"response": []
 						},
 						{
-							"name": "registerUserByAdmin",
+							"name": "refresh-tokenUser",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTUyMDEwNzgsImV4cCI6MTY5NTIwMTY3OH0.5hgGnM9YouBNO1iNHBqVJDx6P7BRkuG6AKlBxFJVHwo",
-											"type": "string"
-										}
-									]
-								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"email\": \"star@gmail.com\",\n        \"password\": \"12345\"\n}",
+									"raw": "{\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTgwODQ0OTYsImV4cCI6MTY5ODA4NTY5Nn0.zsebA1bMhjXopgEcSj5__JOwqcI52uEuQH1Br9j70fI\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -273,14 +332,15 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3006/users",
+									"raw": "http://localhost:3006/auth/refresh-token",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "3006",
 									"path": [
-										"users"
+										"auth",
+										"refresh-token"
 									]
 								}
 							},
@@ -296,7 +356,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY1NzcyNDksImV4cCI6MTY5NjU3Nzg0OX0.SR87OTFPrYZhA8UlXpE_jJzreK8xtgZPhub1CwgVbAg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTgwODY0OTksImV4cCI6MTY5ODA4NzA5OX0.F7KPk5xoEv2HIESoV-f1wnGdLqgVHTCA5D-qu24FLlU",
 									"type": "string"
 								}
 							]
@@ -325,7 +385,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY1NzcyNDksImV4cCI6MTY5NjU3Nzg0OX0.SR87OTFPrYZhA8UlXpE_jJzreK8xtgZPhub1CwgVbAg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTgwODY0OTksImV4cCI6MTY5ODA4NzA5OX0.F7KPk5xoEv2HIESoV-f1wnGdLqgVHTCA5D-qu24FLlU",
 									"type": "string"
 								}
 							]
@@ -333,7 +393,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/users/8",
+							"raw": "http://localhost:3006/users/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -341,7 +401,7 @@
 							"port": "3006",
 							"path": [
 								"users",
-								"8"
+								"2"
 							]
 						}
 					},
@@ -355,7 +415,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTUyMDEwNzgsImV4cCI6MTY5NTIwMTY3OH0.5hgGnM9YouBNO1iNHBqVJDx6P7BRkuG6AKlBxFJVHwo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTcxOTMyMTMsImV4cCI6MTY5NzE5MzgxM30.s60uLcd7_tSLWzLV4gS-Ih8YtkSrEj_YUBj9ZmfP1zc",
 									"type": "string"
 								}
 							]
@@ -364,7 +424,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"lastName\": \"Starka\"\n\n}",
+							"raw": "{\n    \"email\": \"starka1@gmail.com\"\n\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -372,7 +432,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/users/8",
+							"raw": "http://localhost:3006/users/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -380,7 +440,7 @@
 							"port": "3006",
 							"path": [
 								"users",
-								"8"
+								"2"
 							]
 						}
 					},
@@ -394,7 +454,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2ODY1NTM1MjcsImV4cCI6MTY4NjYzOTkyN30.kFngzc5xe6nLcmcmdxEbbwpDAuhW7tSJk9rIrcM9964",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTcxOTMyMTMsImV4cCI6MTY5NzE5MzgxM30.s60uLcd7_tSLWzLV4gS-Ih8YtkSrEj_YUBj9ZmfP1zc",
 									"type": "string"
 								}
 							]
@@ -411,7 +471,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/users/3",
+							"raw": "http://localhost:3006/users/22",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -419,7 +479,7 @@
 							"port": "3006",
 							"path": [
 								"users",
-								"3"
+								"22"
 							]
 						}
 					},
@@ -438,7 +498,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3MjUzMDQsImV4cCI6MTY5NTcyNTkwNH0.WP9KLlBRV6GdK-ylkz7-xXnWcvRYxn7ssHbJU6NtuLw",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTgwODY0OTksImV4cCI6MTY5ODA4NzA5OX0.F7KPk5xoEv2HIESoV-f1wnGdLqgVHTCA5D-qu24FLlU",
 									"type": "string"
 								}
 							]
@@ -447,7 +507,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"commentText\": \"Ups!\"\n}\n",
+							"raw": "{\n  \"commentText\": \"Вперед!!!\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -455,7 +515,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/comments/403/comment",
+							"raw": "http://localhost:3006/comments/495/comment",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -463,7 +523,7 @@
 							"port": "3006",
 							"path": [
 								"comments",
-								"403",
+								"495",
 								"comment"
 							]
 						}
@@ -481,7 +541,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY1NzcyNDksImV4cCI6MTY5NjU3Nzg0OX0.SR87OTFPrYZhA8UlXpE_jJzreK8xtgZPhub1CwgVbAg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTgwODY0OTksImV4cCI6MTY5ODA4NzA5OX0.F7KPk5xoEv2HIESoV-f1wnGdLqgVHTCA5D-qu24FLlU",
 									"type": "string"
 								}
 							]
@@ -524,7 +584,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTU3MjU5ODgsImV4cCI6MTY5NTcyNjU4OH0.-ewsu2NHvdxglw_VlI7LxsfsqRynD48-YT4EekJ_WaA",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2OTgwODY0OTksImV4cCI6MTY5ODA4NzA5OX0.F7KPk5xoEv2HIESoV-f1wnGdLqgVHTCA5D-qu24FLlU",
 									"type": "string"
 								}
 							]
@@ -533,7 +593,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": \"ISKRA\"\n}\n",
+							"raw": "{\n  \"title\": \"10 Праведників\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -541,7 +601,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/groups/402/group",
+							"raw": "http://localhost:3006/groups/495/group",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -549,7 +609,7 @@
 							"port": "3006",
 							"path": [
 								"groups",
-								"402",
+								"495",
 								"group"
 							]
 						}
@@ -567,7 +627,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJpYXQiOjE2OTY1NzcyNDksImV4cCI6MTY5NjU3Nzg0OX0.SR87OTFPrYZhA8UlXpE_jJzreK8xtgZPhub1CwgVbAg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTcxMTc1MzEsImV4cCI6MTY5NzExODEzMX0.gurqCKjn4XaBZe5vnS9X7FdA3vptJdvUqQTMNM_jcRc",
 									"type": "string"
 								}
 							]

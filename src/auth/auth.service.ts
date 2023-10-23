@@ -24,4 +24,13 @@ export class AuthService {
     const payload = { id: userId };
     return this.jwtService.sign(payload, { expiresIn: '20m' });
   }
+
+  verifyToken(token: string) {
+    try {
+      const decoded = this.jwtService.verify(token);
+      return decoded;
+    } catch (error) {
+      throw new Error('Invalid token');
+    }
+  }
 }
