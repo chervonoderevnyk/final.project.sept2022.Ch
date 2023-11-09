@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import * as cors from 'cors'; // Імпорт cors
 
 import { PrismaService } from './core/orm/prisma.service';

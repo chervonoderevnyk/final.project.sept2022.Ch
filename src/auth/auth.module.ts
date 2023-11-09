@@ -8,6 +8,7 @@ import { BearerStrategy } from './bearer.strategy';
 import { UsersService } from '../users/users.service';
 import { PrismaService } from '../core/orm/prisma.service';
 import { RoleGuard } from './guard/roles.guard';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -30,5 +31,6 @@ import { RoleGuard } from './guard/roles.guard';
     RoleGuard,
   ],
   exports: [AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule {}

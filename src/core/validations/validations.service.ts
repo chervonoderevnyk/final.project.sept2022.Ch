@@ -42,30 +42,6 @@ export class ValidationsService {
     updateOrderDto.manager = user.lastName;
   }
 
-  // validateLastName(updateOrderDto: UpdateOrderDto, order: any, user: any) {
-  //   if (
-  //     (!order.manager &&
-  //       updateOrderDto.manager &&
-  //       updateOrderDto.manager !== user.lastName) ||
-  //     (order.manager &&
-  //       updateOrderDto.manager &&
-  //       updateOrderDto.manager !== user.lastName) ||
-  //     (order.manager && order.manager !== user.lastName)
-  //   ) {
-  //     throw new BadRequestException(
-  //       'Ви не маєте дозволу для змін у цьому order!',
-  //     );
-  //   }
-  //
-  //   if (order.manager && order.manager !== user.lastName) {
-  //     throw new UnauthorizedException(
-  //       'Ви не маєте дозволу для змін у цьому order',
-  //     );
-  //   }
-  //
-  //   updateOrderDto.manager = order.manager || user.lastName;
-  // }
-
   validateUpdateOrderData(
     updateOrderDto: UpdateOrderDto,
     order: any,

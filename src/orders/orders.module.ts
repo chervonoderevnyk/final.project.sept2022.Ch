@@ -6,9 +6,10 @@ import { PrismaModule } from '../core/orm/prisma.module';
 import { PrismaService } from '../core/orm/prisma.service';
 import { UsersService } from '../users/users.service';
 import { ValidationsModule } from '../core/validations/validations.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [PrismaModule, ValidationsModule],
+  imports: [PrismaModule, ValidationsModule, AuthModule],
   controllers: [OrdersController],
   providers: [PrismaService, OrdersService, UsersService],
   exports: [OrdersService],

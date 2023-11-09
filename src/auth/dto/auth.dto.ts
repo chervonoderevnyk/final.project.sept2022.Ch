@@ -9,7 +9,8 @@ export class LoginDto {
 
   @ApiProperty()
   @IsString()
-  @Length(5, 25)
+  // @Length(5, 25)
+  @Length(5, 25, { message: 'Email or password is incorrect' })
   @IsNotEmpty()
   password: string;
 }

@@ -21,7 +21,7 @@ import { ActivateUserDto } from '../users/dto/activate.user.dto';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private userService: UsersService,
+    private usersService: UsersService,
   ) {}
 
   @Post('login')
@@ -32,7 +32,7 @@ export class AuthController {
         .json({ message: 'Error: Check request parameters' });
     }
 
-    const findUser: Users = await this.userService.findUserByEmail(body.email);
+    const findUser: Users = await this.usersService.findUserByEmail(body.email);
 
     if (!findUser) {
       const newUser: CreateUserDto = {
@@ -42,7 +42,7 @@ export class AuthController {
         password: body.password,
         roles: Role.Manager,
       };
-      const createdUser = await this.userService.registerUserByAdmin(newUser);
+      const createdUser = await this.usersService.registerUserByAdmin(newUser);
 
       const accessToken = this.authService.generateAccessToken(
         createdUser.id.toString(),
@@ -75,11 +75,21 @@ export class AuthController {
     try {
       const { refreshToken } = body;
 
-      const decodedToken = this.authService.verifyToken(refreshToken);
+      if (this.authService.isRefreshTokenUsed(refreshToken)) {
+        return res
+          .status(HttpStatus.UNAUTHORIZED)
+          .json({ message: 'Refresh token has already been used' });
+      }
+
+      const decodedToken = this.authService.verifyToken(
+        refreshToken,
+        'refreshToken',
+      );
 
       const userId = decodedToken.id;
 
       const newRefreshToken = this.authService.generateRefreshToken(userId);
+      this.authService.markRefreshTokenAsUsed(refreshToken);
 
       return res.status(HttpStatus.OK).json({ refreshToken: newRefreshToken });
     } catch (error) {
@@ -104,7 +114,7 @@ export class AuthController {
           .json({ message: 'Некоректні дані користувача' });
       }
 
-      const updatedUser = await this.userService.activateUser(
+      const updatedUser = await this.usersService.activateUser(
         Number(userId),
         email,
         password,

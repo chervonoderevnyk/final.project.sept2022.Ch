@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -6,6 +6,8 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
+  private usedRefreshTokens: Set<string> = new Set();
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
@@ -16,21 +18,36 @@ export class AuthService {
   }
 
   generateAccessToken(userId: string): string {
-    const payload = { id: userId };
-    return this.jwtService.sign(payload, { expiresIn: '10m' });
+    const payload = { id: userId, sub: 'accessToken' };
+    const accessToken = this.jwtService.sign(payload, { expiresIn: '10m' });
+    return accessToken;
   }
 
   generateRefreshToken(userId: string): string {
-    const payload = { id: userId };
-    return this.jwtService.sign(payload, { expiresIn: '20m' });
+    const payload = { id: userId, sub: 'refreshToken' };
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: '20m' });
+    return refreshToken;
   }
 
-  verifyToken(token: string) {
+  markRefreshTokenAsUsed(refreshToken: string): void {
+    this.usedRefreshTokens.add(refreshToken);
+  }
+
+  isRefreshTokenUsed(refreshToken: string): boolean {
+    return this.usedRefreshTokens.has(refreshToken);
+  }
+
+  verifyToken(token: string, expectedSub: string): any {
     try {
       const decoded = this.jwtService.verify(token);
+
+      if (decoded.sub !== expectedSub) {
+        throw new UnauthorizedException('Invalid token type');
+      }
+
       return decoded;
     } catch (error) {
-      throw new Error('Invalid token');
+      throw new UnauthorizedException('Invalid token');
     }
   }
 }

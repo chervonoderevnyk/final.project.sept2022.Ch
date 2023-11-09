@@ -7,9 +7,10 @@ import { CommentController } from './comment.controller';
 import { UsersService } from '../users/users.service';
 import { CommentService } from './comment.service';
 import { ValidationsService } from '../core/validations/validations.service';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, AuthModule],
   controllers: [CommentController],
   providers: [
     OrdersService,
