@@ -68,7 +68,7 @@ schema.prisma: Table for the database.
 
 src: 
 
-   auth: Everything you need to register, log in adn guard.
+   auth: Everything you need to register, log in and guard.
 
    comments: This is where the comments are served.
 

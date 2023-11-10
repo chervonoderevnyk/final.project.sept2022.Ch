@@ -15,6 +15,6 @@ export class CreateUserByAdminDto {
   @ApiProperty({ required: false, example: '@gmail.com' })
   @IsString()
   @IsEmail()
-  @IsOptional()
+  @IsNotEmpty()
   email: string;
 }

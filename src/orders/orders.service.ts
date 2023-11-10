@@ -210,32 +210,4 @@ export class OrdersService {
 
     return updatedOrderData;
   }
-
-  // private buildUpdateOrderData(
-  //   updateOrderDto: UpdateOrderDto,
-  //   order: any,
-  //   user: any,
-  // ) {
-  //   const updatedOrderData = {
-  //     name: updateOrderDto.name,
-  //     surname: updateOrderDto.surname,
-  //     email: updateOrderDto.email,
-  //     phone: updateOrderDto.phone,
-  //     age: updateOrderDto.age,
-  //     course: updateOrderDto.course,
-  //     course_format: updateOrderDto.course_format,
-  //     course_type: updateOrderDto.course_type,
-  //     status: updateOrderDto.status,
-  //     sum: updateOrderDto.sum,
-  //     alreadyPaid: updateOrderDto.alreadyPaid,
-  //     group: updateOrderDto.group?.title || order.group,
-  //     created_at: updateOrderDto.created_at,
-  //     manager: updateOrderDto.manager || order.manager,
-  //     managerInfo: {
-  //       connect: { id: user.id },
-  //     },
-  //   };
-  //
-  //   return updatedOrderData;
-  // }
 }

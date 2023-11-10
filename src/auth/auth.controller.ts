@@ -14,7 +14,6 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/auth.dto';
 import { CreateUserDto } from '../users/dto/create.users.dto';
-import { ActivateUserDto } from '../users/dto/activate.user.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -67,7 +66,7 @@ export class AuthController {
 
     return res
       .status(HttpStatus.UNAUTHORIZED)
-      .json({ message: 'Email or password is incorrect' });
+      .json({ message: 'Некоректні дані користувача' });
   }
 
   @Post('refresh-token')
@@ -102,13 +101,14 @@ export class AuthController {
   @Patch('activate/:userId')
   async activateUser(
     @Param('userId') userId: string,
-    @Body() activateUserDto: ActivateUserDto,
+    @Body()
+    activateUserDto: { email: string; password: string; accessToken: string },
     @Res() res: any,
   ) {
     try {
-      const { email, password } = activateUserDto;
+      const { email, password, accessToken } = activateUserDto;
 
-      if (!email || !password || password.length < 5) {
+      if (!email || !password || !accessToken || password.length < 5) {
         return res
           .status(HttpStatus.BAD_REQUEST)
           .json({ message: 'Некоректні дані користувача' });
