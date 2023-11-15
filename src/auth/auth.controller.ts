@@ -6,14 +6,14 @@ import {
   Patch,
   Post,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Role, Users } from '@prisma/client';
+import { Users } from '@prisma/client';
 
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/auth.dto';
-import { CreateUserDto } from '../users/dto/create.users.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -33,24 +33,10 @@ export class AuthController {
 
     const findUser: Users = await this.usersService.findUserByEmail(body.email);
 
-    if (!findUser) {
-      const newUser: CreateUserDto = {
-        firstName: '',
-        lastName: '',
-        email: body.email,
-        password: body.password,
-        roles: Role.Manager,
-      };
-      const createdUser = await this.usersService.registerUserByAdmin(newUser);
-
-      const accessToken = this.authService.generateAccessToken(
-        createdUser.id.toString(),
-      );
-      const refreshToken = this.authService.generateRefreshToken(
-        createdUser.id.toString(),
-      );
-
-      return res.status(HttpStatus.OK).json({ accessToken, refreshToken });
+    if (!findUser || !findUser.active) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        message: 'Некоректні дані користувача',
+      });
     }
 
     if (await this.authService.compareHash(body.password, findUser.password)) {
@@ -87,10 +73,14 @@ export class AuthController {
 
       const userId = decodedToken.id;
 
+      const newAccessToken = this.authService.generateAccessToken(userId);
       const newRefreshToken = this.authService.generateRefreshToken(userId);
+
       this.authService.markRefreshTokenAsUsed(refreshToken);
 
-      return res.status(HttpStatus.OK).json({ refreshToken: newRefreshToken });
+      return res
+        .status(HttpStatus.OK)
+        .json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
     } catch (error) {
       return res
         .status(HttpStatus.UNAUTHORIZED)
@@ -114,6 +104,22 @@ export class AuthController {
           .json({ message: 'Некоректні дані користувача' });
       }
 
+      const isValidToken = this.authService.verifyToken(
+        accessToken,
+        'accessTokenActivate',
+      );
+      if (!isValidToken || isValidToken.id !== userId) {
+        throw new UnauthorizedException('Некоректний токен активації');
+      }
+
+      const userToActivate = await this.usersService.findUserByEmail(email);
+
+      if (!userToActivate || userToActivate.id.toString() !== userId) {
+        return res.status(HttpStatus.UNAUTHORIZED).json({
+          message: 'Некоректні дані користувача',
+        });
+      }
+
       const updatedUser = await this.usersService.activateUser(
         Number(userId),
         email,
@@ -122,6 +128,12 @@ export class AuthController {
       const userWithoutPassword = { ...updatedUser, password: undefined };
       return res.status(HttpStatus.OK).json(userWithoutPassword);
     } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        return res
+          .status(HttpStatus.UNAUTHORIZED)
+          .json({ message: error.message });
+      }
+
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: 'Некоректні дані користувача' });

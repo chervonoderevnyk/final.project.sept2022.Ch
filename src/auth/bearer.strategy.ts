@@ -4,15 +4,15 @@ import { JwtService } from '@nestjs/jwt';
 
 import { Strategy } from 'passport-http-bearer';
 import { UsersService } from '../users/users.service';
-import { AuthService } from './auth.service';
 import { Users } from '@prisma/client';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
   constructor(
-    private authService: AuthService,
     private readonly jwtService: JwtService,
     private readonly userService: UsersService,
+    private readonly authService: AuthService,
   ) {
     super();
   }
@@ -20,8 +20,8 @@ export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
   async validate(token: string): Promise<Users> {
     let user: Users;
     try {
-      const payload = await this.jwtService.verify(token);
-      user = await this.userService.getUserById(payload.id);
+      const decodedToken = this.authService.verifyToken(token, 'accessToken');
+      user = await this.userService.getUserById(decodedToken.id);
       if (!user) {
         throw new UnauthorizedException();
       }

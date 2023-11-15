@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
@@ -20,12 +21,16 @@ import { CreateUserByAdminDto } from './dto/create.users.admin.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { RoleGuard } from '../auth/guard/roles.guard';
+import { AuthService } from '../auth/auth.service';
 
 @ApiTags('Users')
 @Controller('users')
 @UseGuards(AuthGuard(), RoleGuard)
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Post('create-by-admin')
   @UseGuards(AuthGuard(), RoleGuard)
@@ -36,10 +41,22 @@ export class UsersController {
     @Res() res: any,
   ) {
     try {
+      const existingUser = await this.userService.findUserByEmail(
+        createUserByAdminDto.email,
+      );
+      if (existingUser) {
+        throw new ConflictException('Користувач з вказаним email вже існує!');
+      }
+
       const user = await this.userService.registerUserByAdmin(
         createUserByAdminDto,
       );
-      return res.status(HttpStatus.CREATED).json(user);
+
+      const accessToken = this.authService.generateAccessTokenActivate(
+        user.id.toString(),
+      );
+
+      return res.status(HttpStatus.CREATED).json({ user, accessToken });
     } catch (error) {
       return res
         .status(HttpStatus.BAD_REQUEST)

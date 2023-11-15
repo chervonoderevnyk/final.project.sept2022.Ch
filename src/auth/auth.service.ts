@@ -14,13 +14,19 @@ export class AuthService {
 
   generateAccessToken(userId: string): string {
     const payload = { id: userId, sub: 'accessToken' };
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '10m' });
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '10m',
+      keyid: 'accessKey',
+    });
     return accessToken;
   }
 
   generateRefreshToken(userId: string): string {
     const payload = { id: userId, sub: 'refreshToken' };
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '20m' });
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: '20m',
+      keyid: 'refreshKey',
+    });
     return refreshToken;
   }
 
@@ -32,11 +38,35 @@ export class AuthService {
     return this.usedRefreshTokens.has(refreshToken);
   }
 
+  generateAccessTokenActivate(userId: string): string {
+    const payload = { id: userId, sub: 'accessTokenActivate' };
+    const accessTokenActivate = this.jwtService.sign(payload, {
+      expiresIn: '10m',
+      keyid: 'activateKey',
+    });
+    return accessTokenActivate;
+  }
+
   verifyToken(token: string, expectedSub: string): any {
     try {
       const decoded = this.jwtService.verify(token);
 
       if (decoded.sub !== expectedSub) {
+        throw new UnauthorizedException('Invalid token type');
+      }
+
+      if (decoded.keyid === 'accessKey' && expectedSub !== 'accessToken') {
+        throw new UnauthorizedException('Invalid token type');
+      }
+
+      if (decoded.keyid === 'refreshKey' && expectedSub !== 'refreshToken') {
+        throw new UnauthorizedException('Invalid token type');
+      }
+
+      if (
+        decoded.keyid === 'activateKey' &&
+        expectedSub !== 'accessTokenActivate'
+      ) {
         throw new UnauthorizedException('Invalid token type');
       }
 

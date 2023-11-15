@@ -20,7 +20,6 @@ import { OrdersService } from './orders.service';
 import { UpdateOrderDto } from './dto/update.order.dto';
 import { UsersService } from '../users/users.service';
 import { Role } from '../auth/guard/roles.enum';
-import { PrismaService } from '../core/orm/prisma.service';
 import { ValidationsService } from '../core/validations/validations.service';
 
 @ApiTags('Orders')
@@ -31,7 +30,6 @@ export class OrdersController {
     private readonly ordersService: OrdersService,
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
-    private readonly prismaService: PrismaService,
     private readonly validationsService: ValidationsService,
   ) {}
 
