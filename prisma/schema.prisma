@@ -13,7 +13,7 @@ model Orders {
   name          String?       @db.VarChar(25)
   surname       String?       @db.VarChar(25)
   email         String?       @db.VarChar(100)
-  phone         String?       @db.VarChar(12)
+  phone         String?       @db.VarChar(16)
   utm           String?       @db.VarChar(100)
   msg           String?       @db.VarChar(100)
   manager       String?       @db.VarChar(25)

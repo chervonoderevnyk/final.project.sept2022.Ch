@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 import { PrismaService } from '../core/orm/prisma.service';
@@ -154,9 +159,20 @@ export class UsersService {
   }
 
   async deleteUser(userId: string) {
-    return this.prismaService.users.delete({
+    const user = await this.prismaService.users.findUnique({
+      where: { id: Number(userId) },
+      select: { id: true, lastName: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    await this.prismaService.users.delete({
       where: { id: Number(userId) },
     });
+
+    return `User with id ${user.id} and lastName ${user.lastName} deleted!!!`;
   }
 
   async findUserByEmail(userEmail: string) {

@@ -1,4 +1,15 @@
-import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsEmail,
+  IsInt,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  Matches,
+  Max,
+  Min,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Course,
@@ -12,26 +23,40 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  @Matches(/^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ]+$/, {
+    message:
+      'Name must contain only letters of English and Ukrainian alphabets',
+  })
   readonly name?: string;
 
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  @Matches(/^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ]+$/, {
+    message:
+      'Name must contain only letters of English and Ukrainian alphabets',
+  })
   readonly surname?: string | null;
 
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  @IsEmail()
   readonly email?: string | null;
 
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  @Matches(/^\+?\d+$/, { message: 'Invalid phone number format' })
+  @Matches(/^.{10,16}$/, { message: 'Phone number length is incorrect' })
   readonly phone?: string | null;
 
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
+  @IsInt({ message: 'Age must be an integer' })
+  @Min(15, { message: 'Age must not be negative' })
+  @Max(110, { message: 'Age must not be greater than 110' })
   readonly age?: number | null;
 
   @ApiProperty({ required: false, enum: Course })
@@ -57,11 +82,15 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
+  @Min(0, { message: 'Sum must be a positive number or zero' })
+  @Max(1000000, { message: 'Sum must not exceed 1000000' })
   readonly sum?: number | null;
 
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
+  @Min(0, { message: 'Sum must be a positive number or zero' })
+  @Max(1000000, { message: 'Sum must not exceed 1000000' })
   readonly alreadyPaid?: number | null;
 
   @ApiProperty({ required: false })
@@ -72,6 +101,7 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
+  @IsDateString({ message: 'Invalid date format for created_at' } as any)
   readonly created_at?: Date | null;
 
   @ApiProperty({ required: false })

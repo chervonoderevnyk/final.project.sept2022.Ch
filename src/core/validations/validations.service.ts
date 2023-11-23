@@ -107,4 +107,13 @@ export class ValidationsService {
     }
     return status as Status;
   }
+
+  validatePasswordLength(password: string) {
+    const minLength = 5;
+    const maxLength = 20;
+
+    if (password.length < minLength || password.length > maxLength) {
+      throw new UnauthorizedException('Некоректні дані користувача');
+    }
+  }
 }

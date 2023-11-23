@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   HttpStatus,
-  Param,
   Patch,
   Post,
   Res,
@@ -14,6 +13,7 @@ import { Users } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/auth.dto';
+import { ValidationsService } from '../core/validations/validations.service';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -21,6 +21,7 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private usersService: UsersService,
+    private validationsService: ValidationsService,
   ) {}
 
   @Post('login')
@@ -30,6 +31,8 @@ export class AuthController {
         .status(HttpStatus.FORBIDDEN)
         .json({ message: 'Error: Check request parameters' });
     }
+
+    this.validationsService.validatePasswordLength(body.password);
 
     const findUser: Users = await this.usersService.findUserByEmail(body.email);
 
@@ -88,9 +91,8 @@ export class AuthController {
     }
   }
 
-  @Patch('activate/:userId')
+  @Patch('activate')
   async activateUser(
-    @Param('userId') userId: string,
     @Body()
     activateUserDto: { email: string; password: string; accessToken: string },
     @Res() res: any,
@@ -98,7 +100,9 @@ export class AuthController {
     try {
       const { email, password, accessToken } = activateUserDto;
 
-      if (!email || !password || !accessToken || password.length < 5) {
+      this.validationsService.validatePasswordLength(password);
+
+      if (!email || !password || !accessToken) {
         return res
           .status(HttpStatus.BAD_REQUEST)
           .json({ message: 'Некоректні дані користувача' });
@@ -108,9 +112,12 @@ export class AuthController {
         accessToken,
         'accessTokenActivate',
       );
-      if (!isValidToken || isValidToken.id !== userId) {
+
+      if (!isValidToken) {
         throw new UnauthorizedException('Некоректний токен активації');
       }
+
+      const userId = isValidToken.id;
 
       const userToActivate = await this.usersService.findUserByEmail(email);
 
@@ -125,6 +132,7 @@ export class AuthController {
         email,
         password,
       );
+
       const userWithoutPassword = { ...updatedUser, password: undefined };
       return res.status(HttpStatus.OK).json(userWithoutPassword);
     } catch (error) {
@@ -137,6 +145,42 @@ export class AuthController {
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: 'Некоректні дані користувача' });
+    }
+  }
+
+  @Patch('regenerate-activate-token')
+  async regenerateActivateUser(
+    @Body() regenerateTokenDto: { email: string },
+    @Res() res: any,
+  ) {
+    try {
+      const { email } = regenerateTokenDto;
+
+      const existingUser = await this.usersService.findUserByEmail(email);
+
+      if (!existingUser) {
+        return res.status(HttpStatus.NOT_FOUND).json({
+          message: 'Користувач з вказаним email не знайдений',
+        });
+      }
+
+      if (existingUser.active) {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          message: 'Користувач вже активований',
+        });
+      }
+
+      const newActivateToken = this.authService.generateAccessTokenActivate(
+        existingUser.id.toString(),
+      );
+
+      return res
+        .status(HttpStatus.OK)
+        .json({ activateToken: newActivateToken });
+    } catch (error) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ message: 'Непередбачена помилка' });
     }
   }
 }

@@ -9,6 +9,7 @@ import { UsersService } from '../users/users.service';
 import { PrismaService } from '../core/orm/prisma.service';
 import { RoleGuard } from './guard/roles.guard';
 import { AuthController } from './auth.controller';
+import { ValidationsService } from "../core/validations/validations.service";
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AuthController } from './auth.controller';
     UsersService,
     PrismaService,
     RoleGuard,
+    ValidationsService,
   ],
   exports: [AuthService],
   controllers: [AuthController],
