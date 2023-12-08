@@ -98,7 +98,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders/500",
+							"raw": "http://localhost:3006/orders/498",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -106,7 +106,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"500"
+								"498"
 							]
 						}
 					},
@@ -129,7 +129,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"lola\"\n}",
+							"raw": "{\n    \"alreadyPaid\": 5200\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -137,7 +137,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/orders/500",
+							"raw": "http://localhost:3006/orders/497",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -145,7 +145,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"500"
+								"497"
 							]
 						}
 					},
@@ -167,7 +167,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders/497/details",
+							"raw": "http://localhost:3006/orders/498/details",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -175,7 +175,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"497",
+								"498",
 								"details"
 							]
 						}
@@ -561,7 +561,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"commentText\": \"Вчився у Фаріон!!!!!!\"\n}\n",
+							"raw": "{\n  \"commentText\": \"Кодить в ліфті!\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -569,7 +569,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/comments/495/comment",
+							"raw": "http://localhost:3006/comments/500/comment",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -577,7 +577,7 @@
 							"port": "3006",
 							"path": [
 								"comments",
-								"495",
+								"500",
 								"comment"
 							]
 						}
@@ -655,7 +655,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/groups/494/group",
+							"raw": "http://localhost:3006/groups/499/group",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -663,7 +663,7 @@
 							"port": "3006",
 							"path": [
 								"groups",
-								"494",
+								"499",
 								"group"
 							]
 						}

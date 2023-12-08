@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   forwardRef,
@@ -36,13 +37,31 @@ export class OrdersController {
   @Get()
   async getAllOrders(
     @Query('sort') sort: string,
-    @Query('page') page = 1,
-    @Query('limit') limit = 25,
+    @Query('page') page = '1',
+    @Query('limit') limit = '25',
   ) {
+    const pageNumber = parseInt(page, 10);
+    if (isNaN(pageNumber) || pageNumber < 1 || !/^\d+$/.test(page)) {
+      throw new BadRequestException('Некоректне значення для параметра "page"');
+    }
+
+    const limitNumber = parseInt(limit, 10);
+    if (isNaN(limitNumber) || limitNumber < 1 || !/^\d+$/.test(limit)) {
+      throw new BadRequestException(
+        'Некоректне значення для параметра "limit"',
+      );
+    }
+
     let sortField: string | undefined;
     let sortOrder: 'asc' | 'desc' | undefined;
 
     if (sort) {
+      if (!/^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ-]+$/.test(sort)) {
+        throw new BadRequestException(
+          'Некоректне значення для параметра "sort"',
+        );
+      }
+
       if (sort.startsWith('-')) {
         sortField = sort.substring(1);
         sortOrder = 'desc';
@@ -50,9 +69,38 @@ export class OrdersController {
         sortField = sort;
         sortOrder = 'asc';
       }
+
+      const validSortFields = [
+        'id',
+        'name',
+        'surname',
+        'email',
+        'phone',
+        'age',
+        'course',
+        'course_format',
+        'course_type',
+        'status',
+        'sum',
+        'alreadyPaid',
+        'group',
+        'created_at',
+        'manager',
+      ];
+
+      if (!validSortFields.includes(sortField)) {
+        throw new BadRequestException(
+          'Некоректне значення для параметра "sort"',
+        );
+      }
     }
 
-    return this.ordersService.getAllOrders(page, limit, sortField, sortOrder);
+    return this.ordersService.getAllOrders(
+      pageNumber,
+      limitNumber,
+      sortField,
+      sortOrder,
+    );
   }
 
   @Get('/:orderId')
