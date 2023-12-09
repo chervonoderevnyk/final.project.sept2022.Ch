@@ -9,7 +9,7 @@
 			"name": "Orders",
 			"item": [
 				{
-					"name": "getAllOrders",
+					"name": "getAllOrders&Paginate",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -44,7 +44,7 @@
 					"response": []
 				},
 				{
-					"name": "findAllOrdersSort&Paginate",
+					"name": "getAllOrders&Sort&Paginate",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -233,6 +233,48 @@
 							"response": []
 						},
 						{
+							"name": "loginUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const res = pm.response.json()",
+											"pm.environment.set(\"accessToken\", res.accessToken);",
+											"pm.environment.set(\"refreshToken\", res.refreshToken);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"email\": \"DrugYoo24@gmail.com\",\n        \"password\": \"12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3006/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3006",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "createdUserByAdmin",
 							"request": {
 								"auth": {
@@ -272,7 +314,36 @@
 							"response": []
 						},
 						{
-							"name": "regenerateToken",
+							"name": "refresh-token",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJlZnJlc2hLZXkifQ.eyJpZCI6IjQiLCJzdWIiOiJyZWZyZXNoVG9rZW4iLCJpYXQiOjE3MDIxMzYyOTUsImV4cCI6MTcwMjEzNzQ5NX0.pCKsgw3-Gr8NTnr3JNlfh6OGqLfuWh1D_fqAjunbp-8\"\n}\n\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3006/auth/refresh-token",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3006",
+									"path": [
+										"auth",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "regenerateActivateToken",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -334,77 +405,6 @@
 									"path": [
 										"auth",
 										"activate"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "loginUser",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"const res = pm.response.json()",
-											"pm.environment.set(\"accessToken\", res.accessToken);",
-											"pm.environment.set(\"refreshToken\", res.refreshToken);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n        \"email\": \"DrugYoo22@gmail.com\",\n        \"password\": \"12345\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:3006/auth/login",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3006",
-									"path": [
-										"auth",
-										"login"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "refresh-tokenUser",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InJlZnJlc2hLZXkifQ.eyJpZCI6IjIiLCJzdWIiOiJyZWZyZXNoVG9rZW4iLCJpYXQiOjE3MDA2NzI5MDUsImV4cCI6MTcwMDY3NDEwNX0.UEOjA4PknEy6RpJtN_gBBpfkmn4kyZJzLW_Ehs2oknk\"\n}\n\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:3006/auth/refresh-token",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3006",
-									"path": [
-										"auth",
-										"refresh-token"
 									]
 								}
 							},
@@ -478,14 +478,14 @@
 					"response": []
 				},
 				{
-					"name": "PatchUser",
+					"name": "updateUser",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJpYXQiOjE2OTcxOTMyMTMsImV4cCI6MTY5NzE5MzgxM30.s60uLcd7_tSLWzLV4gS-Ih8YtkSrEj_YUBj9ZmfP1zc",
+									"value": "{{accessToken}}",
 									"type": "string"
 								}
 							]
@@ -517,7 +517,7 @@
 					"response": []
 				},
 				{
-					"name": "DeleteUser",
+					"name": "deleteUser",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -561,7 +561,7 @@
 			"name": "Comments",
 			"item": [
 				{
-					"name": "comment",
+					"name": "createComment",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -601,7 +601,7 @@
 					"response": []
 				},
 				{
-					"name": "findAllComments",
+					"name": "getAllComments",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -647,7 +647,7 @@
 			"name": "Groups",
 			"item": [
 				{
-					"name": "group",
+					"name": "createGroup",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -687,7 +687,7 @@
 					"response": []
 				},
 				{
-					"name": "findAllGroups",
+					"name": "getAllGroups",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},

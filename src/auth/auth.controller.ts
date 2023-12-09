@@ -29,7 +29,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Res() res: any, @Body() body: LoginDto) {
+  async loginUser(@Res() res: any, @Body() body: LoginDto) {
     if (!body.email || !body.password) {
       return res
         .status(HttpStatus.FORBIDDEN)
@@ -193,7 +193,7 @@ export class AuthController {
   @Patch('regenerate-activate-token')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
-  async regenerateActivateUser(
+  async regenerateActivateToken(
     @Body() regenerateTokenDto: { id: string },
     @Res() res: any,
   ) {

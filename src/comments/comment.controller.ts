@@ -75,7 +75,7 @@ export class CommentController {
   @Get()
   @UseGuards(AuthGuard())
   @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
-  getAllGroups() {
+  getAllComments() {
     return this.commentService.getAllComments();
   }
 }
