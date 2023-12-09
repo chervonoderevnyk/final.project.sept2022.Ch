@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -113,7 +115,10 @@ export class ValidationsService {
     const maxLength = 20;
 
     if (password.length < minLength || password.length > maxLength) {
-      throw new UnauthorizedException('Некоректні дані користувача');
+      throw new HttpException(
+        { message: 'Некоректні дані користувача' },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

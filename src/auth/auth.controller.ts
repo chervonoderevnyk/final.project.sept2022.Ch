@@ -194,13 +194,13 @@ export class AuthController {
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
   async regenerateActivateUser(
-    @Body() regenerateTokenDto: { id: string }, // Змінено вхідний об'єкт
+    @Body() regenerateTokenDto: { id: string },
     @Res() res: any,
   ) {
     try {
       const { id } = regenerateTokenDto;
 
-      const existingUser = await this.usersService.getUserById(id); // Використовуємо існуючий метод
+      const existingUser = await this.usersService.getUserById(id);
 
       if (!existingUser) {
         return res.status(HttpStatus.NOT_FOUND).json({
