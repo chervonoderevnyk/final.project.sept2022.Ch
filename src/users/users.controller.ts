@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   Res,
   SetMetadata,
@@ -67,8 +68,10 @@ export class UsersController {
   @Get()
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
-  async getUserList(@Req() req: any, @Res() res: any) {
-    return res.status(HttpStatus.OK).json(await this.userService.getUserList());
+  async getUserList(@Req() req: any, @Res() res: any, @Query('page') page = 1) {
+    return res
+      .status(HttpStatus.OK)
+      .json(await this.userService.getUserList(page));
   }
 
   @ApiParam({ name: 'userId', required: true })

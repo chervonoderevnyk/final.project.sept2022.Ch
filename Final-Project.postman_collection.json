@@ -129,7 +129,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"alreadyPaid\": 5200\n}",
+							"raw": "{\n    \"status\": \"Aggre\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -137,7 +137,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/orders/497",
+							"raw": "http://localhost:3006/orders/400",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -145,7 +145,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"497"
+								"400"
 							]
 						}
 					},
@@ -191,7 +191,7 @@
 					"name": "userAuthorization",
 					"item": [
 						{
-							"name": "loginUserAdmin",
+							"name": "loginAdmin",
 							"event": [
 								{
 									"listen": "test",
@@ -249,7 +249,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"lastName\": \"Drugyj\",\n        \"firstName\": \"Druh\",\n        \"email\": \"DrugYoo24@gmail.com\"\n}",
+									"raw": "{\n        \"lastName\": \"Testi\",\n        \"firstName\": \"test\",\n        \"email\": \"TESTUi25@gmail.com\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -272,13 +272,23 @@
 							"response": []
 						},
 						{
-							"name": "regenerateActivateToken",
+							"name": "regenerateToken",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "PATCH",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"email\": \"DrugYoo24@gmail.com\",\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjQiLCJzdWIiOiJhY2Nlc3NUb2tlbkFjdGl2YXRlIiwiaWF0IjoxNzAwNzU5NjcyLCJleHAiOjE3MDA3NjAyNzJ9.bj-Au_wZG32uAvtum-kkxWJAIB_Bz42jndKbIXRdKj4\"\n}",
+									"raw": "{\n        \"id\": 6\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -307,7 +317,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"email\": \"DrugYoo24@gmail.com\",\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjQiLCJzdWIiOiJhY2Nlc3NUb2tlbkFjdGl2YXRlIiwiaWF0IjoxNzAwNzYwNTYxLCJleHAiOjE3MDA3NjExNjF9.OgK9xBbXqfJygGD35J287oi5u_iNZreFMGT1eUGj2AM\"\n}",
+									"raw": "{\n        \"email\": \"TESTUi25@gmail.com\",\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjYiLCJzdWIiOiJhY2Nlc3NUb2tlbkFjdGl2YXRlIiwiaWF0IjoxNzAyMDY0NTYzLCJleHAiOjE3MDIwNjUxNjN9.JFMX8plb1AYuXv9dqqHEGsOBx9ASd-WaQIxVo_w7dP8\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -418,7 +428,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/users",
+							"raw": "http://localhost:3006/users?page=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -426,6 +436,12 @@
 							"port": "3006",
 							"path": [
 								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
 							]
 						}
 					},

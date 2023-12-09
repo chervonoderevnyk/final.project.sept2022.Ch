@@ -5,7 +5,9 @@ import {
   Patch,
   Post,
   Res,
+  SetMetadata,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Users } from '@prisma/client';
@@ -14,6 +16,8 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/auth.dto';
 import { ValidationsService } from '../core/validations/validations.service';
+import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from './guard/roles.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -29,7 +33,7 @@ export class AuthController {
     if (!body.email || !body.password) {
       return res
         .status(HttpStatus.FORBIDDEN)
-        .json({ message: 'Error: Check request parameters' });
+        .json({ message: 'Некоректні дані користувача' });
     }
 
     this.validationsService.validatePasswordLength(body.password);
@@ -148,19 +152,59 @@ export class AuthController {
     }
   }
 
+  // @Patch('regenerate-activate-token')
+  // @UseGuards(AuthGuard(), RoleGuard)
+  // @SetMetadata('roles', ['Admin'])
+  // async regenerateActivateUser(
+  //   @Body() regenerateTokenDto: { email: string },
+  //   @Res() res: any,
+  // ) {
+  //   try {
+  //     const { email } = regenerateTokenDto;
+  //
+  //     const existingUser = await this.usersService.findUserByEmail(email);
+  //
+  //     if (!existingUser) {
+  //       return res.status(HttpStatus.NOT_FOUND).json({
+  //         message: 'Користувач з вказаним email не знайдений',
+  //       });
+  //     }
+  //
+  //     if (existingUser.active) {
+  //       return res.status(HttpStatus.BAD_REQUEST).json({
+  //         message: 'Користувач вже активований',
+  //       });
+  //     }
+  //
+  //     const newActivateToken = this.authService.generateAccessTokenActivate(
+  //       existingUser.id.toString(),
+  //     );
+  //
+  //     return res
+  //       .status(HttpStatus.OK)
+  //       .json({ activateToken: newActivateToken });
+  //   } catch (error) {
+  //     return res
+  //       .status(HttpStatus.BAD_REQUEST)
+  //       .json({ message: 'Непередбачена помилка' });
+  //   }
+  // }
+
   @Patch('regenerate-activate-token')
+  @UseGuards(AuthGuard(), RoleGuard)
+  @SetMetadata('roles', ['Admin'])
   async regenerateActivateUser(
-    @Body() regenerateTokenDto: { email: string },
+    @Body() regenerateTokenDto: { id: string }, // Змінено вхідний об'єкт
     @Res() res: any,
   ) {
     try {
-      const { email } = regenerateTokenDto;
+      const { id } = regenerateTokenDto;
 
-      const existingUser = await this.usersService.findUserByEmail(email);
+      const existingUser = await this.usersService.getUserById(id); // Використовуємо існуючий метод
 
       if (!existingUser) {
         return res.status(HttpStatus.NOT_FOUND).json({
-          message: 'Користувач з вказаним email не знайдений',
+          message: 'Користувач з вказаним ID не знайдений',
         });
       }
 
