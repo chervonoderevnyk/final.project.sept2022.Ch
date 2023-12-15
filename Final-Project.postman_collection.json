@@ -359,7 +359,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"id\": 6\n}",
+									"raw": "",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -367,7 +367,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3006/auth/regenerate-activate-token",
+									"raw": "http://localhost:3006/auth/regenerate-activate-token/9",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -375,7 +375,8 @@
 									"port": "3006",
 									"path": [
 										"auth",
-										"regenerate-activate-token"
+										"regenerate-activate-token",
+										"9"
 									]
 								}
 							},
@@ -388,7 +389,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"email\": \"TESTUi25@gmail.com\",\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjYiLCJzdWIiOiJhY2Nlc3NUb2tlbkFjdGl2YXRlIiwiaWF0IjoxNzAyMDY0NTYzLCJleHAiOjE3MDIwNjUxNjN9.JFMX8plb1AYuXv9dqqHEGsOBx9ASd-WaQIxVo_w7dP8\"\n}",
+									"raw": "{\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjkiLCJzdWIiOiJhY2Nlc3NUb2tlbkFjdGl2YXRlIiwiaWF0IjoxNzAyNjM5NzA4LCJleHAiOjE3MDI2NDAzMDh9.QNXfQZm6-IEAUXKuEDJljeLY7F-beo6oIua-jCeSdPE\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"

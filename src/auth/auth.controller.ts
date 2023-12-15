@@ -1,14 +1,14 @@
 import {
   Body,
   Controller,
-  HttpStatus,
+  HttpStatus, Param,
   Patch,
   Post,
   Res,
   SetMetadata,
   UnauthorizedException,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 import { ApiTags } from '@nestjs/swagger';
 import { Users } from '@prisma/client';
 
@@ -98,18 +98,16 @@ export class AuthController {
   @Patch('activate')
   async activateUser(
     @Body()
-    activateUserDto: { email: string; password: string; accessToken: string },
+    activateUserDto: { password: string; accessToken: string },
     @Res() res: any,
   ) {
     try {
-      const { email, password, accessToken } = activateUserDto;
+      const { password, accessToken } = activateUserDto;
 
-      this.validationsService.validatePasswordLength(password);
-
-      if (!email || !password || !accessToken) {
+      if (!password || !accessToken) {
         return res
           .status(HttpStatus.BAD_REQUEST)
-          .json({ message: 'Некоректні дані користувача' });
+          .json({ message: 'Некоректні дані користувача1' });
       }
 
       const isValidToken = this.authService.verifyToken(
@@ -123,17 +121,16 @@ export class AuthController {
 
       const userId = isValidToken.id;
 
-      const userToActivate = await this.usersService.findUserByEmail(email);
+      const userToActivate = await this.usersService.getUserById(userId);
 
       if (!userToActivate || userToActivate.id.toString() !== userId) {
         return res.status(HttpStatus.UNAUTHORIZED).json({
-          message: 'Некоректні дані користувача',
+          message: 'Некоректні дані користувача2',
         });
       }
 
       const updatedUser = await this.usersService.activateUser(
         Number(userId),
-        email,
         password,
       );
 
@@ -148,25 +145,25 @@ export class AuthController {
 
       return res
         .status(HttpStatus.BAD_REQUEST)
-        .json({ message: 'Некоректні дані користувача' });
+        .json({ message: 'Некоректні дані користувача3' });
     }
   }
 
   // @Patch('regenerate-activate-token')
   // @UseGuards(AuthGuard(), RoleGuard)
   // @SetMetadata('roles', ['Admin'])
-  // async regenerateActivateUser(
-  //   @Body() regenerateTokenDto: { email: string },
+  // async regenerateActivateToken(
+  //   @Body() regenerateTokenDto: { id: string },
   //   @Res() res: any,
   // ) {
   //   try {
-  //     const { email } = regenerateTokenDto;
+  //     const { id } = regenerateTokenDto;
   //
-  //     const existingUser = await this.usersService.findUserByEmail(email);
+  //     const existingUser = await this.usersService.getUserById(id);
   //
   //     if (!existingUser) {
   //       return res.status(HttpStatus.NOT_FOUND).json({
-  //         message: 'Користувач з вказаним email не знайдений',
+  //         message: 'Користувач з вказаним ID не знайдений',
   //       });
   //     }
   //
@@ -190,16 +187,14 @@ export class AuthController {
   //   }
   // }
 
-  @Patch('regenerate-activate-token')
+  @Patch('regenerate-activate-token/:id') // додаємо ':id' до шляху
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
   async regenerateActivateToken(
-    @Body() regenerateTokenDto: { id: string },
+    @Param('id') id: string, // отримуємо 'id' з параметрів шляху
     @Res() res: any,
   ) {
     try {
-      const { id } = regenerateTokenDto;
-
       const existingUser = await this.usersService.getUserById(id);
 
       if (!existingUser) {

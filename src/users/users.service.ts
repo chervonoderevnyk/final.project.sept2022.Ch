@@ -37,11 +37,7 @@ export class UsersService {
     return user;
   }
 
-  async activateUser(
-    userId: number,
-    email: string,
-    password: string,
-  ): Promise<Users> {
+  async activateUser(userId: number, password: string): Promise<Users> {
     const user = await this.prismaService.users.findUnique({
       where: { id: userId },
     });
@@ -53,7 +49,6 @@ export class UsersService {
     const updatedUser = await this.prismaService.users.update({
       where: { id: userId },
       data: {
-        email,
         password: await this.hashPassword(password),
         active: true,
       },
