@@ -149,49 +149,11 @@ export class AuthController {
     }
   }
 
-  // @Patch('regenerate-activate-token')
-  // @UseGuards(AuthGuard(), RoleGuard)
-  // @SetMetadata('roles', ['Admin'])
-  // async regenerateActivateToken(
-  //   @Body() regenerateTokenDto: { id: string },
-  //   @Res() res: any,
-  // ) {
-  //   try {
-  //     const { id } = regenerateTokenDto;
-  //
-  //     const existingUser = await this.usersService.getUserById(id);
-  //
-  //     if (!existingUser) {
-  //       return res.status(HttpStatus.NOT_FOUND).json({
-  //         message: 'Користувач з вказаним ID не знайдений',
-  //       });
-  //     }
-  //
-  //     if (existingUser.active) {
-  //       return res.status(HttpStatus.BAD_REQUEST).json({
-  //         message: 'Користувач вже активований',
-  //       });
-  //     }
-  //
-  //     const newActivateToken = this.authService.generateAccessTokenActivate(
-  //       existingUser.id.toString(),
-  //     );
-  //
-  //     return res
-  //       .status(HttpStatus.OK)
-  //       .json({ activateToken: newActivateToken });
-  //   } catch (error) {
-  //     return res
-  //       .status(HttpStatus.BAD_REQUEST)
-  //       .json({ message: 'Непередбачена помилка' });
-  //   }
-  // }
-
-  @Patch('regenerate-activate-token/:id') // додаємо ':id' до шляху
+  @Patch('regenerate-activate-token/:id')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
   async regenerateActivateToken(
-    @Param('id') id: string, // отримуємо 'id' з параметрів шляху
+    @Param('id') id: string,
     @Res() res: any,
   ) {
     try {
