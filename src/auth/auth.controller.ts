@@ -1,14 +1,15 @@
 import {
   Body,
   Controller,
-  HttpStatus, Param,
+  HttpStatus,
+  Param,
   Patch,
   Post,
   Res,
   SetMetadata,
   UnauthorizedException,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Users } from '@prisma/client';
 
@@ -152,10 +153,7 @@ export class AuthController {
   @Patch('regenerate-activate-token/:id')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
-  async regenerateActivateToken(
-    @Param('id') id: string,
-    @Res() res: any,
-  ) {
+  async regenerateActivateToken(@Param('id') id: string, @Res() res: any) {
     try {
       const existingUser = await this.usersService.getUserById(id);
 
