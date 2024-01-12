@@ -12,12 +12,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Users } from '@prisma/client';
+import { AuthGuard } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/auth.dto';
 import { ValidationsService } from '../core/validations/validations.service';
-import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from './guard/roles.guard';
 
 @ApiTags('Auth')
@@ -108,7 +108,7 @@ export class AuthController {
       if (!password || !accessToken) {
         return res
           .status(HttpStatus.BAD_REQUEST)
-          .json({ message: 'Некоректні дані користувача1' });
+          .json({ message: 'Некоректні дані користувача' });
       }
 
       const isValidToken = this.authService.verifyToken(
@@ -126,9 +126,17 @@ export class AuthController {
 
       if (!userToActivate || userToActivate.id.toString() !== userId) {
         return res.status(HttpStatus.UNAUTHORIZED).json({
-          message: 'Некоректні дані користувача2',
+          message: 'Некоректні дані користувача',
         });
       }
+
+      if (userToActivate.active) {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          message: 'Користувач вже активований',
+        });
+      }
+
+      this.validationsService.validatePasswordLength(password);
 
       const updatedUser = await this.usersService.activateUser(
         Number(userId),
@@ -146,7 +154,7 @@ export class AuthController {
 
       return res
         .status(HttpStatus.BAD_REQUEST)
-        .json({ message: 'Некоректні дані користувача3' });
+        .json({ message: 'Некоректні дані користувача' });
     }
   }
 

@@ -252,7 +252,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"email\": \"LinkiPark2@gmail.com\",\n        \"password\": \"12345\"\n}",
+									"raw": "{\n        \"email\": \"@gmail.com\",\n        \"password\": \"12345\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -291,7 +291,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"lastName\": \"Li\",\n        \"firstName\": \"Pa\",\n        \"email\": \"LinkiPark2@gmail.com\"\n}",
+									"raw": "{\n        \"lastName\": \"asd\",\n        \"firstName\": \"qwe\",\n        \"email\": \"Factor1@gmail.com\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -367,7 +367,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3006/auth/regenerate-activate-token/9",
+									"raw": "http://localhost:3006/auth/regenerate-activate-token/19",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -376,7 +376,7 @@
 									"path": [
 										"auth",
 										"regenerate-activate-token",
-										"9"
+										"19"
 									]
 								}
 							},
@@ -389,7 +389,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjEzIiwic3ViIjoiYWNjZXNzVG9rZW5BY3RpdmF0ZSIsImlhdCI6MTcwNDk3NjM4NCwiZXhwIjoxNzA0OTc2OTg0fQ.ZgHXQFWhSoj8G8wPlNNmdeDx02PD3kSf86XA9J5m1KQ\"\n}",
+									"raw": "{\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjE5Iiwic3ViIjoiYWNjZXNzVG9rZW5BY3RpdmF0ZSIsImlhdCI6MTcwNTA5MDE0NywiZXhwIjoxNzA1MDkwNzQ3fQ.my4w1wsBR01DZgWWr92xg4gevfZP-yBdvKA4wTnA38Y\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
