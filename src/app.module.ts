@@ -1,4 +1,5 @@
 import { Module, OnModuleInit } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 import { OrdersService } from './orders/orders.service';
 import { OrdersModule } from './orders/orders.module';
@@ -19,6 +20,11 @@ import { GroupController } from './groups/group.controller';
 import { GroupService } from './groups/group.service';
 import { ValidationsService } from './core/validations/validations.service';
 import { ValidationsModule } from './core/validations/validations.module';
+import { ChangePasswordModule } from './change-password/change-password.module';
+import { ChangePasswordController } from './change-password/change-password.controller';
+import { ChangePasswordService } from './change-password/change-password.service';
+import { MailModule } from './core/mail/mail.module';
+import { MailService } from './core/mail/mail.service';
 
 @Module({
   imports: [
@@ -30,6 +36,8 @@ import { ValidationsModule } from './core/validations/validations.module';
     CommentModule,
     GroupModule,
     ValidationsModule,
+    ChangePasswordModule,
+    MailModule,
   ],
   controllers: [
     OrdersController,
@@ -37,6 +45,7 @@ import { ValidationsModule } from './core/validations/validations.module';
     AuthController,
     CommentController,
     GroupController,
+    ChangePasswordController,
   ],
   providers: [
     OrdersService,
@@ -46,7 +55,11 @@ import { ValidationsModule } from './core/validations/validations.module';
     CommentService,
     GroupService,
     ValidationsService,
+    ChangePasswordService,
+    JwtService,
+    MailService,
   ],
+  exports: [JwtService],
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly prisma: PrismaService) {}

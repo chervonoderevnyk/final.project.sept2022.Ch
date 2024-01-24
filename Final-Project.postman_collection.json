@@ -291,7 +291,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"lastName\": \"asd\",\n        \"firstName\": \"qwe\",\n        \"email\": \"Factor1@gmail.com\"\n}",
+									"raw": "{\n        \"lastName\": \"\",\n        \"firstName\": \"\",\n        \"email\": \"@gmail.com\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -406,6 +406,90 @@
 									"path": [
 										"auth",
 										"activate"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Change-password",
+					"item": [
+						{
+							"name": "changePasswordGenerateToken",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"@gmail.com\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3006/change-pass/change-password-generate-token",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3006",
+									"path": [
+										"change-pass",
+										"change-password-generate-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "changePasswordUser",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"newPassword\": \"12345\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3006/change-pass/change-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyIiwic3ViIjoiY2hhbmdlUGFzc3dvcmRUb2tlbiIsImlhdCI6MTcwNjA5Mzc5NCwiZXhwIjoxNzA2MDk1NTk0fQ.moo1tgTAxZCgU1941Mbc7LDhtTK9jeVV55smewpFs_o",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3006",
+									"path": [
+										"change-pass",
+										"change-password",
+										"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyIiwic3ViIjoiY2hhbmdlUGFzc3dvcmRUb2tlbiIsImlhdCI6MTcwNjA5Mzc5NCwiZXhwIjoxNzA2MDk1NTk0fQ.moo1tgTAxZCgU1941Mbc7LDhtTK9jeVV55smewpFs_o"
 									]
 								}
 							},

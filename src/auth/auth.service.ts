@@ -1,12 +1,19 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Users } from '@prisma/client';
+
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   private usedRefreshTokens: Set<string> = new Set();
+  private usedChangePasswordTokens: Set<string> = new Set();
 
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private usersService: UsersService,
+  ) {}
 
   async compareHash(password: string, hash: string) {
     return bcrypt.compare(password, hash);
@@ -74,5 +81,37 @@ export class AuthService {
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
+  }
+
+  generateChangePasswordToken(userId: string): string {
+    const payload = { id: userId, sub: 'changePasswordToken' };
+    const changePasswordToken = this.jwtService.sign(payload, {
+      expiresIn: '30m',
+    });
+    return changePasswordToken;
+  }
+
+  async verifyChangePasswordToken(token: string): Promise<Users> {
+    try {
+      const { id } = this.jwtService.verify(token, { ignoreExpiration: false });
+
+      const user = await this.usersService.getUserById(id.toString());
+
+      if (!user) {
+        throw new UnauthorizedException('Користувача не знайдено');
+      }
+
+      return user;
+    } catch (error) {
+      throw new UnauthorizedException('Невірний токен');
+    }
+  }
+
+  markChangePasswordTokenAsUsed(changePasswordToken: string): void {
+    this.usedChangePasswordTokens.add(changePasswordToken);
+  }
+
+  isChangePasswordTokenUsed(changePasswordToken: string): boolean {
+    return this.usedChangePasswordTokens.has(changePasswordToken);
   }
 }

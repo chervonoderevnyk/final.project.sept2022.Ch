@@ -195,4 +195,20 @@ export class UsersService {
       where: { email: userEmail },
     });
   }
+
+  async updateUserPassword(
+    userId: string,
+    newPassword: string,
+  ): Promise<Users> {
+    const hashedPassword = await this.hashPassword(newPassword);
+
+    const updatedUser = await this.prismaService.users.update({
+      where: { id: Number(userId) },
+      data: { password: hashedPassword },
+    });
+
+    delete updatedUser.password;
+
+    return updatedUser;
+  }
 }

@@ -70,11 +70,14 @@ src:
 
    auth: Everything you need to register, log in and guard.
 
+   change-password: Method for changing the password in a user's account.
+
    comments: This is where the comments are served.
 
    core: General purpose files for the project are placed here. 
-         Folder `orm`: contains prisma.service.
-         The `validations` folder: validation checks.
+         Folder 'orm': contains prisma.service.
+         The 'validations' folder: validation checks.
+         Folder 'mail': implementation of message logic.
 
    groups: This is where the groups are served.
 
@@ -83,6 +86,8 @@ src:
    users: Serving the module: 'users' entity through the 'CRUD' script.
 
    main: The central file from which the API is launched.
+
+   templates: Templates for creating stylized messages.
 
    Final-Project.postman_collection.json: Collection of the Postman json format. 
 
