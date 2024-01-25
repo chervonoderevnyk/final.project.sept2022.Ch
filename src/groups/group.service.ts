@@ -14,12 +14,11 @@ export class GroupService {
     private readonly ordersService: OrdersService,
   ) {}
 
-  async createGroup(createGroupDto: CreateGroupDto, userId: string) {
+  async createGroup(createGroupDto: CreateGroupDto) {
     const { title } = createGroupDto;
     return this.prismaService.group.create({
       data: {
         title,
-        user: { connect: { id: Number(userId) } },
       },
     });
   }
@@ -29,7 +28,6 @@ export class GroupService {
       select: {
         id: true,
         title: true,
-        userId: true,
       },
     });
   }

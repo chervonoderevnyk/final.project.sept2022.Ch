@@ -180,14 +180,14 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Користувача не знайдено');
     }
 
     await this.prismaService.users.delete({
       where: { id: Number(userId) },
     });
 
-    return `User with id ${user.id} and lastName ${user.lastName} deleted!!!`;
+    return `Користувача з ідентифікатором ${user.id} та прізвищем ${user.lastName} видалено!!!`;
   }
 
   async findUserByEmail(userEmail: string) {

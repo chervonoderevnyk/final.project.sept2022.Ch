@@ -72,8 +72,7 @@ export class GroupController {
         updateOrderDto.group = {
           ...createGroupDto,
           id: 0,
-          userId: req.user.id,
-        };
+        } as Group;
       }
 
       const updatedOrder = await this.ordersService.updateOrder(
@@ -85,8 +84,6 @@ export class GroupController {
       const updatedGroupDto: Group = {
         ...createGroupDto,
         id: 0,
-        userId: req.user.id,
-        title: updatedOrder.group,
       };
 
       await this.ordersService.updateOrder(
@@ -96,7 +93,7 @@ export class GroupController {
       );
 
       if (!existingGroup) {
-        await this.groupService.createGroup(updatedGroupDto, req.user.id);
+        await this.groupService.createGroup(updatedGroupDto);
       }
 
       return updatedGroupDto;

@@ -33,7 +33,7 @@ export class ChangePasswordService {
       changePasswordToken,
     };
 
-    const subject = 'Change your account PASSWORD!!!';
+    const subject = 'Змінити ПАРОЛЬ до облікового запису!!!';
     this.mailService.send(
       user.email,
       subject,

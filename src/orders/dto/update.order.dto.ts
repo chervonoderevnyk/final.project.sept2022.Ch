@@ -25,7 +25,7 @@ export class UpdateOrderDto {
   @IsOptional()
   @Matches(/^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ]+$/, {
     message:
-      'Name must contain only letters of English and Ukrainian alphabets',
+      'Назва повинна містити лише літери англійської та української абеток',
   })
   readonly name?: string;
 
@@ -34,7 +34,7 @@ export class UpdateOrderDto {
   @IsOptional()
   @Matches(/^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ]+$/, {
     message:
-      'Name must contain only letters of English and Ukrainian alphabets',
+      'Назва повинна містити лише літери англійської та української абеток',
   })
   readonly surname?: string | null;
 
@@ -47,16 +47,18 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  @Matches(/^\+?\d+$/, { message: 'Invalid phone number format' })
-  @Matches(/^.{10,16}$/, { message: 'Phone number length is incorrect' })
+  @Matches(/^\+?\d+$/, { message: 'Неправильний формат телефонного номера' })
+  @Matches(/^.{10,16}$/, {
+    message: 'Неправильно вказано довжину номера телефону',
+  })
   readonly phone?: string | null;
 
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  @IsInt({ message: 'Age must be an integer' })
-  @Min(15, { message: 'Age must not be negative' })
-  @Max(110, { message: 'Age must not be greater than 110' })
+  @IsInt({ message: 'Вік повинен бути цілим числом' })
+  @Min(15, { message: 'Вік не повинен бути негативним' })
+  @Max(110, { message: 'Вік не повинен перевищувати 110 років' })
   readonly age?: number | null;
 
   @ApiProperty({ required: false, enum: Course })
@@ -82,15 +84,15 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  @Min(0, { message: 'Sum must be a positive number or zero' })
-  @Max(1000000, { message: 'Sum must not exceed 1000000' })
+  @Min(0, { message: 'Сума повинна бути додатнім числом або нулем' })
+  @Max(1000000, { message: 'Сума не повинна перевищувати 1000000' })
   readonly sum?: number | null;
 
   @ApiProperty({ required: false })
   @IsNumber()
   @IsOptional()
-  @Min(0, { message: 'Sum must be a positive number or zero' })
-  @Max(1000000, { message: 'Sum must not exceed 1000000' })
+  @Min(0, { message: 'Сума повинна бути додатнім числом або нулем' })
+  @Max(1000000, { message: 'Сума не повинна перевищувати 1000000' })
   readonly alreadyPaid?: number | null;
 
   @ApiProperty({ required: false })
@@ -101,7 +103,7 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  @IsDateString({ message: 'Invalid date format for created_at' } as any)
+  @IsDateString({ message: 'Невірний формат дати для created_at' } as any)
   readonly created_at?: Date | null;
 
   @ApiProperty({ required: false })

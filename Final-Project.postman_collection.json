@@ -24,7 +24,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders?page=1",
+							"raw": "http://localhost:3006/orders?page=20",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -36,7 +36,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "1"
+									"value": "20"
 								}
 							]
 						}
@@ -59,7 +59,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders?sort=-age&page=1",
+							"raw": "http://localhost:3006/orders?sort=-age&page=20",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -75,7 +75,7 @@
 								},
 								{
 									"key": "page",
-									"value": "1"
+									"value": "20"
 								}
 							]
 						}
@@ -98,7 +98,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders/498",
+							"raw": "http://localhost:3006/orders/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -106,7 +106,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"498"
+								"3"
 							]
 						}
 					},
@@ -129,7 +129,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"status\": \"Aggre\"\n}",
+							"raw": "{\n    \"sum\": 350\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -137,7 +137,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/orders/400",
+							"raw": "http://localhost:3006/orders/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -145,7 +145,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"400"
+								"2"
 							]
 						}
 					},
@@ -167,7 +167,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3006/orders/498/details",
+							"raw": "http://localhost:3006/orders/4/details",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -175,7 +175,7 @@
 							"port": "3006",
 							"path": [
 								"orders",
-								"498",
+								"4",
 								"details"
 							]
 						}
@@ -252,7 +252,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"email\": \"@gmail.com\",\n        \"password\": \"12345\"\n}",
+									"raw": "{\n        \"email\": \"LinkiPark3@gmail.com\",\n        \"password\": \"12345\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -389,7 +389,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjE5Iiwic3ViIjoiYWNjZXNzVG9rZW5BY3RpdmF0ZSIsImlhdCI6MTcwNTA5MDE0NywiZXhwIjoxNzA1MDkwNzQ3fQ.my4w1wsBR01DZgWWr92xg4gevfZP-yBdvKA4wTnA38Y\"\n}",
+									"raw": "{\n        \"password\": \"12345\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImFjdGl2YXRlS2V5In0.eyJpZCI6IjIyIiwic3ViIjoiYWNjZXNzVG9rZW5BY3RpdmF0ZSIsImlhdCI6MTcwNTk1MDkwMCwiZXhwIjoxNzA1OTUxNTAwfQ.ZR_4kclhg19lcEkksW-oJp_CvJGpEFdPDIlYUURfZQw\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -670,7 +670,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/comments/500/comment",
+							"raw": "http://localhost:3006/comments/4/comment",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -678,7 +678,7 @@
 							"port": "3006",
 							"path": [
 								"comments",
-								"500",
+								"4",
 								"comment"
 							]
 						}
@@ -748,7 +748,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": \"Негідники 2024\"\n}\n",
+							"raw": "{\n  \"title\": \"Горобці 2024\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -756,7 +756,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/groups/499/group",
+							"raw": "http://localhost:3006/groups/3/group",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -764,7 +764,7 @@
 							"port": "3006",
 							"path": [
 								"groups",
-								"499",
+								"3",
 								"group"
 							]
 						}

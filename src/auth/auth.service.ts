@@ -59,27 +59,27 @@ export class AuthService {
       const decoded = this.jwtService.verify(token);
 
       if (decoded.sub !== expectedSub) {
-        throw new UnauthorizedException('Invalid token type');
+        throw new UnauthorizedException('Неправильний тип токену');
       }
 
       if (decoded.keyid === 'accessKey' && expectedSub !== 'accessToken') {
-        throw new UnauthorizedException('Invalid token type');
+        throw new UnauthorizedException('Неправильний тип токену');
       }
 
       if (decoded.keyid === 'refreshKey' && expectedSub !== 'refreshToken') {
-        throw new UnauthorizedException('Invalid token type');
+        throw new UnauthorizedException('Неправильний тип токену');
       }
 
       if (
         decoded.keyid === 'activateKey' &&
         expectedSub !== 'accessTokenActivate'
       ) {
-        throw new UnauthorizedException('Invalid token type');
+        throw new UnauthorizedException('Неправильний тип токену');
       }
 
       return decoded;
     } catch (error) {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('Недійсний токен');
     }
   }
 

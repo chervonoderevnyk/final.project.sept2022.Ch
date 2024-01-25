@@ -49,12 +49,6 @@ export class CommentController {
       const order = await this.ordersService.getOrderById(orderId);
       const user = await this.userService.getUserById(req.user.id);
 
-      // if (!updateOrderDto.manager && user.lastName) {
-      //   updateOrderDto.manager = user.lastName || updateOrderDto.manager;
-      // }
-
-      // await this.ordersService.updateOrder(orderId, updateOrderDto, user);
-
       return this.commentService.createComment(
         orderId,
         createCommentDto,

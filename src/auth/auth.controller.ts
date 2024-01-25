@@ -71,7 +71,7 @@ export class AuthController {
       if (this.authService.isRefreshTokenUsed(refreshToken)) {
         return res
           .status(HttpStatus.UNAUTHORIZED)
-          .json({ message: 'Refresh token has already been used' });
+          .json({ message: 'Токен оновлення вже використано' });
       }
 
       const decodedToken = this.authService.verifyToken(
@@ -92,7 +92,7 @@ export class AuthController {
     } catch (error) {
       return res
         .status(HttpStatus.UNAUTHORIZED)
-        .json({ message: 'Invalid refreshToken' });
+        .json({ message: 'Недійсний токен оновлення' });
     }
   }
 

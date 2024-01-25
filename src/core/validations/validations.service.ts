@@ -74,7 +74,7 @@ export class ValidationsService {
     if (!Object.values(Course).includes(course as Course)) {
       const validValues = Object.values(Course).join(', ');
       throw new BadRequestException(
-        `Недопустиме значення для поля "course". Курси можуть бути тільки такими: ${validValues}`,
+        `Недопустиме значення для поля "course". "course" може бути тільки таким: ${validValues}`,
       );
     }
     return course as Course;
@@ -84,7 +84,7 @@ export class ValidationsService {
     if (!Object.values(CourseFormat).includes(courseFormat as CourseFormat)) {
       const validValues = Object.values(CourseFormat).join(', ');
       throw new BadRequestException(
-        `Недопустиме значення для поля "courseFormat". Формат курсу може бути тільки таким: ${validValues}`,
+        `Недопустиме значення для поля "courseFormat". "courseFormat" може бути тільки таким: ${validValues}`,
       );
     }
     return courseFormat as CourseFormat;
@@ -94,7 +94,7 @@ export class ValidationsService {
     if (!Object.values(CourseType).includes(courseType as CourseType)) {
       const validValues = Object.values(CourseType).join(', ');
       throw new BadRequestException(
-        `Недопустиме значення для поля "courseType". Типи курсу можуть бути тільки такими: ${validValues}`,
+        `Недопустиме значення для поля "courseType". "courseType" може бути тільки таким: ${validValues}`,
       );
     }
     return courseType as CourseType;
@@ -104,7 +104,7 @@ export class ValidationsService {
     if (!Object.values(Status).includes(status as Status)) {
       const validValues = Object.values(Status).join(', ');
       throw new BadRequestException(
-        `Недопустиме значення для поля "status". Статус може бути тільки таким: ${validValues}`,
+        `Недопустиме значення для поля "status". "status" може бути тільки таким: ${validValues}`,
       );
     }
     return status as Status;

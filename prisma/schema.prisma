@@ -56,7 +56,6 @@ model Users {
   active    Boolean?  @default(false)
   orders    Orders[]
   comment   Comment[]
-  Group     Group[]
 
   @@index([lastName], name: "LastNameIndex")
 }
@@ -74,8 +73,6 @@ model Comment {
 model Group {
   id     Int      @id @default(autoincrement())
   title  String?
-  user   Users    @relation(fields: [userId], references: [id])
-  userId Int
   orders Orders[]
 }
 
