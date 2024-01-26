@@ -15,13 +15,13 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Придумай надійний пароль!' })
   password: string;
 
   @ApiProperty({ required: true, example: '@gmail.com' })
   @IsString()
   @IsEmail()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'В цього юзера 100% є поштоваа скринька! Пошукай!' })
   email: string;
 
   @ApiProperty({ enum: Role })

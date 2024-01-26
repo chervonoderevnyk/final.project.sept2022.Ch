@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Users } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -30,6 +30,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @ApiOperation({ summary: 'Login user' })
   async loginUser(@Res() res: any, @Body() body: LoginDto) {
     if (!body.email || !body.password) {
       return res
@@ -64,6 +65,7 @@ export class AuthController {
   }
 
   @Post('refresh-token')
+  @ApiOperation({ summary: 'Refresh access token' })
   async refreshToken(@Res() res: any, @Body() body: { refreshToken: string }) {
     try {
       const { refreshToken } = body;
@@ -97,6 +99,7 @@ export class AuthController {
   }
 
   @Patch('activate')
+  @ApiOperation({ summary: 'Activate user' })
   async activateUser(
     @Body()
     activateUserDto: { password: string; accessToken: string },
@@ -161,6 +164,7 @@ export class AuthController {
   @Patch('regenerate-activate-token/:id')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
+  @ApiOperation({ summary: 'Regenerate activation token' })
   async regenerateActivateToken(@Param('id') id: string, @Res() res: any) {
     try {
       const existingUser = await this.usersService.getUserById(id);

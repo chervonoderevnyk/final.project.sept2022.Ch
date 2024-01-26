@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Role } from '@prisma/client';
 
 export class UpdateUserDto {
@@ -22,6 +22,7 @@ export class UpdateUserDto {
   @IsString()
   @IsEmail()
   @IsOptional()
+  @IsNotEmpty({ message: 'В тебе 100% є поштоваа скринька! Пошукай!' })
   readonly email: string;
 
   @ApiProperty({ enum: Role })

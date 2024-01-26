@@ -4,6 +4,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateCommentDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Твій коментар гідний бути написаним!' })
   readonly commentText: string;
 }

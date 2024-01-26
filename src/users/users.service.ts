@@ -161,7 +161,18 @@ export class UsersService {
   async updateUser(
     userId: string,
     updateUserDto: UpdateUserDto,
+    user: any,
   ): Promise<Users> {
+    const isAdmin = user.roles === Role.Admin;
+    const isUserSelfUpdate = userId === user.id.toString();
+
+    if (!isAdmin && !isUserSelfUpdate) {
+      throw new HttpException(
+        'Недостатні права для редагування користувача',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
     const { lastName, firstName, email, roles } = updateUserDto;
     const updatedUser = await this.prismaService.users.update({
       where: { id: Number(userId) },

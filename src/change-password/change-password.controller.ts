@@ -6,7 +6,7 @@ import {
   Patch,
   Res,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { ChangePasswordService } from './change-password.service';
 
@@ -16,6 +16,7 @@ export class ChangePasswordController {
   constructor(private changePasswordService: ChangePasswordService) {}
 
   @Patch('change-password-generate-token')
+  @ApiOperation({ summary: 'Generate token for changing password' })
   async ChangePasswordGenerateToken(
     @Body() changePasswordDto: { email: string },
     @Res() res: any,
@@ -45,6 +46,7 @@ export class ChangePasswordController {
   }
 
   @Patch('change-password/:token')
+  @ApiOperation({ summary: 'Change user password' })
   async changePasswordUser(
     @Param('token') token: string,
     @Body() changePasswordDto: { newPassword: string },

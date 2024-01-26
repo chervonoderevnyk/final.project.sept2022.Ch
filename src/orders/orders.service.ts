@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
@@ -22,13 +23,63 @@ export class OrdersService {
     private readonly validationsService: ValidationsService,
   ) {}
 
-  async getAllOrders(
-    page: number,
-    limit: number,
-    sortField?: string,
-    sortOrder?: 'asc' | 'desc',
-  ) {
-    const skip = (page - 1) * limit;
+  async getAllOrders(sort: string, page: string, limit: string) {
+    const pageNumber = parseInt(page, 10);
+    if (isNaN(pageNumber) || pageNumber < 1 || !/^\d+$/.test(page)) {
+      throw new BadRequestException('Некоректне значення для параметра "page"');
+    }
+
+    const limitNumber = parseInt(limit, 10);
+    if (isNaN(limitNumber) || limitNumber < 1 || !/^\d+$/.test(limit)) {
+      throw new BadRequestException(
+        'Некоректне значення для параметра "limit"',
+      );
+    }
+
+    let sortField: string | undefined;
+    let sortOrder: 'asc' | 'desc' | undefined;
+
+    if (sort) {
+      if (!/^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ-]+$/.test(sort)) {
+        throw new BadRequestException(
+          'Некоректне значення для параметра "sort"',
+        );
+      }
+
+      if (sort.startsWith('-')) {
+        sortField = sort.substring(1);
+        sortOrder = 'desc';
+      } else {
+        sortField = sort;
+        sortOrder = 'asc';
+      }
+
+      const validSortFields = [
+        'id',
+        'name',
+        'surname',
+        'email',
+        'phone',
+        'age',
+        'course',
+        'course_format',
+        'course_type',
+        'status',
+        'sum',
+        'alreadyPaid',
+        'group',
+        'created_at',
+        'manager',
+      ];
+
+      if (!validSortFields.includes(sortField)) {
+        throw new BadRequestException(
+          'Некоректне значення для параметра "sort"',
+        );
+      }
+    }
+
+    const skip = (pageNumber - 1) * limitNumber;
     const totalCount = await this.prismaService.orders.count();
 
     const orderBy: any = {};
@@ -42,7 +93,7 @@ export class OrdersService {
     const orders = await this.prismaService.orders.findMany({
       orderBy,
       skip,
-      take: limit,
+      take: limitNumber,
       select: {
         id: true,
         name: true,
@@ -70,8 +121,8 @@ export class OrdersService {
 
     return {
       data: orders,
-      page,
-      limit,
+      page: pageNumber,
+      limit: limitNumber,
       totalCount,
     };
   }

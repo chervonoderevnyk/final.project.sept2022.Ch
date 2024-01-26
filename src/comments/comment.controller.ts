@@ -12,7 +12,7 @@ import {
   SetMetadata,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 import { UsersService } from '../users/users.service';
@@ -36,6 +36,7 @@ export class CommentController {
   ) {}
 
   @Post(':orderId/comment')
+  @ApiOperation({ summary: 'Create a new comment for an order' })
   @UseGuards(AuthGuard())
   @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   async createComment(
@@ -67,6 +68,7 @@ export class CommentController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all comments' })
   @UseGuards(AuthGuard())
   @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
   getAllComments() {

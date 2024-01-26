@@ -15,7 +15,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 
 import { CreateUserByAdminDto } from './dto/create.users.admin.dto';
@@ -36,6 +36,7 @@ export class UsersController {
   @Post('create-by-admin')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
+  @ApiOperation({ summary: 'Create user by admin' })
   async createUserByAdmin(
     @Req() req: any,
     @Body() createUserByAdminDto: CreateUserByAdminDto,
@@ -68,6 +69,7 @@ export class UsersController {
   @Get()
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
+  @ApiOperation({ summary: 'Get user list' })
   async getUserList(@Req() req: any, @Res() res: any, @Query('page') page = 1) {
     return res
       .status(HttpStatus.OK)
@@ -78,6 +80,7 @@ export class UsersController {
   @Get('/:userId')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
+  @ApiOperation({ summary: 'Get user information by ID' })
   async getUserInfo(
     @Req() req: any,
     @Res() res: any,
@@ -90,6 +93,7 @@ export class UsersController {
 
   @Patch('/:userId')
   @UseGuards(AuthGuard())
+  @ApiOperation({ summary: 'Update user by ID' })
   async updateUser(
     @Param('userId') userId: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -97,22 +101,12 @@ export class UsersController {
     @Req() req: any,
   ) {
     try {
-      const user = req.user;
-      const isAdmin = user.roles === Role.Admin;
-      const isUserSelfUpdate = userId === user.id.toString();
-
-      if (isAdmin || isUserSelfUpdate) {
-        const updatedUser = await this.userService.updateUser(
-          userId,
-          updateUserDto,
-        );
-        const userWithoutPassword = { ...updatedUser, password: undefined };
-        return res.status(HttpStatus.OK).json(userWithoutPassword);
-      } else {
-        return res
-          .status(HttpStatus.FORBIDDEN)
-          .json({ message: 'Недостатні права для редагування користувача' });
-      }
+      const updatedUser = await this.userService.updateUser(
+        userId,
+        updateUserDto,
+        req.user,
+      );
+      return res.status(HttpStatus.OK).json(updatedUser);
     } catch (error) {
       return res
         .status(HttpStatus.BAD_REQUEST)
@@ -123,6 +117,7 @@ export class UsersController {
   @Delete('/:userId')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
+  @ApiOperation({ summary: 'Delete user by ID' })
   deleteUser(@Param('userId') userId: string) {
     return this.userService.deleteUser(userId);
   }
