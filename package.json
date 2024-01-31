@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@devoxa/prisma-relay-cursor-connection": "^2.2.2",
-    "@nestjs-modules/mailer": "^1.10.3",
+    "@nestjs-modules/mailer": "^1.9.1",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^8.4.7",
