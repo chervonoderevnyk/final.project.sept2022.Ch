@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "module": "commonjs",
+    "target": "es6",
+    "sourceMap": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
-    "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
@@ -19,5 +20,7 @@
     "noFallthroughCasesInSwitch": false,
     "types": ["node", "@prisma/client"],
     "typeRoots": ["node_modules/@types"]
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

@@ -16,9 +16,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 import { UsersService } from '../users/users.service';
-import { PrismaService } from '../core/orm/prisma.service';
 import { OrdersService } from '../orders/orders.service';
-import { UpdateOrderDto } from '../orders/dto/update.order.dto';
 import { CreateCommentDto } from './dto/create.comment.dto';
 import { CommentService } from './comment.service';
 import { Role } from '../auth/guard/roles.enum';
@@ -31,7 +29,6 @@ export class CommentController {
     private readonly ordersService: OrdersService,
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
-    private readonly prismaService: PrismaService,
     private readonly commentService: CommentService,
   ) {}
 
@@ -45,10 +42,8 @@ export class CommentController {
     @Req() req: any,
   ) {
     try {
-      const updateOrderDto = new UpdateOrderDto();
-
-      const order = await this.ordersService.getOrderById(orderId);
-      const user = await this.userService.getUserById(req.user.id);
+      await this.ordersService.getOrderById(orderId);
+      await this.userService.getUserById(req.user.id);
 
       return this.commentService.createComment(
         orderId,

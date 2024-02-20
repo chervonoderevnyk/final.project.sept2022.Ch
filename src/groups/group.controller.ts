@@ -3,10 +3,8 @@ import {
   Get,
   Post,
   Body,
-  Param,
   Inject,
   forwardRef,
-  Req,
   HttpException,
   HttpStatus,
   UseGuards,
@@ -16,10 +14,10 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 import { GroupService } from './group.service';
-import { OrdersService } from '../orders/orders.service';
 import { UsersService } from '../users/users.service';
 import { CreateGroupDto } from './dto/create.group.dto';
 import { Role } from '../auth/guard/roles.enum';
+import { ValidationsService } from '../core/validations/validations.service';
 
 @ApiTags('Groups')
 @Controller('groups')
@@ -27,30 +25,21 @@ import { Role } from '../auth/guard/roles.enum';
 export class GroupController {
   constructor(
     private readonly groupService: GroupService,
-    private readonly ordersService: OrdersService,
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
+    private readonly validationsService: ValidationsService,
   ) {}
 
-  @Post(':orderId/group')
+  @Post(':group')
   @UseGuards(AuthGuard())
   @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
-  @ApiOperation({ summary: 'Create group for an order' })
-  async createGroup(
-    @Param('orderId') orderId: string,
-    @Body() createGroupDto: CreateGroupDto,
-    @Req() req: any,
-  ) {
+  @ApiOperation({ summary: 'Create group' })
+  async createGroup(@Body() createGroupDto: CreateGroupDto) {
     try {
-      const user = await this.userService.getUserById(req.user.id);
-
-      const updatedGroupDto = await this.groupService.createOrUpdateGroup(
-        orderId,
-        createGroupDto,
-        user,
-      );
-
-      return updatedGroupDto;
+      await this.groupService.createGroup(createGroupDto);
+      return {
+        message: 'Групу успішно створено',
+      };
     } catch (error) {
       throw new HttpException(
         {

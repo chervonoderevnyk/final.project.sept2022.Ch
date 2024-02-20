@@ -16,7 +16,6 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Role } from '@prisma/client';
 
 import { CreateUserByAdminDto } from './dto/create.users.admin.dto';
 import { UsersService } from './users.service';

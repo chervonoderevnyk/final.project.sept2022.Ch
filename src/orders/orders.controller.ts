@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   forwardRef,
@@ -22,6 +21,7 @@ import { UpdateOrderDto } from './dto/update.order.dto';
 import { UsersService } from '../users/users.service';
 import { Role } from '../auth/guard/roles.enum';
 import { ValidationsService } from '../core/validations/validations.service';
+import { GroupService } from '../groups/group.service';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -32,6 +32,7 @@ export class OrdersController {
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     private readonly validationsService: ValidationsService,
+    private readonly groupService: GroupService,
   ) {}
 
   @Get()
@@ -75,12 +76,7 @@ export class OrdersController {
 
     updateOrderDto.manager = order.manager || user.lastName;
 
-    const updatedOrder = await this.ordersService.updateOrder(
-      orderId,
-      updateOrderDto,
-      user,
-    );
-    return updatedOrder;
+    return await this.ordersService.updateOrder(orderId, updateOrderDto, user);
   }
 
   @Get('/:orderId/details')

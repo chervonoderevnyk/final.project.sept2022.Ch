@@ -8,6 +8,7 @@ import { UsersService } from '../users/users.service';
 import { CommentService } from './comment.service';
 import { ValidationsService } from '../core/validations/validations.service';
 import { AuthModule } from '../auth/auth.module';
+import { GroupService } from '../groups/group.service';
 
 @Module({
   imports: [PrismaModule, AuthModule],
@@ -18,6 +19,7 @@ import { AuthModule } from '../auth/auth.module';
     CommentService,
     UsersService,
     ValidationsService,
+    GroupService,
   ],
   exports: [CommentService],
 })

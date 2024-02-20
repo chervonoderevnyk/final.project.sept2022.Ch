@@ -11,13 +11,7 @@ import {
   Min,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Course,
-  CourseFormat,
-  CourseType,
-  Group,
-  Status,
-} from '@prisma/client';
+import { Course, CourseFormat, CourseType, Status } from '@prisma/client';
 
 export class UpdateOrderDto {
   @ApiProperty({ required: false })
@@ -98,7 +92,7 @@ export class UpdateOrderDto {
   @ApiProperty({ required: false })
   @IsObject()
   @IsOptional()
-  group?: Group | null;
+  group?: { title: string } | null;
 
   @ApiProperty({ required: false })
   @IsString()

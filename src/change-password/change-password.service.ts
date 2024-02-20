@@ -8,6 +8,8 @@ import { MailInterface } from '../core/mail/mail.interface';
 
 @Injectable()
 export class ChangePasswordService {
+  private readonly changePasswordAttempts: Map<string, number> = new Map();
+
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
@@ -42,6 +44,46 @@ export class ChangePasswordService {
     );
 
     return { success: true };
+  }
+
+  canChangePassword(email: string): boolean {
+    const key = email.toLowerCase();
+    const attempts = this.changePasswordAttempts.get(key) || 0;
+    const lastAttemptTime = this.changePasswordAttempts.get(`${key}_time`) || 0;
+    const currentTime = new Date().getTime();
+
+    // Визначення кількості дозволених спроб і часовий період (наприклад, 3 спроби за добу)
+    const maxAttempts = 3;
+    const resetPeriod = 24 * 60 * 60 * 1000; // 24 години в мілісекундах
+    // const lockoutPeriod = 5 * 60 * 1000; // 5 хвилин в мілісекундах
+
+    if (
+      attempts >= maxAttempts &&
+      currentTime - lastAttemptTime < resetPeriod
+    ) {
+      // Заблоковано через досягнення максимальної кількості спроб, але ще не минув період блокування
+      return false;
+    }
+
+    if (currentTime - lastAttemptTime >= resetPeriod) {
+      // Скидаємо лічильник, якщо пройшов часовий період
+      this.changePasswordAttempts.set(key, 0);
+      this.changePasswordAttempts.set(`${key}_time`, currentTime);
+      return true;
+    }
+
+    return true;
+  }
+
+  recordChangePasswordAttempt(email: string): void {
+    const key = email.toLowerCase();
+    const attempts = this.changePasswordAttempts.get(key) || 0;
+    this.changePasswordAttempts.set(key, attempts + 1);
+
+    // Ініціалізація часу останньої спроби, якщо він ще не існує
+    if (!this.changePasswordAttempts.has(`${key}_time`)) {
+      this.changePasswordAttempts.set(`${key}_time`, new Date().getTime());
+    }
   }
 
   async changePassword(token: string, newPassword: string) {

@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Users } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -32,6 +32,20 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: 'Login user' })
   async loginUser(@Res() res: any, @Body() body: LoginDto) {
+    const expectedFields = ['email', 'password'];
+
+    const invalidFields = Object.keys(body).filter(
+      (key) => !expectedFields.includes(key),
+    );
+
+    if (invalidFields.length > 0) {
+      return res.status(HttpStatus.FORBIDDEN).json({
+        message: `Знайдено непередбачені поля у запиті: ${invalidFields.join(
+          ', ',
+        )}`,
+      });
+    }
+
     if (!body.email || !body.password) {
       return res
         .status(HttpStatus.FORBIDDEN)

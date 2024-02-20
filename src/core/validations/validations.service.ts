@@ -8,6 +8,7 @@ import {
 import { Course, CourseFormat, CourseType, Status } from '@prisma/client';
 
 import { UpdateOrderDto } from '../../orders/dto/update.order.dto';
+import { badWordsList } from '../words/bed.words.list';
 
 @Injectable()
 export class ValidationsService {
@@ -119,6 +120,30 @@ export class ValidationsService {
         { message: 'Некоректні дані користувача' },
         HttpStatus.BAD_REQUEST,
       );
+    }
+  }
+
+  checkForBadWords(text: string): string {
+    let filteredText = text;
+
+    badWordsList.forEach((badWord) => {
+      const regex = new RegExp(badWord, 'gi');
+      filteredText = filteredText.replace(regex, '*** (страшне матюччя)');
+    });
+
+    return filteredText;
+  }
+
+  validateExtraField(dto: Record<string, any>, allowedFields: string[]) {
+    const extraFields = Object.keys(dto).filter(
+      (key) => !allowedFields.includes(key),
+    );
+
+    if (extraFields.length > 0) {
+      const errorMessage = `Знайдено непередбачені поля у запиті: ${extraFields.join(
+        ', ',
+      )}`;
+      throw new BadRequestException(errorMessage);
     }
   }
 }

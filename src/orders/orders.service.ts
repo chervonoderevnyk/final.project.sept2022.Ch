@@ -1,16 +1,14 @@
 import {
   BadRequestException,
-  forwardRef,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Role, Status } from '@prisma/client';
+import { Status } from '@prisma/client';
 
 import { PrismaService } from '../core/orm/prisma.service';
-import { UsersService } from '../users/users.service';
 import { UpdateOrderDto } from './dto/update.order.dto';
 import { ValidationsService } from '../core/validations/validations.service';
+import { GroupService } from '../groups/group.service';
 
 @Injectable()
 export class OrdersService {
@@ -18,9 +16,8 @@ export class OrdersService {
 
   constructor(
     private readonly prismaService: PrismaService,
-    @Inject(forwardRef(() => UsersService))
-    private readonly userService: UsersService,
     private readonly validationsService: ValidationsService,
+    private readonly groupService: GroupService,
   ) {}
 
   async getAllOrders(sort: string, page: string, limit: string) {
@@ -173,8 +170,41 @@ export class OrdersService {
       throw new NotFoundException('Заявка не знайдена');
     }
 
-    const isAdminOrManager =
-      user.roles === Role.Admin || user.roles === Role.Manager;
+    this.validationsService.validateExtraField(updateOrderDto, [
+      'name',
+      'surname',
+      'email',
+      'phone',
+      'age',
+      'course',
+      'course_format',
+      'course_type',
+      'status',
+      'sum',
+      'alreadyPaid',
+      'group',
+      'utm',
+      'msg',
+      'manager',
+    ]);
+
+    if (updateOrderDto.group) {
+      const existingGroup = await this.groupService.getGroupById(
+        updateOrderDto.group.title,
+      );
+
+      if (!existingGroup) {
+        const availableGroups = await this.groupService.getAllGroups();
+        const groupsList = availableGroups
+          .map((group) => group.title)
+          .join(', ');
+
+        throw new NotFoundException({
+          message: `Група з назвою '${updateOrderDto.group.title}' не існує.`,
+          availableGroups: `Групи: ${groupsList}`,
+        });
+      }
+    }
 
     this.validationsService.validateUpdateOrderData(
       updateOrderDto,
@@ -192,23 +222,54 @@ export class OrdersService {
       user,
     );
 
-    const updatedOrder = await this.prismaService.orders.update({
+    return this.prismaService.orders.update({
       where: { id: Number(orderId) },
       data: updatedOrderData,
       include: {
         managerInfo: {
           select: {
             id: true,
-            email: true,
             lastName: true,
             firstName: true,
-            roles: true,
           },
         },
       },
     });
+  }
 
-    return updatedOrder;
+  private buildUpdateOrderData(
+    updateOrderDto: UpdateOrderDto,
+    order: any,
+    user: any,
+  ) {
+    let managerData = {};
+    if (updateOrderDto.status === Status.New) {
+      managerData = {
+        managerId: null,
+      };
+    } else {
+      managerData = {
+        manager: user.lastName,
+        managerId: user.id,
+      };
+    }
+
+    return {
+      name: updateOrderDto.name,
+      surname: updateOrderDto.surname,
+      email: updateOrderDto.email,
+      phone: updateOrderDto.phone,
+      age: updateOrderDto.age,
+      course: updateOrderDto.course,
+      course_format: updateOrderDto.course_format,
+      course_type: updateOrderDto.course_type,
+      status: updateOrderDto.status,
+      sum: updateOrderDto.sum,
+      alreadyPaid: updateOrderDto.alreadyPaid,
+      group: updateOrderDto.group?.title || order.group.title,
+      created_at: updateOrderDto.created_at,
+      ...managerData,
+    };
   }
 
   async getOrderDetails(orderId: string) {
@@ -232,33 +293,5 @@ export class OrdersService {
         },
       },
     });
-  }
-
-  private buildUpdateOrderData(
-    updateOrderDto: UpdateOrderDto,
-    order: any,
-    user: any,
-  ) {
-    const updatedOrderData = {
-      name: updateOrderDto.name,
-      surname: updateOrderDto.surname,
-      email: updateOrderDto.email,
-      phone: updateOrderDto.phone,
-      age: updateOrderDto.age,
-      course: updateOrderDto.course,
-      course_format: updateOrderDto.course_format,
-      course_type: updateOrderDto.course_type,
-      status: updateOrderDto.status,
-      sum: updateOrderDto.sum,
-      alreadyPaid: updateOrderDto.alreadyPaid,
-      group: updateOrderDto.group?.title || order.group,
-      created_at: updateOrderDto.created_at,
-      manager: user.lastName,
-      managerInfo: {
-        connect: { id: user.id },
-      },
-    };
-
-    return updatedOrderData;
   }
 }
