@@ -7,6 +7,7 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
+  // Набори для зберігання використаних токенів оновлення та зміни паролю
   private usedRefreshTokens: Set<string> = new Set();
   private usedChangePasswordTokens: Set<string> = new Set();
 
@@ -15,10 +16,12 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
+  // Порівняння пароля з хешем
   async compareHash(password: string, hash: string) {
     return bcrypt.compare(password, hash);
   }
 
+  // Генерація accessToken
   generateAccessToken(userId: string): string {
     const payload = { id: userId, sub: 'accessToken' };
     const accessToken = this.jwtService.sign(payload, {
@@ -28,6 +31,7 @@ export class AuthService {
     return accessToken;
   }
 
+  // Генерація refreshToken
   generateRefreshToken(userId: string): string {
     const payload = { id: userId, sub: 'refreshToken' };
     const refreshToken = this.jwtService.sign(payload, {
@@ -37,14 +41,17 @@ export class AuthService {
     return refreshToken;
   }
 
+  // Відзначення refreshToken як використаного
   markRefreshTokenAsUsed(refreshToken: string): void {
     this.usedRefreshTokens.add(refreshToken);
   }
 
+  // Перевірка, чи використано refreshToken
   isRefreshTokenUsed(refreshToken: string): boolean {
     return this.usedRefreshTokens.has(refreshToken);
   }
 
+  // Генерація accessToken для активації облікового запису
   generateAccessTokenActivate(userId: string): string {
     const payload = { id: userId, sub: 'accessTokenActivate' };
     const accessTokenActivate = this.jwtService.sign(payload, {
@@ -54,10 +61,12 @@ export class AuthService {
     return accessTokenActivate;
   }
 
+  // Перевірка та розшифрування токену
   verifyToken(token: string, expectedSub: string): any {
     try {
       const decoded = this.jwtService.verify(token);
 
+      // Перевірка правильності типу токену
       if (decoded.sub !== expectedSub) {
         throw new UnauthorizedException('Неправильний тип токену');
       }
@@ -83,6 +92,7 @@ export class AuthService {
     }
   }
 
+  // Генерація токену для зміни паролю
   generateChangePasswordToken(userId: string): string {
     const payload = { id: userId, sub: 'changePasswordToken' };
     const changePasswordToken = this.jwtService.sign(payload, {
@@ -91,6 +101,7 @@ export class AuthService {
     return changePasswordToken;
   }
 
+  // Перевірка та розшифрування токену для зміни паролю
   async verifyChangePasswordToken(token: string): Promise<Users> {
     try {
       const { id } = this.jwtService.verify(token, { ignoreExpiration: false });
@@ -107,10 +118,12 @@ export class AuthService {
     }
   }
 
+  // Відзначення changePasswordToken як використаного
   markChangePasswordTokenAsUsed(changePasswordToken: string): void {
     this.usedChangePasswordTokens.add(changePasswordToken);
   }
 
+  // Перевірка, чи використано changePasswordToken
   isChangePasswordTokenUsed(changePasswordToken: string): boolean {
     return this.usedChangePasswordTokens.has(changePasswordToken);
   }

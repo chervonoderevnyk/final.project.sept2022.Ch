@@ -7,17 +7,18 @@ import { UsersService } from '../users/users.service';
 import { UsersModule } from '../users/users.module';
 import { AuthModule } from './auth.module';
 
-@Global()
+@Global() // Позначення модуля як глобального
 @Module({
   imports: [
     UsersModule,
     AuthModule,
-    PassportModule.register({ defaultStrategy: 'bearer' }),
+    PassportModule.register({ defaultStrategy: 'bearer' }), // Реєстрація PassportModule зі стратегією "bearer"
     JwtModule.registerAsync({
+      // Асинхронна реєстрація JwtModule
       useFactory: async () => ({
-        secret: 'Secret',
+        secret: 'Secret', // Секретний ключ для підпису токенів
         signOptions: {
-          expiresIn: '24h',
+          expiresIn: '24h', // Термін дії токенів - 24 години
         },
       }),
     }),

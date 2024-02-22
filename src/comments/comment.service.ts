@@ -7,10 +7,12 @@ import { ValidationsService } from '../core/validations/validations.service';
 @Injectable()
 export class CommentService {
   constructor(
-    private readonly prismaService: PrismaService,
-    private readonly validationsService: ValidationsService,
+    // Впровадження залежностей
+    private readonly prismaService: PrismaService, // Впровадження залежностей для взаємодії з базою даних через Prisma
+    private readonly validationsService: ValidationsService, // Впровадження залежностей для валідації даних
   ) {}
 
+  // Створення коментаря для певного замовлення
   async createComment(
     orderId: string,
     createCommentDto: CreateCommentDto,
@@ -23,22 +25,26 @@ export class CommentService {
         'Текст коментаря відсутній',
         HttpStatus.BAD_REQUEST,
       );
-    }
+    } // Перевірка наявності тексту коментаря
 
     const filteredCommentText =
-      this.validationsService.checkForBadWords(commentText);
+      this.validationsService.checkForBadWords(commentText); // Фільтрація коментаря від нецензурних слів
+
     this.validationsService.validateExtraField(createCommentDto, [
       'commentText',
-    ]);
+    ]); // Валідація додаткових полів DTO
+
+    // Створення коментаря у базі даних
     return this.prismaService.comment.create({
       data: {
-        commentText: filteredCommentText,
-        order: { connect: { id: Number(orderId) } },
-        user: { connect: { id: Number(userId) } },
+        commentText: filteredCommentText, // Текст коментаря після фільтрації
+        order: { connect: { id: Number(orderId) } }, // Посилання на замовлення
+        user: { connect: { id: Number(userId) } }, // Посилання на користувача
       },
     });
   }
 
+  // Отримання всіх коментарів
   async getAllComments() {
     return this.prismaService.comment.findMany({
       select: {

@@ -252,7 +252,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n        \"email\": \"LinkiPark3@gmail.com\",\n        \"password\": \"12345\"\n}",
+									"raw": "{\n        \"email\": \"@gmail.com\",\n        \"password\": \"54321\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -662,7 +662,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"commentText\": \"Кодить в ліфті!\"\n}\n",
+							"raw": "{\n  \"commentText\": \"\"\n}\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -670,7 +670,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/comments/4/comment",
+							"raw": "http://localhost:3006/comments/56/comment",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -678,7 +678,7 @@
 							"port": "3006",
 							"path": [
 								"comments",
-								"4",
+								"56",
 								"comment"
 							]
 						}
@@ -748,7 +748,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": \"Горобці 2024\"\n}\n",
+							"raw": "{\n  \"title\": \"\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -756,7 +756,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3006/groups/3/group",
+							"raw": "http://localhost:3006/groups/group",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -764,7 +764,6 @@
 							"port": "3006",
 							"path": [
 								"groups",
-								"3",
 								"group"
 							]
 						}

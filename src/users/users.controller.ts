@@ -32,6 +32,7 @@ export class UsersController {
     private authService: AuthService,
   ) {}
 
+  // Метод POST для створення користувача адміністратором
   @Post('create-by-admin')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
@@ -43,28 +44,29 @@ export class UsersController {
   ) {
     try {
       const existingUser = await this.userService.findUserByEmail(
-        createUserByAdminDto.email,
+        createUserByAdminDto.email, // Пошук існуючого користувача за email
       );
       if (existingUser) {
         throw new ConflictException('Користувач з вказаним email вже існує!');
       }
 
       const user = await this.userService.registerUserByAdmin(
-        createUserByAdminDto,
+        createUserByAdminDto, // Реєстрація користувача адміністратором
       );
 
       const accessToken = this.authService.generateAccessTokenActivate(
-        user.id.toString(),
+        user.id.toString(), // Генерація токену доступу
       );
 
-      return res.status(HttpStatus.CREATED).json({ user, accessToken });
+      return res.status(HttpStatus.CREATED).json({ user, accessToken }); // Повертає успішну відповідь з користувачем та токеном доступу
     } catch (error) {
       return res
         .status(HttpStatus.BAD_REQUEST)
-        .json({ message: error.message });
+        .json({ message: error.message }); // Повертає помилку при невдалому створенні користувача
     }
   }
 
+  // Метод GET для отримання списку користувачів
   @Get()
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])
@@ -85,11 +87,12 @@ export class UsersController {
     @Res() res: any,
     @Param('userId') userId: string,
   ) {
-    const user = await this.userService.getUserById(String(userId));
-    const userWithoutPassword = { ...user, password: undefined };
-    return res.status(HttpStatus.OK).json(userWithoutPassword);
+    const user = await this.userService.getUserById(String(userId)); // Отримання користувача за його ID
+    const userWithoutPassword = { ...user, password: undefined }; // Видалення паролю з відповіді
+    return res.status(HttpStatus.OK).json(userWithoutPassword); // Повертає інформацію про користувача без пароля
   }
 
+  // Метод PATCH для оновлення користувача за його ID
   @Patch('/:userId')
   @UseGuards(AuthGuard())
   @ApiOperation({ summary: 'Update user by ID' })
@@ -103,16 +106,17 @@ export class UsersController {
       const updatedUser = await this.userService.updateUser(
         userId,
         updateUserDto,
-        req.user,
+        req.user, // Користувач, який оновлює дані
       );
-      return res.status(HttpStatus.OK).json(updatedUser);
+      return res.status(HttpStatus.OK).json(updatedUser); // Повертає оновленого користувача
     } catch (error) {
       return res
         .status(HttpStatus.BAD_REQUEST)
-        .json({ message: error.message });
+        .json({ message: error.message }); // Повертає помилку при невдалому оновленні користувача
     }
   }
 
+  // Метод DELETE для видалення користувача за його ID
   @Delete('/:userId')
   @UseGuards(AuthGuard(), RoleGuard)
   @SetMetadata('roles', ['Admin'])

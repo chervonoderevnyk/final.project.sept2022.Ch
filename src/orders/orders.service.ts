@@ -15,16 +15,18 @@ export class OrdersService {
   [x: string]: any;
 
   constructor(
+    // Впровадження залежностей для взаємодії з...
     private readonly prismaService: PrismaService,
     private readonly validationsService: ValidationsService,
     private readonly groupService: GroupService,
   ) {}
 
+  // Метод для отримання всіх замовлень з можливістю сортування та пагінації
   async getAllOrders(sort: string, page: string, limit: string) {
     const pageNumber = parseInt(page, 10);
     if (isNaN(pageNumber) || pageNumber < 1 || !/^\d+$/.test(page)) {
       throw new BadRequestException('Некоректне значення для параметра "page"');
-    }
+    } // Парсимо параметри пагінації
 
     const limitNumber = parseInt(limit, 10);
     if (isNaN(limitNumber) || limitNumber < 1 || !/^\d+$/.test(limit)) {
@@ -33,6 +35,7 @@ export class OrdersService {
       );
     }
 
+    // Парсимо та перевіряємо значення сортування
     let sortField: string | undefined;
     let sortOrder: 'asc' | 'desc' | undefined;
 
@@ -67,7 +70,7 @@ export class OrdersService {
         'group',
         'created_at',
         'manager',
-      ];
+      ]; // Допустимі поля для сортування
 
       if (!validSortFields.includes(sortField)) {
         throw new BadRequestException(
@@ -76,17 +79,20 @@ export class OrdersService {
       }
     }
 
+    // Обчислюємо значення пропуску
     const skip = (pageNumber - 1) * limitNumber;
     const totalCount = await this.prismaService.orders.count();
 
     const orderBy: any = {};
 
+    // Побудова параметрів сортування
     if (sortField && sortOrder) {
       orderBy[sortField] = sortOrder;
     } else {
       orderBy.id = 'desc';
     }
 
+    // Отримуємо список замовлень з бази даних
     const orders = await this.prismaService.orders.findMany({
       orderBy,
       skip,
@@ -113,7 +119,7 @@ export class OrdersService {
             lastName: true,
           },
         },
-      },
+      }, // Вибираємо поля для виведення
     });
 
     return {
@@ -124,10 +130,12 @@ export class OrdersService {
     };
   }
 
+  // Метод для отримання замовлення за його ідентифікатором
   async getOrderById(orderId: string) {
     return this.prismaService.orders.findFirst({
       where: { id: Number(orderId) },
       select: {
+        // Вибираємо поля для виведення
         name: true,
         surname: true,
         email: true,
@@ -154,6 +162,7 @@ export class OrdersService {
     });
   }
 
+  // Метод для оновлення замовлення за його ідентифікатором
   async updateOrder(
     orderId: string,
     updateOrderDto: UpdateOrderDto,
@@ -161,15 +170,14 @@ export class OrdersService {
   ) {
     const order = await this.prismaService.orders.findUnique({
       where: { id: Number(orderId) },
-      include: {
-        managerInfo: true,
-      },
-    });
+      include: { managerInfo: true },
+    }); // Отримання замовлення за його ідентифікатором
 
     if (!order) {
       throw new NotFoundException('Заявка не знайдена');
-    }
+    } // Перевірка чи знайдене замовлення існує
 
+    // Валідація даних замовлення
     this.validationsService.validateExtraField(updateOrderDto, [
       'name',
       'surname',
@@ -191,8 +199,9 @@ export class OrdersService {
     if (updateOrderDto.group) {
       const existingGroup = await this.groupService.getGroupById(
         updateOrderDto.group.title,
-      );
+      ); // Перевірка наявності групи
 
+      // Якщо група не знайдена, повертаємо помилку зі списком доступних груп
       if (!existingGroup) {
         const availableGroups = await this.groupService.getAllGroups();
         const groupsList = availableGroups
@@ -206,37 +215,29 @@ export class OrdersService {
       }
     }
 
-    this.validationsService.validateUpdateOrderData(
-      updateOrderDto,
-      order,
-      user,
-    );
+    this.validationsService.validateUpdateOrder(updateOrderDto, order, user); // Валідація оновлення замовлення
 
     if (updateOrderDto.status === undefined || updateOrderDto.status === null) {
       updateOrderDto.status = Status.In_work;
-    }
+    } // Якщо статус не вказано, встановлюємо статус "In_work"
 
     const updatedOrderData = this.buildUpdateOrderData(
       updateOrderDto,
       order,
       user,
-    );
+    ); // Побудова даних для оновлення замовлення
 
+    // Оновлення замовлення в базі даних
     return this.prismaService.orders.update({
       where: { id: Number(orderId) },
       data: updatedOrderData,
       include: {
-        managerInfo: {
-          select: {
-            id: true,
-            lastName: true,
-            firstName: true,
-          },
-        },
+        managerInfo: { select: { id: true, lastName: true, firstName: true } },
       },
     });
   }
 
+  // Внутрішній метод для побудови даних для оновлення замовлення
   private buildUpdateOrderData(
     updateOrderDto: UpdateOrderDto,
     order: any,
@@ -246,6 +247,7 @@ export class OrdersService {
     if (updateOrderDto.status === Status.New) {
       managerData = {
         managerId: null,
+        manager: null,
       };
     } else {
       managerData = {
@@ -266,12 +268,13 @@ export class OrdersService {
       status: updateOrderDto.status,
       sum: updateOrderDto.sum,
       alreadyPaid: updateOrderDto.alreadyPaid,
-      group: updateOrderDto.group?.title || order.group.title,
+      group: updateOrderDto.group?.title || order.group?.title,
       created_at: updateOrderDto.created_at,
       ...managerData,
-    };
+    }; // Дані для оновлення
   }
 
+  // Метод для отримання деталей замовлення за його ідентифікатором
   async getOrderDetails(orderId: string) {
     return this.prismaService.orders.findFirst({
       where: { id: Number(orderId) },
@@ -293,5 +296,32 @@ export class OrdersService {
         },
       },
     });
+  }
+
+  // Метод для оновлення інформації про менеджера для замовлення
+  async updateOrderManager(
+    orderId: string,
+    managerId: string,
+    managerLastName: string,
+  ): Promise<any> {
+    return this.prismaService.orders.update({
+      where: { id: Number(orderId) },
+      data: {
+        managerInfo: { connect: { id: Number(managerId) } },
+        manager: managerLastName,
+      },
+    });
+  }
+
+  // Метод для оновлення статусу замовлення за його ідентифікатором
+  async updateOrderStatus(orderId: string, status: Status): Promise<void> {
+    try {
+      await this.prismaService.orders.update({
+        where: { id: Number(orderId) },
+        data: { status },
+      });
+    } catch (error) {
+      throw new Error(`Помилка при оновленні статусу ордера: ${error.message}`);
+    }
   }
 }
