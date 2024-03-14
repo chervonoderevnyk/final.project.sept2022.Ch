@@ -433,7 +433,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"email\": \"@gmail.com\"\n}\n",
+									"raw": "{\n \"email\": \"@gmail.com\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"

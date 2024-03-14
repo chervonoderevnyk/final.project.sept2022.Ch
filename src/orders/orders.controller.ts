@@ -21,7 +21,6 @@ import { UpdateOrderDto } from './dto/update.order.dto';
 import { UsersService } from '../users/users.service';
 import { Role } from '../auth/guard/roles.enum';
 import { ValidationsService } from '../core/validations/validations.service';
-import { GroupService } from '../groups/group.service';
 
 @ApiTags('Orders') // Теги для Swagger
 @Controller('orders') // Контролер для маршруту /orders

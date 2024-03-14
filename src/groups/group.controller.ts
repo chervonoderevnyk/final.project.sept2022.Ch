@@ -19,9 +19,10 @@ import { CreateGroupDto } from './dto/create.group.dto';
 import { Role } from '../auth/guard/roles.enum';
 import { ValidationsService } from '../core/validations/validations.service';
 
+// Додаємо теги для Swagger
 @ApiTags('Groups')
 @Controller('groups')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard()) // Використовуємо сторожа аутентифікації
 export class GroupController {
   constructor(
     private readonly groupService: GroupService,
@@ -30,17 +31,19 @@ export class GroupController {
     private readonly validationsService: ValidationsService,
   ) {}
 
+  // Обробник для створення групи
   @Post(':group')
-  @UseGuards(AuthGuard())
-  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])
-  @ApiOperation({ summary: 'Create group' })
+  @UseGuards(AuthGuard()) // Використовуємо сторожа аутентифікації
+  @SetMetadata('roles', [Role.ADMIN, Role.MANAGER]) // Встановлюємо метадані для ролей
+  @ApiOperation({ summary: 'Create group' }) // Додаємо опис операції для Swagger
   async createGroup(@Body() createGroupDto: CreateGroupDto) {
     try {
-      await this.groupService.createGroup(createGroupDto);
+      await this.groupService.createGroup(createGroupDto); // Викликаємо сервіс для створення групи
       return {
         message: 'Групу успішно створено',
       };
     } catch (error) {
+      // Обробляємо помилку
       throw new HttpException(
         {
           statusCode: HttpStatus.BAD_REQUEST,
@@ -52,6 +55,7 @@ export class GroupController {
     }
   }
 
+  // Обробник для отримання всіх груп
   @Get()
   @UseGuards(AuthGuard())
   @SetMetadata('roles', [Role.ADMIN, Role.MANAGER])

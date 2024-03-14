@@ -20,6 +20,7 @@ export class ChangePasswordController {
     private validationsService: ValidationsService,
   ) {}
 
+  // Генерує токен для зміни пароля
   @Patch('change-password-generate-token')
   @ApiOperation({ summary: 'Generate token for changing password' })
   async ChangePasswordGenerateToken(
@@ -78,6 +79,7 @@ export class ChangePasswordController {
     }
   }
 
+  // Змінює пароль користувача
   @Patch('change-password/:token')
   @ApiOperation({ summary: 'Change user password' })
   async changePasswordUser(
@@ -100,6 +102,7 @@ export class ChangePasswordController {
         });
       }
 
+      // Валідація нового пароля
       this.validationsService.validatePasswordLength(
         changeOldPasswordDto.newPassword,
       );

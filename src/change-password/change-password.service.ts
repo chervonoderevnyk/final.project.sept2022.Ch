@@ -8,6 +8,7 @@ import { MailInterface } from '../core/mail/mail.interface';
 
 @Injectable()
 export class ChangePasswordService {
+  // Map для зберігання спроб зміни паролю за email користувача(Лічильник спроб зміни пароля для кожного користувача)
   private readonly changePasswordAttempts: Map<string, number> = new Map();
 
   constructor(
@@ -17,18 +18,20 @@ export class ChangePasswordService {
     private validationsService: ValidationsService,
   ) {}
 
+  // Генерація токену для зміни паролю та відправлення електронного листа з посиланням
   async generateChangePasswordToken(email: string) {
     const user = await this.usersService.findUserByEmail(email);
 
     if (!user) {
       return { success: false, message: 'Користувача не знайдено' };
-    }
+    } // Якщо користувач не знайдений, повертаємо помилку
 
     const changePasswordToken = this.authService.generateChangePasswordToken(
       user.id.toString(),
     );
     // console.log('Change Password Token:', changePasswordToken);
 
+    // Підготовка даних для електронного листа
     const mailData = {
       lastName: user.lastName,
       firstName: user.firstName,
@@ -36,6 +39,7 @@ export class ChangePasswordService {
     };
 
     const subject = 'Змінити ПАРОЛЬ до облікового запису!!!';
+    // Відправлення електронного листа з посиланням на зміну паролю
     this.mailService.send(
       user.email,
       subject,
@@ -46,6 +50,7 @@ export class ChangePasswordService {
     return { success: true };
   }
 
+  // Перевірка можливості зміни паролю для заданого email
   canChangePassword(email: string): boolean {
     const key = email.toLowerCase();
     const attempts = this.changePasswordAttempts.get(key) || 0;
@@ -53,7 +58,7 @@ export class ChangePasswordService {
     const currentTime = new Date().getTime();
 
     // Визначення кількості дозволених спроб і часовий період (наприклад, 3 спроби за добу)
-    const maxAttempts = 3;
+    const maxAttempts = 3; // Максимальна кількість спроб зміни пароля
     const resetPeriod = 24 * 60 * 60 * 1000; // 24 години в мілісекундах
     // const lockoutPeriod = 5 * 60 * 1000; // 5 хвилин в мілісекундах
 
@@ -75,6 +80,7 @@ export class ChangePasswordService {
     return true;
   }
 
+  // Запис спроби зміни паролю для email
   recordChangePasswordAttempt(email: string): void {
     const key = email.toLowerCase();
     const attempts = this.changePasswordAttempts.get(key) || 0;
@@ -86,17 +92,18 @@ export class ChangePasswordService {
     }
   }
 
+  // Зміна паролю з використанням токену
   async changePassword(token: string, newPassword: string) {
     if (!token || !newPassword) {
       return { success: false, message: 'Некоректні дані користувача' };
-    }
+    } // Перевірка наявності вхідних даних
 
     const isChangePasswordTokenUsed =
       this.authService.isChangePasswordTokenUsed(token);
 
     if (isChangePasswordTokenUsed) {
       return { success: false, message: 'Токен зміни пароля вже використано' };
-    }
+    } // Перевірка, чи токен не використовувався раніше
 
     const isValidToken = this.authService.verifyToken(
       token,
@@ -105,7 +112,7 @@ export class ChangePasswordService {
 
     if (!isValidToken) {
       return { success: false, message: 'Некоректний токен зміни пароля' };
-    }
+    } // Перевірка валідності токену
 
     const user = await this.authService.verifyChangePasswordToken(token);
 
@@ -113,14 +120,14 @@ export class ChangePasswordService {
       return {
         success: false,
         message: 'Користувач не активований. Зміна паролю неможлива.',
-      };
+      }; // Перевірка активності користувача
     }
 
     this.validationsService.validatePasswordLength(newPassword);
 
-    this.authService.markChangePasswordTokenAsUsed(token);
+    this.authService.markChangePasswordTokenAsUsed(token); // Позначення токену як використаного
 
-    await this.usersService.updateUserPassword(user.id.toString(), newPassword);
+    await this.usersService.updateUserPassword(user.id.toString(), newPassword); // Оновлення паролю користувача
 
     return { success: true };
   }

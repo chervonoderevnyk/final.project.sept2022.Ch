@@ -1,7 +1,9 @@
+// Генератор клієнта Prisma
 generator client {
   provider = "prisma-client-js"
 }
 
+// Джерело даних для бази даних MySQL
 datasource db {
   provider          = "mysql"
   url               = env("DATABASE_URL")
@@ -104,9 +106,9 @@ enum CourseFormat {
 }
 
 enum Status {
-  In_work
-  New
-  Aggre
-  Disaggre
-  Dubbing
+  In_work // В роботі
+  New // Новий
+  Aggre // Підтверджений
+  Disaggre // Відхилений
+  Dubbing // В дублюванні
 }

@@ -12,20 +12,23 @@ export class GroupService {
     private readonly validationsService: ValidationsService,
   ) {}
 
+  // Створює нову групу з вказаною назвою.
   async createGroup(createGroupDto: CreateGroupDto) {
     const filteredTitle = this.validationsService.checkForBadWords(
-      createGroupDto.title,
+      createGroupDto.title, // Фільтруємо назву групи для перевірки на образливі слова.
     );
 
     if (filteredTitle !== createGroupDto.title) {
       throw new BadRequestException(
         'Заборонено використовувати матюкливі слова у назві групи.',
-      );
+      ); // Якщо фільтрована назва відрізняється від введеної, викидаємо виняток.
     }
 
+    // Перевірка на додаткові поля у вхідних даних.
     this.validationsService.validateExtraField(createGroupDto, ['title']);
     const { title } = createGroupDto;
 
+    // Створення нової групи у базі даних.
     return this.prismaService.group.create({
       data: {
         title,
@@ -33,6 +36,7 @@ export class GroupService {
     });
   }
 
+  // Отримує групу за її назвою.
   async getGroupById(title: string): Promise<Group | null> {
     return this.prismaService.group.findFirst({
       where: {
@@ -43,6 +47,7 @@ export class GroupService {
     });
   }
 
+  // Отримує всі групи.
   async getAllGroups() {
     return this.prismaService.group.findMany({
       select: {
